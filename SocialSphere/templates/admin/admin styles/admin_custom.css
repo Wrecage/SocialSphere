@@ -1,0 +1,24 @@
+
+.header {
+  background-color: #FDCC00;
+}
+
+.sidebar {
+  
+  background-color: #000000;
+}
+
+body {
+  background-color: #FDCC00;
+  color: #ffffff; 
+}
+
+.module h2 {
+  color: #FDCC00; 
+}
+
+
+.login {
+  background-color: #FDCC00; 
+  color: #000000; 
+}

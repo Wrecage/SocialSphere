@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event List</title>
+    <style>
+        body {
+            background-color: #FDCC00;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 36px;
+        }
+        
+        .event {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+        }
+        .event img {
+            max-width: 500px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .event-caption {
+            font-size:large;
+            font-family:Calibri;
+        }
+
+        .event-title {
+            font-family:sans-serif ;
+            font-weight: bolder;
+            font-size:xx-large;
+        }
+        .event-date {
+            font-size:xx-small;
+            font-style: italic;
+            color: #777777;
+            margin-bottom: 20px;
+        }
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Event List</h1>
+
+    
+    {% for event in events %}
+    <div class="event">
+        <div class="event-title">{{ event.title }}</div>
+        <div class="event-date">{{ event.date }}</div>
+        <div class="event-caption">{{ event.caption }}</div>
+        {% if event.photo_or_video %}
+        <div class="event-img">
+            {% if event.photo_or_video.url %}
+                <img src="{{ event.photo_or_video.url }}" alt="Event Image">
+            {% else %}
+                <video controls>
+                    <source src="{{ event.photo_or_video.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            {% endif %}
+        </div>
+        {% endif %}
+
+
+        
+        <!-- Add more fields as needed -->
+    </div>
+    {% empty %}
+    <p>No events available.</p>
+    {% endfor %}
+</body>
+</html>
+
