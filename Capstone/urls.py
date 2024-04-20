@@ -20,6 +20,9 @@ from SocialSphere import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+# from django.contrib.auth.views import logout_then_login
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.event_list, name='event_list'),
@@ -27,4 +30,5 @@ urlpatterns = [
     path('events/posts/', views.event_posts, name='event_posts'),
     path('events/<int:id>/delete/', views.event_delete, name='delete_event'),
     path('events/', views.events_view, name='events_view'),
+    path('user_logout/', views.user_logout, name='user_logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

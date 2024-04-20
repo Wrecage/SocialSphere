@@ -73,8 +73,8 @@
         }
 
         #image-preview img {
-            max-width: fit-content;
-            max-height: fit-content;
+            max-width: 200px;
+            max-height: 100px;
             margin-right: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
@@ -141,6 +141,7 @@
             max-width: 500px;
             border-radius: 5px;
             margin-bottom: 10px;
+            
         }
         .event-caption {
             font-size:xx-large;
@@ -160,6 +161,11 @@
     </style>
 </head>
 <body>
+
+    </div>
+    <a href="{% url 'user_logout' %}" class="profile-button" style="background-color: #333;">Logout</a>
+    </div>
+
     <h1>Event Posts</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -196,7 +202,7 @@
 
         </div>
 
-
+        <div class="event-title">{{ event.title }}</div>
         <div class="event-caption">{{ event.caption }}</div>
         <div class="event-date">{{ event.date }}</div>
         {% if event.photo_or_video %}
