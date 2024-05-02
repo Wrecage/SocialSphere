@@ -60,6 +60,23 @@ def event_posts(request):
     events = Event.objects.all()
     return render(request, 'content_manager/event_posts.html', {'form': form, 'events': events})
 
+//new commit
+@login_required
+def edit_event_posts(request, id):
+    event = get_object_or_404(Event, pk=id)
+
+    editing = request.Get.get('editing', False)
+
+    if editing:
+        form = EventForm(request.POST or None, instannce=event, user=request.user)
+        if request.method == 'POST' and form.is_valid():
+            form.save()
+            return redirect('event_posts', id=event.id)
+    else:
+        form = None
+
+    return render(request, 'content_manager/event_posts.html', {'form': form, 'event': event, 'editing': editing})
+
 @login_required      
 def event_delete(request,id):
     event = get_object_or_404(Event, pk=id)
