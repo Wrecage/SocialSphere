@@ -23,30 +23,63 @@
         <a class="profile-button" style="text-decoration: none;" href="{% url 'user_logout' %}">Logout</a>
         <div class="bold1">DASHBOARD ANALYTICS</div>
         <a href="{% url 'event_posts' %}" style="text-decoration: none;" class="event_url">Event Posts</a>
-        <a href="{% url 'admin:index' %}" style="text-decoration: none;" class="manage_url">Management</a>
+        <a href="{% url 'admin:index' %}" style="text-decoration: none;" class="manage_url">User Management</a>
     </div>
 
-    <div class="fb">
-        <div class="fb-content">
-            <p class="fb-title">Facebook Analytics</p>
-            <p class="fb-para" id="fb-likes">Total likes/Reactions:{{ total_reactions_count }}</p>
-            <p class="fb-para" id="fb-comments">Comments:{{ total_comments }}</p>
-            <p class="fb-para" id="fb-shares">Shares:{{ total_shares }}</p>
-            <p class="fb-para" id="fb-views">Views:{{ page_views }}</p>
+
+    <div class="analytics-container">
+        <div class="fb">
+            <div class="fb-content">
+                <div class="fb-item">
+                    <p class="fb-title">Facebook Analytics</p>
+                </div>
+                <div class="fb-item">
+                    <p class="fb-para">Total Likes/Reactions:</p>
+                    <p class="fb-value" id="fb-likes">{{ total_reactions_count }}</p>
+                </div>
+                <div class="fb-item">
+                    <p class="fb-para">Comments:</p>
+                    <p class="fb-value" id="fb-comments">{{ total_comments }}</p>
+                </div>
+                <div class="fb-item">
+                    <p class="fb-para">Shares:</p>
+                    <p class="fb-value" id="fb-shares">{{ total_shares }}</p>
+                </div>
+                <div class="fb-item">
+                    <p class="fb-para">Views:</p>
+                    <p class="fb-value" id="fb-views">{{ page_views }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="wb">
+            <div class="wb-content">
+                <div class="wb-item">
+                    <p class="wb-title">Website Analytics</p>
+                </div>
+                <div class="wb-item">
+                    <p class="wb-para">Visitors:</p>
+                    <p class="wb-value" id="wb-visitors">{{ total_visitors }}</p>
+                </div>
+                <div class="wb-item">
+                    <p class="wb-para">Clicks:</p>
+                    <p class="wb-value" id="wb-clicks">{{ total_clicks }}</p>
+                </div>
+                <div class="wb-item">
+                    <p class="wb-para">Comments:</p>
+                    <p class="wb-value" id="wb-comments">{{ total_comments }}</p>
+                </div>
+                <div class="wb-item">
+                    <p class="wb-para">Likes/Reactions:</p>
+                    <p class="wb-value" id="wb-likes">{{ total_likes }}</p>
+                </div>
+            </div>
         </div>
     </div>
 
 
 
-    <div class="wb">
-        <div class="wb-content">
-            <p class="wb-title">Website Analytics</p>
-            <p class="wb-para" id="wb-visitors">Visitors: {{ context.total_visitors }}</p>
-            <p class="wb-para" id="wb-clicks">Clicks: {{ context.total_clicks }}</p>
-            <p class="wb-para" id="wb-comments">Comments: {{ total_comments }}</p>
-            <p class="wb-para" id="wb-likes">Likes/Reactions: {{ total_likes }}</p>
-        </div>
-    </div>
+
 
 </body>
 

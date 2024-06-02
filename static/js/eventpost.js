@@ -88,6 +88,10 @@
             }
         }
     }
+
+
+
+    
     
     function initializeFacebookModal() {
         const postToFacebookBtns = document.querySelectorAll('.post-to-facebook-btn');
@@ -162,7 +166,7 @@
         if (photo) {
             photo.innerHTML = `
                 <input type="file" id="edit_photo_${eventId}" accept="image/*">
-                <button class="remove-photo-btn" data-id="${eventId}">Remove Photo</button>
+                
             `;
         }
 
@@ -321,7 +325,92 @@
         const hiddenElements = document.querySelectorAll('.event');
         hiddenElements.forEach((el) => observer.observe(el));
     }
+    function handlePublishButtonClick(event) {
+        const form = document.getElementById('event-form');
+        if (form) {
+            const checkbox = form.querySelector('input[name="post_to_facebook"]');
+            if (checkbox && checkbox.checked) {
+                event.preventDefault(); // Prevent the default form submission
+                handlePostToFacebookAndPublish();
+            }
+        }
+    }
     
+    function handlePostToFacebookAndPublish() {
+        const form = document.getElementById('event-form');
+        if (form) {
+            const facebookModal = document.getElementById('facebookModal');
+            const loader = document.getElementById('loader');
+            const facebookModalMessage = document.getElementById('facebookModalMessage');
+            facebookModalMessage.textContent = 'Publishing and Posting to Facebook...';
+            loader.style.display = 'block';
+            facebookModal.style.display = 'block';
+    
+            form.submit(); 
+        }
+    }
+    
+    function initializeFacebookModalMain() {
+        const facebookModal = document.getElementById('facebookModal');
+        const facebookModalMessage = document.getElementById('facebookModalMessage');
+        const loader = document.getElementById('loader');
+        const facebookSpan = facebookModal.getElementsByClassName('close')[0];
+    
+        facebookSpan.onclick = function() {
+            facebookModal.style.display = 'none';
+        }
+    
+        window.onclick = function(event) {
+            if (event.target == facebookModal) {
+                facebookModal.style.display = 'none';
+            }
+        }
+    }
+
+
+    function handlePublishButtonClick(event) {
+        const form = document.querySelector('form');
+        if (form) {
+            const checkbox = form.querySelector('input[name="post_to_facebook"]');
+            if (checkbox && checkbox.checked) {
+                event.preventDefault(); // Prevent the default form submission
+                handlePostToFacebookAndPublish(form);
+            }
+        }
+    }
+    
+    
+    function handlePostToFacebookAndPublish() {
+        const form = document.querySelector('form');
+        if (form) {
+            // Show the Facebook modal
+            const facebookModal = document.getElementById('facebookModal');
+            const loader = document.getElementById('loader');
+            const facebookModalMessage = document.getElementById('facebookModalMessage');
+            facebookModalMessage.textContent = 'Publishing and Posting to Facebook...';
+            loader.style.display = 'block';
+            facebookModal.style.display = 'block';
+    
+            form.submit(); // Submit the form
+        }
+    }
+
+    function initializeFacebookModal() {
+        const facebookModal = document.getElementById('facebookModal');
+        const facebookModalMessage = document.getElementById('facebookModalMessage');
+        const loader = document.getElementById('loader');
+        const facebookSpan = facebookModal.getElementsByClassName('close')[0];
+    
+        facebookSpan.onclick = function() {
+            facebookModal.style.display = 'none';
+        }
+    
+        window.onclick = function(event) {
+            if (event.target == facebookModal) {
+                facebookModal.style.display = 'none';
+            }
+        }
+    }
 
     function initializeEventListeners() {
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -331,6 +420,13 @@
             initializeFacebookModal();
             initializeAttachmentButtons();
             observeVisibleElements();
+           
+
+            const publishButton = document.querySelector('.publish-button');
+            if (publishButton) {
+                publishButton.addEventListener('click', handlePublishButtonClick);
+            }
+            
         });
     }
 

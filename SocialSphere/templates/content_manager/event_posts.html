@@ -45,7 +45,7 @@
             <button type="button" id="clear-image-button" style="display: none;">Clear Image</button>
 
             <div class="attach-buttons">
-                <button type="button" id="attach-image-button">📷 Attach Image</button>
+                <button type="button" id="attach-image-button"><i class="fa-solid fa-image"></i> Attach Image</button>
             </div>
 
             <input type="file" name="photo" id="file-input" accept="image/*" style="display:none;">
@@ -53,8 +53,7 @@
 
             <div class="button-container">
                 <input type="submit" value="Publish" class="publish-button">
-                <button type="button" class="post-to-facebook-btn" data-event-id="{{ event.id }}">Post to <span
-                        class="fab fa-facebook facebook-icon"></span></button>
+                <label class="postfacebook" ><input type="checkbox" name="post_to_facebook" value="1"> Post to <span class="fab fa-facebook facebook-icon"></span></label>
             </div>
         </form>
     </div>
@@ -79,6 +78,15 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Posting to Facebook</h2>
+            <div id="loader" class="loader"></div>
+            <p id="facebookModalMessage"></p>
+        </div>
+    </div>
+
+    <div id="facebookModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Publishing and Posting to Facebook...</h2>
             <div id="loader" class="loader"></div>
             <p id="facebookModalMessage"></p>
         </div>
@@ -111,19 +119,7 @@
 
 
             <button class="post-to-facebook-btn" data-event-id="{{ event.id }}" data-facebook-url="{% url 'post_to_facebook' event.id %}">Post to <span class="fab fa-facebook facebook-icon"></span></button>
-          
-
-                    
-            
-            <div class="interact-buttons">
-                <button class="event-like-btn">&#x1F44D; Like</button>
-                <button class="event-comment-btn">&#x1F4AC; Comment</button>
-                <div class="comment-section" style="display: none;">
-                    <textarea class="comment-textarea" placeholder="Write your comment here..."></textarea>
-                    <button class="submit-comment-btn">Submit Comment</button>
-                </div>
-                <button class="event-clicks-btn">&#x1F4A1; Clicks</button>
-            </div>
+        
         </div>
     {% empty %}
         <p>No events available.</p>

@@ -4,16 +4,21 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth import authenticate, login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from .facebook_utils import facebook_analytics
+from .facebook_utils import  post_to_facebook
+from django.utils.http  import url_has_allowed_host_and_scheme
 from .models import Event
 from .forms import EventForm
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from .models import Event, Like, Comment, EventStats
 from django.db.models import Sum
+from django.contrib.auth.password_validation import UserAttributeSimilarityValidator, MinimumLengthValidator, CommonPasswordValidator, NumericPasswordValidator
+from django.core.exceptions import ValidationError
+
 
 
 User = settings.AUTH_USER_MODEL
@@ -40,13 +45,36 @@ class ContentManager:
         return ip
 
     def login(self):
+        if self.request.user.is_authenticated:
+            # Redirect to the previous page or dashboard if already logged in
+            next_url = self.request.GET.get('next')
+            if next_url and  url_has_allowed_host_and_scheme(next_url, allowed_hosts={self.request.get_host()}):
+                return redirect(next_url)
+            return redirect('dashboard_analytics')
+
         error_message = ""
         if self.request.method == 'POST':
             username = self.request.POST.get('username')
             password = self.request.POST.get('password')
+            validators = [
+                UserAttributeSimilarityValidator(),
+                MinimumLengthValidator(min_length=8),
+                CommonPasswordValidator(),
+                NumericPasswordValidator()
+            ]
+            try:
+                for validator in validators:
+                    validator.validate(password)
+            except ValidationError as e:
+                error_message = ', '.join(e.messages)
+                return render(self.request, 'content_manager/content_login.html', {'message': error_message})
+
             user = authenticate(username=username, password=password)
             if user is not None:
-                login(self.request, user)
+                auth_login(self.request, user)
+                next_url = self.request.POST.get('next') or self.request.session.get('last_visited')
+                if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={self.request.get_host()}):
+                    return redirect(next_url)
                 if AuthUtils.is_superuser(user) or AuthUtils.is_staff(user):
                     return HttpResponseRedirect(reverse('dashboard_analytics'))
                 else:
@@ -54,12 +82,13 @@ class ContentManager:
             else:
                 error_message = "Incorrect username or password"
         return render(self.request, 'content_manager/content_login.html', {'message': error_message})
+    
 
     def event_list(self):
-        events = Event.objects.all().order_by('-date')
+        events = Event.objects.all().exclude(id=1).order_by('-date')
         return render(self.request, 'content_manager/event_list.html', {'events': events})
     
-  
+   
     def event_posts(self, request):
         if request.method == 'POST':
             form = EventForm(request.POST, request.FILES)
@@ -67,12 +96,20 @@ class ContentManager:
                 event = form.save(commit=False)
                 event.content_manager = request.user  
                 event.save()
+
+                if 'post_to_facebook' in self.request.POST:
+                    post_to_facebook(event)
+
+                
                 return redirect('event_posts')
         else:
             form = EventForm()
 
-        events = Event.objects.all().order_by('-date')
+        events = Event.objects.all().exclude(id=1).order_by('-date')
         return render(request, 'content_manager/event_posts.html', {'form': form, 'events': events})
+    
+
+
     
     def update_event(self, event_id):
         event = Event.objects.get(pk=event_id)
@@ -142,25 +179,44 @@ class ContentManager:
 
                 return JsonResponse({'status': 'success', 'message': 'Comment added'})
             return JsonResponse({'status': 'failed', 'message': 'Invalid request'})
+        
 
+    def get_total_likes_and_comments(self):
+        total_likes = EventStats.objects.aggregate(Sum('total_likes'))['total_likes__sum'] or 0
+        total_comments = EventStats.objects.aggregate(Sum('total_comments'))['total_comments__sum'] or 0
 
+        return {
+            'total_likes': total_likes,
+            'total_comments': total_comments,
+        }
 
+    def dashboard_analytics(self):
+        if self.request.user.is_superuser:
+            context = facebook_analytics(self.request)
 
+            stats = self.get_total_likes_and_comments()
+            context.update(stats)
 
+            dummy_event_stats = EventStats.objects.filter(event__id=1).first()
+            total_visitors = dummy_event_stats.total_visitors if dummy_event_stats else 0
+            total_clicks = dummy_event_stats.total_clicks if dummy_event_stats else 0
 
+            context['total_visitors'] = total_visitors
+            context['total_clicks'] = total_clicks
 
+            return render(self.request, 'content_manager/dashboard_analytics.html', context)
+        else:
+            return redirect('content_login')
 
-
-
-
-
-
-
-
-
-
-
-
+    @staticmethod
+    def record_click(request):
+        if request.method == 'POST':
+            dummy_event = get_object_or_404(Event, id=1)  # Assuming the dummy event has ID 1
+            stats, created = EventStats.objects.get_or_create(event=dummy_event)
+            stats.total_clicks += 1
+            stats.save()
+            return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'failure'}, status=400)    
 
 
 
@@ -212,38 +268,14 @@ def user_logout(request):
     return content_manager.user_logout()
 
 
-
-
-
-
-
-
-
-
-def get_total_likes_and_comments():
-        total_likes = EventStats.objects.aggregate(Sum('total_likes'))['total_likes__sum'] or 0
-        total_comments = EventStats.objects.aggregate(Sum('total_comments'))['total_comments__sum'] or 0
-        
-        return {
-            'total_likes': total_likes,
-            'total_comments': total_comments,
-        }
-
-
-
-
 @login_required
 def dashboard_analytics(request):
-    if request.user.is_superuser:
-        context = facebook_analytics(request) 
+    content_manager = ContentManager(request)
+    return content_manager.dashboard_analytics()
 
-        stats = get_total_likes_and_comments()
-        context.update(stats)
-    else: 
-        return redirect('content_login')
-    return render(request, 'content_manager/dashboard_analytics.html', context)
-
-
+@method_decorator(csrf_exempt, name='dispatch')
+def record_click(request):
+    return ContentManager.record_click(request)
 
 
 

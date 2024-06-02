@@ -9,6 +9,7 @@ body {
     overflow: auto;
     background: url('../event_list/Honeycomb.svg') no-repeat center center fixed;
     background-size: cover;
+    overflow-x: hidden;
 }
 
 .header{
@@ -233,7 +234,7 @@ body {
 
 .profile-button:hover {
   background-color: #555;
-  transform: scale(1.1);
+  transform: scale(1.07);
 
 }
 
@@ -254,7 +255,7 @@ body {
 
 .event_url:hover {
   background-color: #555;
-  transform: scale(1.1);
+  transform: scale(1.07);
 
 } 
 
@@ -275,7 +276,7 @@ body {
 
 .manage_url:hover {
   background-color: #555;
-  transform: scale(1.1);
+  transform: scale(1.07);
 
 } 
 
@@ -381,4 +382,94 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.analytics-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px; /* Increased gap for visual separation */
+  padding: 20px; /* Padding around the container */
+  background: url('../event_list/Honeycomb.svg') no-repeat center center fixed;
+  background-size: cover;
+  width: 100%; /* Full width to accommodate the background */
+  margin-top: 80px;
+ 
+}
+
+.fb, .wb {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 700px; /* Adjusted width to make it more rectangular */
+  height: 300px; /* Reduced height */
+  padding: 10px; /* Reduced padding for a tighter layout */
+  background-color: #333;
+  background-image: linear-gradient(160deg, #333 0%, #000 100%);
+  border-radius: 5px; /* Smaller radius for a sharper look */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  color: white;
+  overflow: hidden;
+  transform: none;
+  margin-inline: auto;
+}
+
+.fb-title, .wb-title {
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 0px; /* Space below the title */
+  position: relative;
+  top: -15px;
+}
+
+.fb-para, .wb-para {
+  font-size: 20px; /* Larger font size for better readability */
+  margin: 0;
+}
+
+/* Remove hover effects for simplicity and match the provided image */
+.fb:hover, .wb:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Remove before and after pseudo-elements as they are not visible in the provided image */
+.fb:before, .fb:after, .wb:before, .wb:after {
+  display: none;
+}
+
+.fb-content, .wb-content {
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Increased gap between items for better visual separation */
+  color: white;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.fb-content .fb-para, .wb-content .wb-para {
+  display: flex;
+  justify-content: space-between; /* Align text label to left and number to right */
+  width: 100%; /* Ensure the flex container takes full width */
+  font-size: 18px;
+  color: #FFF; /* White color for visibility */
+  margin-bottom: 20px; /* Additional margin for more space between paragraphs */
+}
+
+.fb-content, .wb-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between each item */
+  
+}
+
+.fb-item, .wb-item {
+  display: flex;
+  justify-content: space-between; /* Ensures space between labels and values */
+  width: 100%; 
+  /* Ensures full width for separation */
 }
