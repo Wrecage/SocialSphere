@@ -1,0 +1,678 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+body {
+    color: #000000;
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    overflow: auto;
+    background: url('../event_list/Honeycomb.svg') no-repeat center center fixed;
+    background-size: cover;
+}
+header{
+    position: relative;
+}
+h1 {
+    font-size: 36px;
+}
+
+textarea[name="caption"] {
+    height: 100px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 98%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    resize: none;
+}
+
+textarea[name="caption"]::placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+}
+
+textarea[name="title"] {
+    padding: 20px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 96%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 30px;
+    resize: none;
+}
+
+textarea[name="title"]::placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 30px;
+}
+
+input[type="file"] {
+    padding: 5px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 50%;
+}
+
+input[type="datetime-local"] {
+    padding: 20px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    max-width: fit-content;
+    font-size: 16px;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    width: 30px;
+    height: 30px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    border-radius: 50px;
+}
+
+.post-to-facebook-btn{
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #3a67e4;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    border-radius: 50px;
+    text-align: right;
+}
+
+.facebook-icon {
+    margin-left: 5px;
+}
+
+#image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+#image-preview img {
+    max-width: 200px;
+    max-height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#file-input {
+    margin-bottom: 10px;
+}
+
+/* buttons */
+.event-buttons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+}
+.event-buttons button {
+    background-color: #fff; /* White background for contrast */
+    border: 1px solid #ccc; /* Light gray border for subtle definition */
+    cursor: pointer;
+    font-size: 20px;
+    color: #222121; /* Dark text color */
+    transition: color 0.3s ease, transform 0.3s, background-color 0.3s;
+    border-radius: 5px; /* Rounded corners for a modern look */
+    width: 40px; /* Fixed width for uniform buttons */
+    height: 40px; /* Fixed height for uniform buttons */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the icons */
+    padding: 0; /* Remove any padding for a cleaner look */
+}
+
+.event-buttons button:hover {
+    color: #ffd000;
+    transform: scale(1.1);
+}
+
+/* Styles for the event-delete button */
+/* Modal styles */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.event-delete-btn {
+    float: right;
+}
+
+.event-delete-btn:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    position: relative; /* Added position relative for loader positioning */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.confirm-delete-btn,
+.cancel-delete-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.confirm-delete-btn {
+    background-color: #c0392b; /* Red background */
+    color: white; /* White text */
+}
+
+.cancel-delete-btn {
+    background-color: #7f8c8d; /* Grey background */
+    color: white; /* White text */
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        max-width: 400px; /* Adjust max-width for smaller screens */
+    }
+
+    .confirm-delete-btn,
+    .cancel-delete-btn {
+        padding: 8px 16px; /* Adjust padding for smaller buttons */
+        font-size: 14px; /* Decrease font size for smaller screens */
+    }
+}
+
+
+
+/* Styles for the edit button */
+.edit-btn {
+    color: rgb(0, 0, 0); /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    float: right;
+}
+
+.edit-btn:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+
+h1 {
+    font-size: 36px;
+}
+
+
+.event {
+    margin-inline: auto;
+    width: 55%; /* Adjust the width as needed */
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    max-width: 700px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-width: medium;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+
+}
+
+.event.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.event:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); 
+}
+
+.event img {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.event-title {
+    font-family: 'Arial', sans-serif; /* Consistent font for better readability */
+    font-weight: bold; /* Strong emphasis */
+    font-size: 24px; /* Larger font size for visibility */
+    color: #333; /* Darker text for better contrast */
+    margin-bottom: 8px; /* Space between title and date */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.event-date {
+    font-size: 14px; /* Smaller font size than the title */
+    font-style: italic; /* Stylistic choice for date */
+    color: #666; /* Gray for subtlety */
+    margin-bottom: 12px; /* Space between date and caption */
+}
+
+.event-caption {
+    font-family: 'Calibri', sans-serif; /* Maintain font consistency */
+    font-size: 18px; /* Legible font size */
+    color: #444; /* Dark gray for readability */
+    line-height: 1.5; /* Improved line spacing for better readability */
+    text-align: justify; /* Justified text for a neat look */
+    margin-bottom: 20px; /* Space below the caption before next section */
+    background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+    padding: 15px; /* Padding for better text framing */
+    border-left: 5px solid #fdcc00; /* Accent line for style */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for floating effect */
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+/* Interact buttons */
+.interact-buttons {
+    margin-top: 10px;
+}
+
+.interact-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #222121;
+    transition: color 0.3s ease, transform 0.3s;
+    margin-right: 10px;
+}
+
+.interact-buttons button:hover {
+    color: #ffd000;
+    transform: scale(1.1);
+}
+
+.event-posts {
+    width: 80%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    position: relative;
+    top: 5px;
+} 
+
+.profile-button {
+    position: fixed; 
+    top: 20px; 
+    right: 20px;
+    /* z-index: 1; */
+    display: flex;
+    padding: 1rem 2.5rem;
+    background-color: #000000;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 50px;
+    margin-left: auto;
+    overflow: hidden;
+}
+
+
+.profile-button:hover {
+    background-color: #555;
+    transform: scale(1.1);
+
+}
+
+/* Comment Section */
+.comment-section {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.submit-comment-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.submit-comment-btn:hover {
+    background-color: #333;
+}
+
+.icon-bar {
+    display: flex;
+    position: fixed;
+    left: 10px; /* Adjusted to ensure consistency */
+    bottom: 20px; /* Position at the bottom with a consistent gap */
+    gap: 35px; /* Space between icons */
+}
+
+.icon-bar img {
+    width: 27px; 
+    /* z-index: 1; */
+}
+
+.new-text {
+    position: relative;
+    font-size: 37px; 
+    color: #333; /* Text color */
+    font-family: 'Bebas Neue', sans-serif; /* Specify font family */
+    text-align: right;
+    position: fixed; /* Position fixed */
+    bottom: 10px; /* Adjust bottom position as needed */
+    right: 30px; /* Adjust right position as needed */
+    /* z-index: -1; */
+}
+
+.new-text2 {
+    position: fixed; /* Position fixed */
+    top: 10px; /* Adjust top position as needed */
+    left: 30px; /* Adjust left position as needed */
+    font-size: 60px; /* Adjust size as needed */
+    color: #000000; /* Text color */
+    font-family: 'Bebas Neue', sans-serif; /* Specify font family */
+    text-align: left; /* Align text to the left */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Add shadow effect */
+}
+
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: auto;
+    height: 90px; /* Adjust height as needed */
+    background: linear-gradient(to bottom, rgba(255, 204, 0, 0.5), rgba(255, 204, 0, 0)); /* Yellow color fading to transparent */
+    z-index: 1;
+    backdrop-filter: blur(2px); /* Add a blur effect to the background */
+    opacity: 1; /* Set opacity to 1 (fully opaque) */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    border-right: 1px;
+}
+
+.attach-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#attach-image-button {
+    background-color: #000;
+    color: #fff;
+}
+
+#attach-video-button {
+    background-color: #000;
+    color: #fff;
+}
+
+.publish-button {
+    background-color: #000;
+    color: #fff;
+    margin-right: 10px;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    animation: spin 2s linear infinite;
+}
+  
+  @keyframes l18 {
+    25% {
+      box-shadow: #dfdfdf -15px -15px, #dfdfdf 15px 15px;
+    }
+  
+    50% {
+      box-shadow: #dfdfdf 0px -20px, #dfdfdf 0px 20px;
+    }
+  
+    75% {
+      box-shadow: #dfdfdf 15px -15px, #dfdfdf -15px 15px;
+    }
+  
+    100% {
+      box-shadow: #dfdfdf 20px 0px, #dfdfdf -20px 0px;
+    }
+  }
+  
+
+  .admin_url {
+    position: fixed; 
+    top: 20px; 
+    float: right;
+    display: flex;
+    padding: 1rem 2.5rem;
+    background-color: #000000;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 50px;
+    overflow: hidden;
+    margin-inline: 10em;
+  }
+  
+  .admin_url:hover {
+    background-color: #555;
+    transform: scale(1.1);
+  
+  } 
+
+
+
+/* steverns new */
+
+.confirmation-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    z-index: 1000;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    animation: popupAnimation 0.3s ease-out;
+}
+
+@keyframes popupAnimation {
+    from {
+        transform: translate(-50%, -60%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+.confirmation-popup h2 {
+    margin: 0 0 20px;
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+}
+
+.confirmation-popup p {
+    margin: 0 0 30px;
+    font-size: 18px;
+    color: #555;
+}
+
+.confirmation-popup button {
+    padding: 12px 24px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.yes-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.no-button {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.yes-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.no-button:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+}
+
+.yes-button:focus, .no-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(100, 100, 255, 0.5);
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -1,249 +1,144 @@
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <script>
+        const csrf_token = "{{ csrf_token }}";
+    </script>
+    <script src="{% static 'js/eventpost.js' %}"></script>
+    <script src="{% static 'js/logout.js' %}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Posts</title>
-    <style>
-
-        /* event post */
-        body {
-            background-color: #FDCC00;
-            color: #000000;
-            font-family: Arial, sans-serif;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 36px;
-        }
-
-        input[name="caption"]{
-            padding: 50px;
-            margin: 10px 0;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            width: 50%;
-        } 
-        input[name="title"]{
-            padding: 20px;
-            margin: 10px 0;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            width: 80%;
-        } 
-        
-        
-        input[type="file"] {
-            padding: 5px;
-            margin: 10px 0;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            width: 50%;
-        }
-
-        input[type="datetime-local"]{
-            padding: 20px;
-            margin: 10px 0;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            max-width: fit-content;
-            font-size: 16px;
-        }
-
-        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-            width: 30px;
-            height: 30px;
-        }
-
-        input[type="submit"] {
-            padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #000000;
-            color: #FDCC00;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        #image-preview img {
-            max-width: 200px;
-            max-height: 100px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #file-input {
-            margin-bottom: 10px;
-        }
-
-
-
-        /* buttons */
-        .event-buttons {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 10px;
-        }
-        .event-buttons button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: #222121;
-            transition: color 0.3s ease;
-            transition: transform 0.3s;
-        }
-        .event-buttons button:hover {
-            color: #ffd000;
-            transform: scale(1.1);
-        }
-       
-
-
-
-
-
-
-
-
-
-        /* event list */
-        body {
-            background-color: #FDCC00;
-            color: #000000;
-            font-family: Arial, sans-serif;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 36px;
-        }
-        
-        .event {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            position: relative;
-        }
-        .event img {
-            max-width: 500px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            
-        }
-        .event-caption {
-            font-size:xx-large;
-        }
-        .event-date {
-            font-size:x-small;
-            font-style: italic;
-            color: #777777;
-            margin-bottom: 20px;
-        }
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{% static 'event_posts/event_posts.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-
-    </div>
-    <a href="{% url 'user_logout' %}" class="profile-button" style="background-color: #333;">Logout</a>
-    </div>
-
-    <h1>Event Posts</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="Title" required><br> 
-        <input type="text" name="caption" placeholder="Post an Announcement" required><br>
-        <input type="datetime-local" name="date" required><br>
-
-
-        <div id="image-preview"></div>
-        <input type="file" name="photo_or_video" id="file-input" accept="image/*" required multiple > <br>
-        
-        <input type="submit" value="Post Event">
-    </form>
-
-
-
-    {% for event in events %}
-    <div class="event">
-
-        <div class="event-buttons">
-
-            <form method="post" action="" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="event-edit-btn" onclick="return confirm('Are you sure you want to edit this event?')">&#9998;</button>
-            </form>
-            
-
-            <form method="post" action="{% url 'delete_event' event.id %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="event-delete-btn" onclick="return confirm('Are you sure you want to delete this event?')">
-                    &#10006;
-                </button>
-            </form>
-
-        </div>
-
-        <div class="event-title">{{ event.title }}</div>
-        <div class="event-caption">{{ event.caption }}</div>
-        <div class="event-date">{{ event.date }}</div>
-        {% if event.photo_or_video %}
-        <div class="event-img">
-            {% if event.photo_or_video.url %}
-                <img src="{{ event.photo_or_video.url }}" alt="Event Image">
-            {% else %}
-                <video controls>
-                    <source src="{{ event.photo_or_video.url }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            {% endif %}
-        </div>
+    <div class="header"></div>
+    <div class="container">
+        <a class="profile-button" style="text-decoration: none;" href="{% url 'user_logout' %}">Logout</a>
+        {% if not user.is_superuser and not user.is_staff %}
+        <div class="new-text2">CONTENT MANAGER</div>
         {% endif %}
 
-
+        {% if user.is_superuser %}
+        <div class="new-text2">ADMIN</div>
+        <a href="{% url 'dashboard_analytics' %}" style="text-decoration: none;" class="admin_url">Admin Dashboard</a>
+        {% endif %}
+     
         
-        <!-- Add more fields as needed -->
     </div>
+
+    <br><br><br><br><br>
+
+    <div class="event-posts">
+        <form method="post" action="{% url 'event_posts' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <textarea type="text" name="title" placeholder="Title" required></textarea><br>
+            <textarea type="text" name="caption" placeholder="Post an announcement" required></textarea><br>
+            <div id="image-preview"></div>
+            <button type="button" id="clear-image-button" style="display: none;">Clear Image</button>
+
+            <div class="attach-buttons">
+                <button type="button" id="attach-image-button">📷 Attach Image</button>
+            </div>
+
+            <input type="file" name="photo" id="file-input" accept="image/*" style="display:none;">
+            <input type="file" name="video" id="video-input" accept="video/*" style="display:none;">
+
+            <div class="button-container">
+                <input type="submit" value="Publish" class="publish-button">
+                <button type="button" class="post-to-facebook-btn" data-event-id="{{ event.id }}">Post to <span
+                        class="fab fa-facebook facebook-icon"></span></button>
+            </div>
+        </form>
+    </div>
+
+
+
+    <!-- Delete Modal Structure -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this event?</p>
+            <form id="deleteForm" method="post">
+                {% csrf_token %}
+                <button type="submit" class="confirm-delete-btn">Delete</button>
+                <button type="button" class="cancel-delete-btn">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <!-- Post to Facebook Modal Structure -->
+    <div id="facebookModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Posting to Facebook</h2>
+            <div id="loader" class="loader"></div>
+            <p id="facebookModalMessage"></p>
+        </div>
+    </div>
+
+    {% for event in events %}
+        <div class="event" data-id="{{ event.id }}">
+            <div class="event_buttons">
+                <button class="event-delete-btn" data-id="{{ event.id }}" data-delete-url="{% url 'delete_event' event.id %}">  &#10006;</button>
+
+                <button type="button" data-id="{{ event.id }}" class="edit-btn">&#9998;</button>
+            </div>
+
+            <div class="event-title" id="title_{{ event.id }}">{{ event.title }}</div>
+            <div class="event-caption" id="caption_{{ event.id }}">{{ event.caption }}</div>
+            <div class="event-date">{{ event.date }}</div>
+
+            {% if event.photo %}
+            <div class="event-img">
+                {% if event.photo.url %}
+                <img id="photo_{{ event.id }}" src="{{ event.photo.url }}" alt="Event Image">
+                {% else %}
+                <video controls>
+                    <source src="{{ event.photo.url }}" type="video/mp4">  
+                    Your browser does not support the video tag.
+                </video>
+                {% endif %}
+            </div>
+            {% endif %}
+
+
+            <button class="post-to-facebook-btn" data-event-id="{{ event.id }}" data-facebook-url="{% url 'post_to_facebook' event.id %}">Post to <span class="fab fa-facebook facebook-icon"></span></button>
+          
+
+                    
+            
+            <div class="interact-buttons">
+                <button class="event-like-btn">&#x1F44D; Like</button>
+                <button class="event-comment-btn">&#x1F4AC; Comment</button>
+                <div class="comment-section" style="display: none;">
+                    <textarea class="comment-textarea" placeholder="Write your comment here..."></textarea>
+                    <button class="submit-comment-btn">Submit Comment</button>
+                </div>
+                <button class="event-clicks-btn">&#x1F4A1; Clicks</button>
+            </div>
+        </div>
     {% empty %}
-    <p>No events available.</p>
+        <p>No events available.</p>
     {% endfor %}
 
-    <script>
-        const fileInput = document.getElementById('file-input');
-        const imagePreview = document.getElementById('image-preview');
+    <div class="icon-bar">
+        <img src="{% static 'event_list/locationIcon.svg' %}" alt="Location Icon">
+        <img src="{% static 'event_list/emailIcon.svg' %}" alt="Email Icon">
+        <img src="{% static 'event_list/contactIcon.svg' %}" alt="Contact Icon">
+    </div>
 
-        fileInput.addEventListener('change', () => {
-            imagePreview.innerHTML = '';
-            for (let i = 0; i < fileInput.files.length; i++) {
-                const file = fileInput.files[i];
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const img = document.createElement('img');
-                    img.src = reader.result;
-                    imagePreview.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
+    <div class="new-text">#FARFIRSTFASTFOCUSEDFEROCIUS</div>
+
 </body>
 
 </html>
+
+

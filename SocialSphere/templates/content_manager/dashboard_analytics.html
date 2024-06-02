@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        const csrf_token = "{{ csrf_token }}";
+    </script>
+    <script src="{% static 'js/logout.js' %}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analytics</title>
+    <link rel="stylesheet" href="{% static 'dash_analytics/dash_analytics.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="header"></div>
+    <div class="container">
+        <a class="profile-button" style="text-decoration: none;" href="{% url 'user_logout' %}">Logout</a>
+        <div class="bold1">DASHBOARD ANALYTICS</div>
+        <a href="{% url 'event_posts' %}" style="text-decoration: none;" class="event_url">Event Posts</a>
+        <a href="{% url 'admin:index' %}" style="text-decoration: none;" class="manage_url">Management</a>
+    </div>
+
+    <div class="fb">
+        <div class="fb-content">
+            <p class="fb-title">Facebook Analytics</p>
+            <p class="fb-para" id="fb-likes">Total likes/Reactions:{{ total_reactions_count }}</p>
+            <p class="fb-para" id="fb-comments">Comments:{{ total_comments }}</p>
+            <p class="fb-para" id="fb-shares">Shares:{{ total_shares }}</p>
+            <p class="fb-para" id="fb-views">Views:{{ page_views }}</p>
+        </div>
+    </div>
+
+
+
+    <div class="wb">
+        <div class="wb-content">
+            <p class="wb-title">Website Analytics</p>
+            <p class="wb-para" id="wb-visitors">Visitors: {{ context.total_visitors }}</p>
+            <p class="wb-para" id="wb-clicks">Clicks: {{ context.total_clicks }}</p>
+            <p class="wb-para" id="wb-comments">Comments: {{ total_comments }}</p>
+            <p class="wb-para" id="wb-likes">Likes/Reactions: {{ total_likes }}</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+

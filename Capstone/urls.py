@@ -19,7 +19,7 @@ from django.urls import path
 from SocialSphere import views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from SocialSphere import facebook_utils
 # from django.contrib.auth.views import logout_then_login
 
 
@@ -29,6 +29,14 @@ urlpatterns = [
     path('events/content_login/', views.content_login, name='content_login'),
     path('events/posts/', views.event_posts, name='event_posts'),
     path('events/<int:id>/delete/', views.event_delete, name='delete_event'),
-    path('events/', views.events_view, name='events_view'),
+    path('events/analytics/', views.dashboard_analytics, name='dashboard_analytics'),
+
+    path('update_event/<int:event_id>/',views.update_event, name='update_event'),
     path('user_logout/', views.user_logout, name='user_logout'),
+    path('post-to-facebook/<int:event_id>/', facebook_utils.post_to_facebook_view, name='post_to_facebook'),
+    path('remove_photo/<int:event_id>/', views.remove_photo, name='remove_photo'),
+    path('like_event/<int:event_id>/', views.like_event, name='like_event'),
+    path('add_comment/<int:event_id>/', views.add_comment, name='add_comment'),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

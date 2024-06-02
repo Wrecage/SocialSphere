@@ -1,88 +1,59 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="{% static 'js/eventlist.js' %}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event List</title>
-    <style>
-        body {
-            background-color: #FDCC00;
-            color: #000000;
-            font-family: Arial, sans-serif;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 36px;
-        }
-        
-        .event {
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            object-fit: contain;
-            object-position: center;
-            max-width: fit-content;
-        }
-        .event img {
-            max-width: 700px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .event-caption {
-            font-size:large;
-            font-family:Calibri;
-        }
-
-        .event-title {
-            font-family:sans-serif ;
-            font-weight: bolder;
-            font-size:xx-large;
-        }
-        .event-date {
-            font-size:xx-small;
-            font-style: italic;
-            color: #777777;
-            margin-bottom: 20px;
-        }
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{% static 'event_list/event_list.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Event List</h1>
+ <!-- Honeycomb background -->
+        <div class="header"></div>
+        <div class="container"></div>
+            <img src="{% static 'general/WildcatLogo.svg' %}" alt="Wildcat Logo" class="logo">
+        <div class="honeycomb"> 
+        <div class="events">
+            {% for event in events %}
+            <div class="event">
+                <div class="event-title">{{ event.title }}</div>
+                <div class="event-date">{{ event.date }}</div>
+                <div class="event-caption">{{ event.caption }}</div>
+                {% if event.photo %}
+                <div class="event-img">
+                    {% if event.photo.url %}
+                        <img src="{{ event.photo.url }}" alt="Event Image">
+                    {% else %}
+                        <video controls>
+                            <source src="{{ event.photo.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% endif %}
+                </div>
+                {% endif %}
+            <div class="interact-buttons">
+                <button class="event-like-btn" data-event-id="{{ event.id }}">&#x1F44D; Like</button>
+                <button class="event-comment-btn" data-event-id="{{ event.id }}">&#x1F4AC; Comment</button>
+                <button class="event-clicks-btn" data-event-id="{{ event.id }}">&#x1F4A1; Clicks</button>
+            </div>
+            </div>
+            {% empty %}
+            <p>No events available.</p>
+            {% endfor %}
+        </div>
+        <div class="icon-bar"> <!-- Icons for additional features -->
+            <img src="{% static 'event_list/locationIcon.svg' %}" alt="Location Icon">
+            <img src="{% static 'event_list/emailIcon.svg' %}" alt="Email Icon">
+            <img src="{% static 'event_list/contactIcon.svg' %}" alt="Contact Icon">
+        </div>
+        <div class="new-text">#FARFIRSTFASTFOCUSEDFEROCIUS
+        </div>
+    </div>
 
     
-    {% for event in events %}
-    <div class="event">
-        <div class="event-title">{{ event.title }}</div>
-        <div class="event-date">{{ event.date }}</div>
-        <div class="event-caption">{{ event.caption }}</div>
-        {% if event.photo_or_video %}
-        <div class="event-img">
-            {% if event.photo_or_video.url %}
-                <img src="{{ event.photo_or_video.url }}" alt="Event Image">
-            {% else %}
-                <video controls>
-                    <source src="{{ event.photo_or_video.url }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            {% endif %}
-        </div>
-        {% endif %}
-
-
-        
-        <!-- Add more fields as needed -->
-    </div>
-    {% empty %}
-    <p>No events available.</p>
-    {% endfor %}
+    
 </body>
-</html>
 
+</html>
