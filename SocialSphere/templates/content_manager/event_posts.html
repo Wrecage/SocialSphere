@@ -37,7 +37,7 @@
     <br><br><br><br><br>
 
     <div class="event-posts">
-        <form method="post" action="{% url 'event_posts' %}" enctype="multipart/form-data">
+        <form id="event-form" method="post" action="{% url 'event_posts' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <textarea type="text" name="title" placeholder="Title" required></textarea><br>
             <textarea type="text" name="caption" placeholder="Post an announcement" required></textarea><br>
@@ -73,6 +73,8 @@
             </form>
         </div>
     </div>
+
+
     <!-- Post to Facebook Modal Structure -->
     <div id="facebookModal" class="modal">
         <div class="modal-content">
@@ -83,7 +85,8 @@
         </div>
     </div>
 
-    <div id="facebookModal" class="modal">
+
+    <div id="facebookModalmain" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Publishing and Posting to Facebook...</h2>
