@@ -5,7 +5,8 @@ from .models import ContentManager,Event,Like,Comment
 
 
 
-admin.site.register(ContentManager, UserAdmin)
+admin.site.register(ContentManager)
 admin.site.unregister(Group)
 admin.site.register(Event)
+
 

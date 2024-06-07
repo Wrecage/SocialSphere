@@ -1,25 +1,24 @@
-
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from .facebook_utils import facebook_analytics
-from .facebook_utils import  post_to_facebook
-from django.utils.http  import url_has_allowed_host_and_scheme
+from .facebook_utils import post_to_facebook
+from django.utils.http import url_has_allowed_host_and_scheme
 from .models import Event
 from .forms import EventForm
-from django.http import HttpResponseRedirect
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from .models import Event, Like, Comment, EventStats
 from django.db.models import Sum
 from django.contrib.auth.password_validation import UserAttributeSimilarityValidator, MinimumLengthValidator, CommonPasswordValidator, NumericPasswordValidator
 from django.core.exceptions import ValidationError
-
-
+from .facebook_config import PAGE_ID, ACCESS_TOKEN
+from .forms import ContentManagerForm
+from .models import ContentManager
 
 User = settings.AUTH_USER_MODEL
 
@@ -32,7 +31,7 @@ class AuthUtils:
     def is_staff(user):
         return user.is_staff
 
-class ContentManager:
+class ContentManagerUtility:
     def __init__(self, request):
         self.request = request
 
@@ -46,9 +45,8 @@ class ContentManager:
 
     def login(self):
         if self.request.user.is_authenticated:
-            # Redirect to the previous page or dashboard if already logged in
             next_url = self.request.GET.get('next')
-            if next_url and  url_has_allowed_host_and_scheme(next_url, allowed_hosts={self.request.get_host()}):
+            if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={self.request.get_host()}):
                 return redirect(next_url)
             return redirect('dashboard_analytics')
 
@@ -89,12 +87,12 @@ class ContentManager:
         return render(self.request, 'content_manager/event_list.html', {'events': events})
     
    
-    def event_posts(self, request):
-        if request.method == 'POST':
-            form = EventForm(request.POST, request.FILES)
+    def event_posts(self):
+        if self.request.method == 'POST':
+            form = EventForm(self.request.POST, self.request.FILES)
             if form.is_valid():
                 event = form.save(commit=False)
-                event.content_manager = request.user  
+                event.content_manager = self.request.user  
                 event.save()
 
                 if 'post_to_facebook' in self.request.POST:
@@ -106,10 +104,7 @@ class ContentManager:
             form = EventForm()
 
         events = Event.objects.all().exclude(id=1).order_by('-date')
-        return render(request, 'content_manager/event_posts.html', {'form': form, 'events': events})
-    
-
-
+        return render(self.request, 'content_manager/event_posts.html', {'form': form, 'events': events})
     
     def update_event(self, event_id):
         event = Event.objects.get(pk=event_id)
@@ -145,7 +140,6 @@ class ContentManager:
     def user_logout(self):
         auth_logout(self.request)
         return redirect('content_login')
-
 
     
     def like_event(self, event_id):
@@ -190,10 +184,22 @@ class ContentManager:
             'total_comments': total_comments,
         }
 
-    def dashboard_analytics(self):
-        if self.request.user.is_superuser:
-            context = facebook_analytics(self.request)
+    @staticmethod
+    def record_click(request):
+        if request.method == 'POST':
+            dummy_event = get_object_or_404(Event, id=1)  # Assuming the dummy event has ID 1
+            stats, created = EventStats.objects.get_or_create(event=dummy_event)
+            stats.total_clicks += 1
+            stats.save()
+            return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'failure'}, status=400)   
+    
 
+    def dashboard_analytics(self):
+        if AuthUtils.is_superuser(self.request.user):
+            data = facebook_analytics(PAGE_ID, ACCESS_TOKEN)
+            context = {'data': data}
+            
             stats = self.get_total_likes_and_comments()
             context.update(stats)
 
@@ -206,76 +212,110 @@ class ContentManager:
 
             return render(self.request, 'content_manager/dashboard_analytics.html', context)
         else:
-            return redirect('content_login')
+            return redirect('content_login') 
 
-    @staticmethod
-    def record_click(request):
+    
+    def add_content_manager(self, request):
         if request.method == 'POST':
-            dummy_event = get_object_or_404(Event, id=1)  # Assuming the dummy event has ID 1
-            stats, created = EventStats.objects.get_or_create(event=dummy_event)
-            stats.total_clicks += 1
-            stats.save()
-            return JsonResponse({'status': 'success'})
-        return JsonResponse({'status': 'failure'}, status=400)    
+            form = ContentManagerForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('list_content_managers')
+        else:
+            form = ContentManagerForm()
+        return render(request, 'user_management/user_form.html', {'form': form, 'title': 'Add Content Manager'})
 
+  
+    def edit_content_manager(self, request, pk):
+        content_manager = get_object_or_404(ContentManager, pk=pk)
+        if request.method == 'POST':
+            form = ContentManagerForm(request.POST, instance=content_manager)
+            if form.is_valid():
+                form.save()
+                return redirect('list_content_managers')
+        else:
+            form = ContentManagerForm(instance=content_manager)
+        return render(request, 'user_management/user_form.html', {'form': form, 'title': 'Edit Content Manager'})
+
+    
+    def list_content_managers(self, request):
+        content_managers = ContentManager.objects.all()
+        return render(request, 'user_management/user_list.html', {'content_managers': content_managers})
 
 
 
 def content_login(request):
-    content_manager = ContentManager(request)
-    return content_manager.login()
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.login()
 
 def event_list(request):
-    content_manager = ContentManager(request)
-    return content_manager.event_list()
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.event_list()
 
 @csrf_exempt
 def like_event(request, event_id):
-    content_manager = ContentManager(request)
-    return content_manager.like_event(event_id)
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.like_event(event_id)
 
 @csrf_exempt
 def add_comment(request, event_id):
-    content_manager = ContentManager(request)
-    return content_manager.add_comment(event_id)
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.add_comment(event_id)
     
 
 @login_required
 def event_posts(request):
-    content_manager = ContentManager(request)
-    return content_manager.event_posts(request)  
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.event_posts()  
 
 @login_required
 @require_POST
 def update_event(request, event_id):
-    content_manager = ContentManager(request)
-    return content_manager.update_event(event_id)
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.update_event(event_id)
 
 @login_required
 @require_POST
 def remove_photo(request, event_id):
-    content_manager = ContentManager(request)
-    return content_manager.remove_photo(event_id)
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.remove_photo(event_id)
 
 @login_required
 def event_delete(request, id):
-    content_manager = ContentManager(request)
-    return content_manager.event_delete(id)
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.event_delete(id)
 
 @login_required
 def user_logout(request):
-    content_manager = ContentManager(request)
-    return content_manager.user_logout()
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.user_logout()
 
-
-@login_required
-def dashboard_analytics(request):
-    content_manager = ContentManager(request)
-    return content_manager.dashboard_analytics()
 
 @method_decorator(csrf_exempt, name='dispatch')
 def record_click(request):
-    return ContentManager.record_click(request)
+    return ContentManagerUtility.record_click(request)
 
 
+@login_required
+@user_passes_test(AuthUtils.is_superuser)
+def dashboard_analytics(request):
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.dashboard_analytics()
 
+@login_required
+@user_passes_test(AuthUtils.is_superuser)
+def add_content_manager(request):
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.add_content_manager(request)
+
+@login_required
+@user_passes_test(AuthUtils.is_superuser)
+def edit_content_manager(request, pk):
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.edit_content_manager(request, pk)
+
+@login_required
+@user_passes_test(AuthUtils.is_superuser)
+def list_content_managers(request):
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.list_content_managers(request)

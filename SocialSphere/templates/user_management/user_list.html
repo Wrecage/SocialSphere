@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Content Managers</title>
+</head>
+<body>
+    <h1>Content Managers</h1>
+    <a href="{% url 'dashboard_analytics' %}">Admin Dashboard</a>
+    <a href="{% url 'add_content_manager' %}">Add New Content Manager</a>
+    <ul>
+        {% for manager in content_managers %}
+            <li>
+                {{ manager.username }} - {{ manager.email }} 
+                <a href="{% url 'edit_content_manager' manager.pk %}">Edit</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
