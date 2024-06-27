@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Detail</title>
+  <link rel="stylesheet" href="{% static 'event_detail/event_detail.css' %}">
+  <script src="{% static 'js/eventdetail.js' %}"></script>
+</head>
+<body>
+  <div id="event-detail-overlay" class="event-detail-overlay">
+    <div class="event-detail-container">
+      <div id="close-button" class="close-button" onclick="closeEventDetail()">×</div>
+      <div id="home-button" class="home-button" onclick="goHome()">Home</div>
+      {% if event.photo %}
+      <div class="event-img">
+        {% if event.photo.url %}
+        <div class="photo-wrapper">
+          <img src="{{ event.photo.url }}" alt="Event Image">
+        </div>
+        {% else %}
+        <div class="video-wrapper">
+          <video controls>
+            <source src="{{ event.photo.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+      <div class="event-content">
+        <div class="event-title">{{ event.title }}</div>
+        <div class="event-date">{{ event.date }}</div>
+        <div class="event-caption">{{ event.caption }}</div>
+        <div class="comments-section">
+          <h3>Comments</h3>
+          {% for comment in comments %}
+          <div class="comment">
+            <div class="comment-text">{{ comment.comment_text }}</div>
+            <div class="comment-date">{{ comment.comment_date }}</div>
+          </div>
+          {% empty %}
+          <p>No comments available.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>

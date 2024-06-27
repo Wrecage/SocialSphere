@@ -1,0 +1,453 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.background {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url('../general/Honeycomb.svg'), linear-gradient(rgba(0, 0, 0, 0.897), rgba(0, 0, 0, 0.884)), url('background.svg');
+    background-size: cover;
+    background-position: center;
+}
+
+
+/* Base styling for all text elements */
+.text {
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: rgba(253, 204, 1, 0.58); /* Yellow color with 60% opacity */
+    text-align: center;
+    white-space: nowrap;
+    transform: rotate(0deg);
+    z-index: 1; /* Ensures text is appropriately layered on top of any background */
+}
+
+
+
+.latin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%; /* Adjust the width as needed to cover the left half */
+    height: 100%; /* Cover the entire height of the container */
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the background */
+    z-index: -1; /* Send the background behind other content */
+}
+
+
+
+.center-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%; /* or any width you prefer */
+    height: 50%; /* or any height you prefer */
+    padding: 25px;
+    background-image: linear-gradient(to right, #fdcc01 50%, white 50%);
+    z-index: 3; /* make sure it's below the text elements if they overlap */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Optional: adds some shadow for depth */
+}
+
+.center-container {
+    /* ... existing styles ... */
+    display: flex;
+    align-items: center; /* This will vertically center the contents */
+}
+
+.welcome-text {
+    font-family: "Bebas Neue-Regular", Helvetica, sans-serif;
+    font-weight: bold;
+    color: #000000; /* The color you provided */
+    font-size: 2rem; /* Or whatever size you prefer */
+    margin-left: 30px; /* Adjust spacing as needed */
+}
+
+.welcome-container {
+    font-family: "Bebas Neue-Regular", Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 3.5rem;
+    color: #000; /* Adjust the color if needed */
+    text-align: center; /* Center the text within the container */
+    /* Align the text block to the left side of the yellow area */
+    position: absolute;
+    left: 100px; /* Same as padding for consistency */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-shadow: 7px 7px 1px rgb(117, 100, 0); /* Horizontal offset, vertical offset, blur radius, and shadow color */
+    
+}
+
+.wildcat-logo {
+    max-width: 100%; /* Adjust as needed */
+    max-height: auto; /* Adjust as needed */
+
+}
+
+.welcome,
+.to {
+    line-height: 1; /* Ensures the text lines are close together */
+
+}
+
+.sign-in-container {
+    background-color: #000; /* Black background */
+    padding: -20px; /* Spacing around the content */
+    box-sizing: border-box; /* Includes padding in the width and height */
+    width: 45%; /* Adjust width as necessary */
+    height: 280px; /* Height to fit content */
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Optional: if you want rounded corners */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 25px; /* Align to the right inside the center-container */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2000;
+}
+
+.sign-in-title {
+    font-family: "Bebas Neue-Regular", Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 2rem; /* Adjust the size as needed */
+    color: rgb(254, 203, 1); /* Adjust the color as needed */
+    margin-bottom: 1.5rem; /* Space below the title */
+    margin-top: -35px;
+    z-index: 10;
+    text-shadow: 5px 5px 1px rgb(133, 106, 0), 10px 10px 1px rgba(73, 59, 0, 0.8); /* Text shadow for visibility */
+    margin-left: -8em;
+
+}
+/* this */
+.box {
+    width: 1106;
+    height: 134px;
+}
+
+.box .group {
+    position: fixed;
+    width: 1112px;
+    height: 134px;
+    top: 0;
+    left: 0;
+}
+
+.box .overlap-group {
+    position: relative;
+    width: 1106px;
+    height: 134px;
+}
+
+.box .text-wrapper {
+    width: 752px;
+    top: 3px;
+    left: 92px;
+    opacity: 0.3;
+
+}
+/* this */
+
+.input-field {
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    color: #333;
+    background-color: #fff;
+    border-radius: 5px; /* Square corners to match the image */
+    padding: 0.8rem;
+    margin-bottom: 1rem; /* Space between input fields */
+    width: 330px; /* Subtract padding from the width */
+    height: 30px;
+    border: 2px solid #ffffff;
+    border-top: none;
+    border-bottom: none;
+    font-size: 16px;
+    background: #ffffff;
+    outline: none;
+    box-shadow: 7px 7px 0px 0px #cacaca;
+    transition: all 0.5s;
+    margin-left: -1em;
+}
+
+.input-field::placeholder {
+    color: #aaa;
+}
+
+.login-container {
+    position: absolute;
+    bottom: 30px; /* Place it at the bottom of the .center-container */
+    right: 120px; /* Align it to the right within .center-container */
+    z-index: 2001; /* Make sure it's above other elements */
+}
+
+/* login button was here */
+
+.login-button:hover,
+.login-button:focus {
+    background-color: #e6b801; /* Slightly darker yellow on hover/focus for feedback */
+}
+
+/* ... existing styles ... */
+
+@media (max-width: 768px) {
+    .welcome-text {
+        font-size: 1.5rem; /* Adjust size for smaller screens */
+    }
+    
+}
+
+@media (max-width: 768px) {
+    .text { 
+        font-size: 1.5rem;
+    }
+    .center-container {
+        width: 70%; /* adjust size for smaller screens */
+        height: 70%; /* adjust size for smaller screens */
+    }
+    .welcome-container {
+        font-size: 2.5rem; /* Adjust size for smaller screens */
+    }
+}
+
+form {
+    position: relative;  /* Necessary if using absolute positioning inside the form */
+    z-index: 1;
+}
+
+.loginbutton {
+    position: absolute;
+    bottom: -140px; /* Half outside the container */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%); /* Precise horizontal centering */
+    width: 80%; /* Adjust based on your design needs */
+    height: 50px; /* Match the button height in your image */
+    background-color: rgb(254, 203, 1); /* Yellow background */
+    color: black; /* Text color */
+    border: none; /* No border */
+    border-radius: 25px; /* Rounded corners for the button */
+    font-size: 1.2rem; /* Larger font size */
+    font-weight: bold; /* Bold text */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Drop shadow for 3D effect */
+
+}
+
+
+/* 
+  .input-field {
+    padding: 10px;
+    height: 40px;
+    border: 2px solid #0B2447;
+    border-top: none;
+    border-bottom: none;
+    font-size: 16px;
+    background: transparent;
+    outline: none;
+    box-shadow: 7px 7px 0px 0px #0B2447;
+    transition: all 0.5s;
+  }
+   */
+   
+  .input-field:focus {
+    box-shadow: none;
+    transition: all 0.5s;
+  }
+  
+  .label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #0B2447;
+    transition: all 0.5s;
+    transform: scale(0);
+    z-index: -1;
+  }
+  
+  .sign-in-container .topline {
+    position: absolute;
+    content: "";
+    background-color: #0B2447;
+    width: 0%;
+    height: 2px;
+    right: 0;
+    top: 0;
+    transition: all 0.5s;
+  }
+  
+  .sign-in-container input[type="text"]:focus ~ .topline {
+    width: 35%;
+    transition: all 0.5s;
+  }
+  
+  .sign-in-container .underline {
+    position: absolute;
+    content: "";
+    background-color: #0B2447;
+    width: 0%;
+    height: 2px;
+    right: 0;
+    bottom: 0;
+    transition: all 0.5s;
+  }
+  
+  .sign-in-container input[type="text"]:focus ~ .underline {
+    width: 100%;
+    transition: all 0.5s;
+  }
+  
+  .sign-in-container input[type="text"]:focus ~ .label {
+    top: -10px;
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+
+
+  /* new buttons */
+
+  button {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+    user-select: none;
+    touch-action: manipulation;
+   }
+   
+   .shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: hsl(0deg 0% 0% / 0.25);
+    will-change: transform;
+    transform: translateY(2px);
+    transition: transform
+       600ms
+       cubic-bezier(.3, .7, .4, 1);
+   }
+   
+   .edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(
+       to left,
+       #FDCC01 0%,
+       #cca402e1 8%,
+       #cca402e1 92%,
+       #FDCC01 100%
+     );
+   }
+   
+   .front {
+    display: flex;
+    position: relative;
+    padding: 12px 6em;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    color: black;
+    background-color: rgb(254, 203, 1);
+    will-change: transform;
+    transform: translateY(-4px);
+    transition: transform
+       600ms
+       cubic-bezier(.3, .7, .4, 1);
+   }
+   button:hover {
+    filter: brightness(110%);
+   }
+   
+   button:hover .front {
+    transform: translateY(-6px);
+    transition: transform
+       250ms
+       cubic-bezier(.3, .7, .4, 1.5);
+   }
+   
+   button:active .front {
+    transform: translateY(-2px);
+    transition: transform 34ms;
+   }
+   
+   button:hover .shadow {
+    transform: translateY(4px);
+    transition: transform
+       250ms
+       cubic-bezier(.3, .7, .4, 1.5);
+   }
+   
+   button:active .shadow {
+    transform: translateY(1px);
+    transition: transform 34ms;
+   }
+   
+   button:focus:not(:focus-visible) {
+    outline: none;
+   }
+
+   .error-message {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    font-family: Bebas Neue;
+   }
+   
+/* body {
+    background-color: #FDCC00;
+    color: #000000;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 300px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #000000;
+    color: #FDCC00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+} */

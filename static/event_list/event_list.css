@@ -1,0 +1,272 @@
+body {
+    background: linear-gradient(to right, #FDCC00, #FFFFFF);
+    color: #000000;
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh; /* Ensure the body covers at least the full view height */
+    overflow: auto; /* Enable scrolling */
+    position: relative; /* Necessary for z-index to take effect */
+    z-index: 0; /* Lowest in the stacking context */
+    
+}
+
+.honeycomb {
+    background-color: #fdcc00;
+    background: url('../event_list/Honeycomb.svg') repeat; /* Repeat to cover the entire content */
+    background-size: cover;
+    position: absolute; /* Changed to absolute */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Ensures it's below all other content */
+    overflow: auto;
+}
+
+.header {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.logo {
+    width: 250px; /* Adjust size */
+    position: absolute; /* Position logo at the top left */
+    top: 5px; /* Distance from the top */
+    left: 10px; /* Distance from the left */
+    z-index: 1;
+}
+
+.icon-bar {
+    display: flex;
+    position: fixed;
+    left: 10px; /* Adjusted to ensure consistency */
+    bottom: 20px; /* Position at the bottom with a consistent gap */
+    gap: 35px; /* Space between icons */
+    z-index: -1;
+}
+
+.icon-bar img {
+    width: 27px; /* Adjust size accordingly */
+}
+
+
+
+.event {
+    margin-inline: auto;
+    width: 55%; /* Adjust the width as needed */
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    max-width: 700px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-width: medium;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+   
+
+}
+
+
+.event.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.event:hover {
+    transform: translateY(1px); /* Slight lift effect on hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover for more depth */
+}
+
+.event img {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.event-title {
+    font-family: 'Arial', sans-serif; /* Consistent font for better readability */
+    font-weight: bold; /* Strong emphasis */
+    font-size: 24px; /* Larger font size for visibility */
+    color: #333; /* Darker text for better contrast */
+    margin-bottom: 8px; /* Space between title and date */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.event-date {
+    font-size: 14px; /* Smaller font size than the title */
+    font-style: italic; /* Stylistic choice for date */
+    color: #666; /* Gray for subtlety */
+    margin-bottom: 12px; /* Space between date and caption */
+}
+
+.event-caption {
+    font-family: 'Calibri', sans-serif; /* Maintain font consistency */
+    font-size: 18px; /* Legible font size */
+    color: #444; /* Dark gray for readability */
+    line-height: 1.5; /* Improved line spacing for better readability */
+    text-align: justify; /* Justified text for a neat look */
+    margin-bottom: 20px; /* Space below the caption before next section */
+    background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+    padding: 15px; /* Padding for better text framing */
+    border-left: 5px solid #fdcc00; /* Accent line for style */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for floating effect */
+}
+
+h1 {
+    font-size: 36px;
+    margin-left: 180px; /* Move the title next to the logo */
+}
+
+/* Interact buttons */
+.interact-buttons {
+    margin-top: 10px;
+}
+
+.interact-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #222121;
+    transition: color 0.3s ease, transform 0.3s;
+    margin-right: 10px;
+}
+
+.interact-buttons button:hover {
+    color: #ffd000;
+    transform: scale(1.1);
+}
+
+.new-text {
+    position: relative;
+    font-size: 37px; /* Adjust size as needed */
+    color: #333; /* Text color */
+    font-family: 'Bebas Neue', sans-serif; /* Specify font family */
+    text-align: right;
+    position: fixed; /* Position fixed */
+    bottom: 10px; /* Adjust bottom position as needed */
+    right: 30px; /* Adjust right position as needed */
+    z-index: -1;
+}
+
+/* Define the font family for the placeholder text */
+input::placeholder {
+    font-family: 'Bebas Neue', sans-serif; /* Specify Bebas Neue font family */
+}
+
+.error-message{
+    color: red;
+    font-family: Bebas Neue;
+}
+
+/* Comment Section */
+.comment-section {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.submit-comment-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.submit-comment-btn:hover {
+    background-color: #333;
+}
+
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px; /* Adjust height as needed */
+    background-color: rgba(255, 204, 0, 0.5); /* Yellow color with opacity */
+    z-index: 1; 
+    backdrop-filter: blur(2px); /* Add a blur effect to the background */
+    opacity: 10; /* Adjust the opacity of the container */
+    border-bottom: -2px solid rgba(255, 204, 0, 0.5); /* Border with fall off effect */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds container height */
+    width: calc(100% - 22px); /* Adjust width to accommodate scroll bar */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow for a subtle border effect ADJUST NI KUNG GANAHAN MO */
+}
+
+/* Modal Background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1001;
+    padding: 20px;
+    border: 1px solid #888;
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Prevent background from scrolling when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+body.modal-open .modal {
+    display: block;
+}

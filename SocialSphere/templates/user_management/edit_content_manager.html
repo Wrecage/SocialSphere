@@ -1,0 +1,155 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'user_management/userstyle.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% if message %}
+        <div class="error">{{ message }}</div>
+        {% endif %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ form.username.value }}">
+        {% for error in form.username.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value }}">
+        {% for error in form.first_name.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value }}">
+        {% for error in form.last_name.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="is_superuser">Is Superuser:</label>
+        <input type="checkbox" id="is_superuser" name="is_superuser" {% if form.is_superuser.value %}checked{% endif %}>
+        {% for error in form.is_superuser.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="is_staff">Is Staff:</label>
+        <input type="checkbox" id="is_staff" name="is_staff" {% if form.is_staff.value %}checked{% endif %}>
+        {% for error in form.is_staff.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="is_active">Is Active:</label>
+        <input type="checkbox" id="is_active" name="is_active" {% if form.is_active.value %}checked{% endif %}>
+        {% for error in form.is_active.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="user_permissions">Permissions:</label>
+        <select multiple id="user_permissions" name="user_permissions">
+            {% for permission in form.user_permissions.field.queryset %}
+                <option value="{{ permission.id }}" {% if permission in form.user_permissions.value %}selected{% endif %}>{{ permission.name }}</option>
+            {% endfor %}
+        </select>
+        {% for error in form.user_permissions.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <button type="submit">Save</button>
+    </form>
+
+    <button id="delete-button">Delete</button>
+
+    <!-- Modal HTML -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Confirm Deletion</h2>
+            <div id="modal-error-message" class="error" style="display: none;">
+       
+            </div>
+            <p>Are you sure you want to delete this user? Please enter your password to confirm.</p>
+            <input type="password" id="confirm-password" placeholder="Enter your password">
+            <form method="post" action="{% url 'edit_content_manager' content_manager.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="delete" value="true">
+                <input type="hidden" id="password-input" name="confirm_password">
+                <button type="submit" id="confirm-delete">Yes</button>
+                <button id="cancel-delete">No</button>
+            </form>
+         
+        </div>
+    </div>
+
+    <a href="{% url 'list_content_managers' %}">Back to list</a>
+
+    {% if modal_error_message %}
+    <div class="error">{{ modal_error_message }}</div>
+    {% endif %}
+    
+    <script>
+           // Get the modal
+        var modal = document.getElementById("confirmation-modal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("delete-button");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // Get the cancel button
+        var cancelBtn = document.getElementById("cancel-delete");
+
+        // Get the modal error message element
+        var modalErrorMessage = document.getElementById("modal-error-message");
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x) or No button, close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        cancelBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Prevent modal from closing when clicking outside of it
+        modal.onclick = function(event) {
+            if (event.target != this.querySelector('.modal-content') && !this.querySelector('.modal-content').contains(event.target)) {
+                event.stopPropagation();
+            }
+        }
+
+        // When the user clicks the Yes button
+        document.getElementById("confirm-delete").onclick = function(event) {
+            var password = document.getElementById("confirm-password").value;
+            if (password) {
+                document.getElementById("password-input").value = password;
+            } else {
+                event.preventDefault();
+                modalErrorMessage.innerHTML = "Please enter your password.";
+                modalErrorMessage.style.display = "block";
+            }
+        }
+
+        // Handle form submission
+        document.getElementById("delete-form").onsubmit = function(event) {
+            var password = document.getElementById("confirm-password").value;
+            if (!password) {
+                event.preventDefault();
+                modalErrorMessage.innerHTML = "Please enter your password.";
+                modalErrorMessage.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
