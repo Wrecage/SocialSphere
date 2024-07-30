@@ -8,7 +8,6 @@ body {
     overflow: auto; /* Enable scrolling */
     position: relative; /* Necessary for z-index to take effect */
     z-index: 0; /* Lowest in the stacking context */
-
 }
 
 .honeycomb {

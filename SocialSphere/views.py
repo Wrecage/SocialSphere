@@ -252,6 +252,9 @@ class ContentManagerUtility:
                 return JsonResponse({'status': 'failed', 'message': 'Unauthorized'})
         return JsonResponse({'status': 'failed', 'message': 'Invalid request method'})
 
+class ContentManagerUtility:
+    def __init__(self, request):
+        self.request = request
 
     def get_total_likes_and_comments(self):
         total_likes = EventStats.objects.aggregate(Sum('total_likes'))['total_likes__sum'] or 0

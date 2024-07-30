@@ -50,6 +50,12 @@ urlpatterns = [
     path('edit_comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
     path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 
+    path('update_event/<int:event_id>/',views.update_event, name='update_event'),
+    path('user_logout/', views.user_logout, name='user_logout'),
+    path('remove_photo/<int:event_id>/', views.remove_photo, name='remove_photo'),
+    path('like_event/<int:event_id>/', views.like_event, name='like_event'),
+    path('add_comment/<int:event_id>/', views.add_comment, name='add_comment'),
+
     path('record_click/', views.record_click, name='record_click'),
 
 
