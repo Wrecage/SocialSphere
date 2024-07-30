@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'user_management/add_content_manager.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+   
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ form.username.value }}">
+        {% for error in form.username.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value }}">
+        {% for error in form.first_name.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value }}">
+        {% for error in form.last_name.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+
+        <label for="password2">Confirm Password:</label>
+        <input type="password" id="password2" name="password2">
+
+        {% if message %}
+        <div class="error">{{ message }}</div>
+        {% endif %}
+
+        <label for="is_superuser">Is Superuser:</label>
+        <input type="checkbox" id="is_superuser" name="is_superuser" {% if form.is_superuser.value %}checked{% endif %}>
+        {% for error in form.is_superuser.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="is_staff">Is Staff:</label>
+        <input type="checkbox" id="is_staff" name="is_staff" {% if form.is_staff.value %}checked{% endif %}>
+        {% for error in form.is_staff.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="is_active">Is Active:</label>
+        <input type="checkbox" id="is_active" name="is_active" {% if form.is_active.value %}checked{% endif %}>
+        {% for error in form.is_active.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="user_permissions">Permissions:</label>
+        <select multiple id="user_permissions" name="user_permissions">
+            {% for permission in form.user_permissions.field.queryset %}
+                <option value="{{ permission.id }}" {% if permission in form.user_permissions.value %}selected{% endif %}>{{ permission.name }}</option>
+            {% endfor %}
+        </select>
+        {% for error in form.user_permissions.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <button type="submit">Save</button>
+    </form>
+    
+    <a href="{% url 'list_content_managers' %}"  class="buttonbck">Back to list</a>
+</body>
+</html>

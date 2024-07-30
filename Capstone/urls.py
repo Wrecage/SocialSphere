@@ -19,16 +19,46 @@ from django.urls import path
 from SocialSphere import views
 from django.conf import settings
 from django.conf.urls.static import static
+from SocialSphere import facebook_utils
+
 
 # from django.contrib.auth.views import logout_then_login
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('', views.event_list, name='event_list'),
+    path('events/<int:event_id>/', views.event_detail, name='event_detail'),
+
     path('events/content_login/', views.content_login, name='content_login'),
+
     path('events/posts/', views.event_posts, name='event_posts'),
     path('events/<int:id>/delete/', views.event_delete, name='delete_event'),
-    path('events/', views.events_view, name='events_view'),
+    path('events/analytics/', views.dashboard_analytics, name='dashboard_analytics'),
+    path('update_event/<int:event_id>/',views.update_event, name='update_event'),
     path('user_logout/', views.user_logout, name='user_logout'),
+
+
+    path('remove_photo/<int:event_id>/', views.remove_photo, name='remove_photo'),
+
+
+    path('like_event/<int:event_id>/', views.like_event, name='like_event'),
+
+
+    path('add_comment/<int:event_id>/', views.add_comment, name='add_comment'),
+    path('edit_comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
+
+    path('record_click/', views.record_click, name='record_click'),
+
+
+    path('post-to-facebook/<int:event_id>/', facebook_utils.post_to_facebook_view, name='post_to_facebook'),
+
+
+
+    path('add/', views.add_content_manager, name='add_content_manager'),
+    path('edit/<int:pk>/', views.edit_content_manager, name='edit_content_manager'),
+    path('list/', views.list_content_managers, name='list_content_managers'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Content Managers</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'user_management/userstyle.css' %}">
+    <script src="{% static 'js/userlist.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+    <h1>Content Managers</h1>
+    <a class="buttonNav1" href="{% url 'add_content_manager' %}">Add New Content Manager</a>
+    <a class="buttonNav2" href="{% url 'dashboard_analytics' %}">Go To Dashboard</a>
+    </div>
+
+
+    <form id="delete-form" method="post">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Username</th>
+                    <th>Superuser</th>
+                    <th>Staff</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for manager in content_managers %}
+                <tr>
+                    <td><input type="checkbox" name="selected_users" value="{{ manager.id }}"></td>
+                    <td class="{% if manager.is_superuser %}superuser{% endif %}">{{ manager.username }}</td>                    
+                    <td>{% if manager.is_superuser %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if manager.is_staff %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <a href="{% url 'edit_content_manager' manager.pk %}">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" id="delete-button">Delete Selected</button>
+    </form>
+
+    <!-- Modal HTML -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Confirm Deletion</h2>
+            <div id="modal-error-message" class="error" style="display: none;">
+             
+            </div>
+            <p>Are you sure you want to delete the selected users? Please enter your password to confirm.</p>
+            <input type="password" id="confirm-password" placeholder="Enter your password">
+            <button id="confirm-delete">Yes</button>
+            <button id="cancel-delete">No</button>
+        </div>
+    </div>
+
+    <!-- {% if error_message %}
+    <div class="error">{{ error_message }}</div>
+    {% endif %} -->
+
+
+</body>
+</html>

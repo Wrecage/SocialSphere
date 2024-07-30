@@ -1,88 +1,88 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
+    <script src="{% static 'js/eventlist.js' %}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event List</title>
-    <style>
-        body {
-            background-color: #FDCC00;
-            color: #000000;
-            font-family: Arial, sans-serif;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 36px;
-        }
-        
-        .event {
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            object-fit: contain;
-            object-position: center;
-            max-width: fit-content;
-        }
-        .event img {
-            max-width: 700px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .event-caption {
-            font-size:large;
-            font-family:Calibri;
-        }
-
-        .event-title {
-            font-family:sans-serif ;
-            font-weight: bolder;
-            font-size:xx-large;
-        }
-        .event-date {
-            font-size:xx-small;
-            font-style: italic;
-            color: #777777;
-            margin-bottom: 20px;
-        }
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{% static 'event_list/event_list.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1>Event List</h1>
+ <!-- Honeycomb background -->
+
+ 
+        <div class="header"></div>
+        <div class="container">
+            <img src="{% static 'general/WildcatLogo.svg' %}" alt="Wildcat Logo" class="logo">
+        </div>
+        
+        <div class="honeycomb"> 
+            <br><br><br><br><br><br><br>
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"> 
+            {% for event in events %}
+            <div class="event" data-event-id="{{ event.id }}">
+                <div class="event-title">{{ event.title }}</div>
+                <div class="event-date">{{ event.date }}</div>
+                <div class="event-caption">{{ event.caption }}</div>
+                {% if event.photo %}
+                <div class="event-img">
+                    {% if event.photo.url %}
+                        <a href="{% url 'event_detail' event.id %}" >    <!--class="event-detail-link" data-event-id="{{ event.id }}-->
+                            <img src="{{ event.photo.url }}" alt="Event Image">
+                        </a>
+                    {% else %}
+                        <video controls>
+                            <source src="{{ event.photo.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% endif %}
+                </div>
+                {% endif %}
+            <div class="interact-buttons">
+                <!-- <button class="event-like-btn" data-event-id="{{ event.id }}">&#x1F44D; Like</button> -->
+                <button id="likeButton" class="event-like-btn {% if event.id in liked_events %}highlighted{% endif %}" data-event-id="{{ event.id }}">
+                    <i class="fas fa-thumbs-up"></i> <span>{% if event.id in liked_events %}Liked{% else %}Like{% endif %}</span>
+                </button>
+                <a href="{% url 'event_detail' event.id %} " >    <!--class="event-detail-link" data-event-id="{{ event.id }}-->
+                    <button >&#x1F4AC; Comment</button>
+                </a>
+                <!-- <button class="event-comment-btn" data-event-id="{{ event.id }}">&#x1F4AC; Comment</button> -->
+            </div>
+            <div class="counts-container">
+                <span class="like-count">{{ event.like_count }} Likes</span> ·
+                <span class="comment-count">{{ event.comment_count }} Comments</span>
+            </div>
+            </div>
+            {% empty %}
+            <p>No events available.</p>
+            {% endfor %}
+       
+
+        <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" style="display: none;">&times;</span>
+                    <div id="modal-body">
+                        <!-- Detailed event content will be loaded here -->
+                    </div>
+                </div>
+        </div>
+
+        <div class="icon-bar"> <!-- Icons for additional features -->
+            <img src="{% static 'event_list/locationIcon.svg' %}" alt="Location Icon">
+            <img src="{% static 'event_list/emailIcon.svg' %}" alt="Email Icon">
+            <img src="{% static 'event_list/contactIcon.svg' %}" alt="Contact Icon">
+        </div>
+        <div class="new-text">#FARFIRSTFASTFOCUSEDFEROCIUS
+        </div>
+    </div>
+
+   
 
     
-    {% for event in events %}
-    <div class="event">
-        <div class="event-title">{{ event.title }}</div>
-        <div class="event-date">{{ event.date }}</div>
-        <div class="event-caption">{{ event.caption }}</div>
-        {% if event.photo_or_video %}
-        <div class="event-img">
-            {% if event.photo_or_video.url %}
-                <img src="{{ event.photo_or_video.url }}" alt="Event Image">
-            {% else %}
-                <video controls>
-                    <source src="{{ event.photo_or_video.url }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            {% endif %}
-        </div>
-        {% endif %}
-
-
-        
-        <!-- Add more fields as needed -->
-    </div>
-    {% empty %}
-    <p>No events available.</p>
-    {% endfor %}
 </body>
-</html>
 
+</html>

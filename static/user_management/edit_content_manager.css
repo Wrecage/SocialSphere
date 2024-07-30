@@ -1,0 +1,285 @@
+/* Importing fonts and styles */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+
+/* Base styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: url('../event_list/Honeycomb.svg') no-repeat center center fixed; /* Retaining your background */
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: auto;
+}
+
+/* Title styling */
+h1 {
+    position: fixed; /* Position fixed */
+    top: -30px; /* Adjust top position as needed */
+    left: 30px; /* Adjust left position as needed */
+    font-size: 60px; /* Adjust size as needed */
+    color: #000000; /* Text color */
+    font-family: 'Bebas Neue', sans-serif; /* Specify font family */
+    text-align: left; /* Align text to the left */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Add shadow effect */
+}
+
+/* Form styles */
+.form1 {
+    background-color: #fff; /* White background for the form */
+    max-width: 600px; /* Maximum width of the form */
+    width: 100%; /* Full width */
+    margin: 20px auto; /* Centering the form */
+    padding: 20px; /* Inner padding */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: left; /* Align text to the left */
+    z-index: 99 !important;
+}
+
+/* Label styles */
+label {
+    display: block; /* Block display for labels */
+    margin-bottom: 8px; /* Space below the label */
+    font-weight: bold; /* Bold text */
+    color: #333; /* Dark text color */
+}
+
+/* Input field styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    width: 100%; /* Full width */
+    padding: 10px; /* Inner padding */
+    margin-bottom: 20px; /* Space below each input */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    box-sizing: border-box; /* Box sizing */
+}
+
+/* Checkbox styles */
+input[type="checkbox"] {
+    margin-right: 10px; /* Space to the right of the checkbox */
+}
+
+/* Button styles */
+button[type="submit"]
+ {
+    background-color: #ffcc00; /* Yellow background */
+    color: #333; /* Dark text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Inner padding */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    border-radius: 50px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
+}
+
+/* Button hover effects */
+button[type="submit"]:hover{
+    background-color: #ffbb00; /* Darker yellow on hover */
+}
+
+button#delete-button {
+    background-color: #ff0000; /* Yellow background */
+    color: #ffffff; /* Dark text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Inner padding */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    border-radius: 50px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
+}
+
+button#delete-button:hover{
+    background-color: #c00;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  button#confirm-delete {
+    background-color: #ffcc00;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button#confirm-delete:hover {
+    background-color: #ffbb00;
+  }
+  
+  #cancel-delete {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #cancel-delete:hover {
+    background-color: #bbb;
+  }
+  
+  .error {
+    color: #ff0000;
+    background-color: #ffdddd;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+   
+  }
+
+  #error-modal {
+    z-index: 1000;
+    display: none;
+    opacity: 1;
+  }
+
+ 
+
+
+
+/* Back link styles */
+a {
+    display: inline-block; /* Inline block for spacing */
+    margin-top: 20px; /* Space above the link */
+    color: #000000; /* Text color */
+    text-decoration: none; /* No underline */
+    font-weight: bold; /* Bold text */
+    transition: color 0.3s ease; /* Transition for hover */
+}
+
+/* Back link hover effect */
+a:hover {
+    color: #ffbb00; /* Change color on hover */
+}
+
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: auto;
+    height: 200px; /* Adjust height as needed */
+    background: linear-gradient(to bottom, rgba(255, 204, 0, 0.5), rgba(255, 204, 0, 0)); /* Yellow color fading to transparent */
+    z-index: 1;
+    backdrop-filter: blur(2px); /* Add a blur effect to the background */
+    opacity: 1; /* Set opacity to 1 (fully opaque) */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+.button{
+  position: fixed;
+  right: -300px; 
+  top: 1px; 
+  float: right;
+  display: flex;
+  padding: 1rem 2.5rem;
+  background-color: #000000;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border-radius: 50px;
+  overflow: hidden;
+  margin-inline: 21em;
+  font-family: Poppins, sans-serif;
+  z-index: 99 !important;
+}
+
+.button:hover {
+    background-color: #555;
+    transform: scale(1.07);
+    color: #fff;
+  }
+
+
+
+
+
+  .loading-icon {
+    font-size: 20px;
+    color: gold;
+  }
+  
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top: 3px solid gold;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .modal .loading-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* Hidden by default */
+}

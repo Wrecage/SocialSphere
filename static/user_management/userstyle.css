@@ -1,0 +1,359 @@
+/* Base styles */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: url('../event_list/Honeycomb.svg') no-repeat center center fixed;
+  overflow: auto;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  position: fixed;
+  top: -30px;
+  left: 30px;
+  font-size: 60px;
+  color: #000000;
+  font-family: 'Bebas Neue', sans-serif;
+  text-align: left;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Form styles */
+form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+a {
+  margin-top: 20px;
+  color: #000000;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  text-align: center;
+}
+
+a:hover {
+  color: #ffbb00;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #333;
+  color: #fff;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+th:first-child, td:first-child {
+  text-align: center;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5);
+  margin-right: 10px;
+}
+
+button[name="delete"] {
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[name="delete"]:hover {
+  background-color: #cc0000;
+}
+
+.superuser {
+  color: goldenrod;
+  text-transform: uppercase;
+  font-weight: bold;
+  outline: 2px solid gold;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button#confirm-delete {
+  background-color: #ffcc00;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button#confirm-delete:hover {
+  background-color: #ffbb00;
+}
+
+button#cancel-delete {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button#cancel-delete:hover {
+  background-color: #bbb;
+}
+
+.error {
+  color: #ff0000;
+  background-color: #ffdddd;
+  border: 1px solid #ff0000;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.buttonNav1 {
+  position: fixed;
+  right: -95px;
+  top: 1px;
+  float: right;
+  display: flex;
+  padding: 1rem 2.5rem;
+  background-color: #000000;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border-radius: 50px;
+  overflow: hidden;
+  margin-inline: 21em;
+  font-family: Poppins, sans-serif;
+}
+
+.buttonNav1:hover {
+  background-color: #555;
+  transform: scale(0.90);
+  color: #fff;
+}
+
+.buttonNav2 {
+  position: fixed;
+  top: 1px;
+  right: -320px;
+  float: right;
+  display: flex;
+  padding: 1rem 2.5rem;
+  background-color: #000000;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border-radius: 50px;
+  overflow: hidden;
+  margin-inline: 21em;
+  font-family: Poppins, sans-serif;
+}
+
+.buttonNav2:hover {
+  background-color: #555;
+  transform: scale(0.90);
+  color: #fff;
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: auto;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(255, 204, 0, 0.5), rgba(255, 204, 0, 0));
+  z-index: 1;
+  backdrop-filter: blur(2px);
+  opacity: 1;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+}
+
+form#delete-form {
+  max-width: 800px;
+  width: 1000px;
+  margin: 90px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 200px;
+  top: 100px;
+  z-index: 99 !important;
+}
+
+button#delete-button {
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  font-family: Poppins, sans-serif;
+}
+
+button#delete-button:hover {
+  background-color: #cc0000;
+}
+
+
+
+.loading-icon {
+  font-size: 20px;
+  color: gold;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top: 3px solid gold;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.modal .loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none; /* Hidden by default */
+}
