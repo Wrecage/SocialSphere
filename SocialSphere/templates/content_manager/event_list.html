@@ -10,24 +10,48 @@
     <link rel="stylesheet" href="{% static 'event_list/event_list.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">;
 </head>
 <body>
- <!-- Honeycomb background -->
-
  
-        <div class="header"></div>
-        <div class="container">
-            <img src="{% static 'general/WildcatLogo.svg' %}" alt="Wildcat Logo" class="logo">
-        </div>
+    <div class="header"></div>
+    <div class="container">
+        <div class="maintitle">S O C I A L S P H E R E</div>
+    </div>
         
-        <div class="honeycomb"> 
             <br><br><br><br><br><br><br>
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"> 
+            
             {% for event in events %}
+            <div class="info-container">
+                <img src="static/event_list/information-button.png" class="information-button" width="100" height="100">
+                <p class="about-paragraph">
+                    NOTE:<br>
+                    This website showcases the posted events of Wildcats Innovations Lab, 
+                    integrated seamlessly with Facebook. Through this site, 
+                    users can see events directly, and those events are reflected 
+                    on the associated Facebook page in real-time. This integration not only simplifies 
+                    event management but also ensures that the Wildcats community remains connected and 
+                    informed across multiple platforms. 
+                </p>
+            </div>
+
+            <div class="fb-link">
+                <a href="https://www.facebook.com/profile.php?id=61559580118485" target="_blank">
+                    <img src="static/event_list/facebook.png" alt="Facebook Icon"> Wildcats Innovations Lab Page
+                </a>
+            </div>
+            
+
             <div class="event" data-event-id="{{ event.id }}">
                 <div class="event-title">{{ event.title }}</div>
                 <div class="event-date">{{ event.date }}</div>
-                <div class="event-caption">{{ event.caption }}</div>
+                <div class="event-caption" id="caption_{{ event.id }}">
+                    <span class="caption-text" id="caption-text_{{ event.id }}">
+                        {{ event.caption|linebreaksbr|safe }}
+                    </span>
+                    <button class="toggle-btn" id="toggle-btn_{{ event.id }}" onclick="toggleText('{{ event.id }}')">See More</button>
+                </div>
                 {% if event.photo %}
                 <div class="event-img">
                     {% if event.photo.url %}
@@ -48,7 +72,7 @@
                     <i class="fas fa-thumbs-up"></i> <span>{% if event.id in liked_events %}Liked{% else %}Like{% endif %}</span>
                 </button>
                 <a href="{% url 'event_detail' event.id %} " >    <!--class="event-detail-link" data-event-id="{{ event.id }}-->
-                    <button >&#x1F4AC; Comment</button>
+                    <button  >&#x1F4AC; Comment</button>
                 </a>
                 <!-- <button class="event-comment-btn" data-event-id="{{ event.id }}">&#x1F4AC; Comment</button> -->
             </div>
@@ -71,18 +95,6 @@
                 </div>
         </div>
 
-        <div class="icon-bar"> <!-- Icons for additional features -->
-            <img src="{% static 'event_list/locationIcon.svg' %}" alt="Location Icon">
-            <img src="{% static 'event_list/emailIcon.svg' %}" alt="Email Icon">
-            <img src="{% static 'event_list/contactIcon.svg' %}" alt="Contact Icon">
-        </div>
-        <div class="new-text">#FARFIRSTFASTFOCUSEDFEROCIUS
-        </div>
-    </div>
-
-   
-
-    
 </body>
 
 </html>

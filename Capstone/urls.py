@@ -20,7 +20,7 @@ from SocialSphere import views
 from django.conf import settings
 from django.conf.urls.static import static
 from SocialSphere import facebook_utils
-
+from SocialSphere import groq_utils
 
 # from django.contrib.auth.views import logout_then_login
 
@@ -50,16 +50,11 @@ urlpatterns = [
     path('edit_comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
     path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 
-    path('update_event/<int:event_id>/',views.update_event, name='update_event'),
-    path('user_logout/', views.user_logout, name='user_logout'),
-    path('remove_photo/<int:event_id>/', views.remove_photo, name='remove_photo'),
-    path('like_event/<int:event_id>/', views.like_event, name='like_event'),
-    path('add_comment/<int:event_id>/', views.add_comment, name='add_comment'),
-
     path('record_click/', views.record_click, name='record_click'),
 
 
     path('post-to-facebook/<int:event_id>/', facebook_utils.post_to_facebook_view, name='post_to_facebook'),
+    path('generate-caption/', groq_utils.handle_caption_generation_request, name='generate_caption'),
 
 
 

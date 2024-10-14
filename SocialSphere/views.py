@@ -8,6 +8,8 @@ from django.views.decorators.http import require_POST
 from django.urls import reverse
 from .facebook_utils import facebook_analytics, post_to_facebook
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.core.cache import cache
+from datetime import datetime, timedelta
 from .models import Event, Like, Comment, EventStats
 from .models import ContentManager
 from .forms import EventForm, ContentManagerForm
@@ -21,7 +23,16 @@ from django.contrib.auth.password_validation import (
 )
 from django.core.exceptions import ValidationError
 from .facebook_config import PAGE_ID, ACCESS_TOKEN
+from .groq_utils import handle_caption_generation_request
+from .profanity_filter import check_profanity, contains_links
+from .recaptcha_validator import  verify_recaptcha
+from .website_utils import get_website_analytics_data , get_website_pie_data
+import platform
+from django.utils.timezone import localtime
+from django.utils import timezone
 import logging
+import uuid
+import requests
 
 logger = logging.getLogger(__name__)
 User = settings.AUTH_USER_MODEL
@@ -46,6 +57,7 @@ class ContentManagerUtility:
         else:
             ip = self.request.META.get('REMOTE_ADDR')
         return ip
+        
 
     def login(self):
         if self.request.user.is_authenticated:
@@ -89,7 +101,11 @@ class ContentManagerUtility:
         return render(self.request, 'content_manager/content_login.html', {'message': error_message})
 
     def event_list(self):
-        events = Event.objects.all().exclude(id=1).order_by('-date')
+        events = Event.objects.all()\
+        .exclude(title__startswith='Dummy Event')\
+        .exclude(title__startswith='Daily Event')\
+        .order_by('-date')
+        
         ip_address = self.get_client_ip()
         liked_events = Like.objects.filter(ip_address=ip_address).values_list('event_id', flat=True)
         context = {
@@ -98,26 +114,23 @@ class ContentManagerUtility:
         }
         return render(self.request, 'content_manager/event_list.html', context)
 
+    
     def event_detail(self, event_id):
         event = get_object_or_404(Event, id=event_id)
-        comments = Comment.objects.filter(event=event)
+        comments = Comment.objects.filter(event=event).order_by('-comment_date')
         client_ip = self.get_client_ip()
-
-        if self.request.method == 'POST':
-            comment_text = self.request.POST.get('comment_text')
-
-            if comment_text:
-                Comment.objects.create(event=event, ip_address=client_ip, comment_text=comment_text)
-
-                event_stats, created = EventStats.objects.get_or_create(event=event)
-                event_stats.total_comments += 1
-                event_stats.save()
-
-                return redirect('event_detail', event_id=event_id)
+        
+        # Create a list of comments with their corresponding avatar styles using a consistent session key
+        comments_with_styles = []
+        for comment in comments:
+            # Use the comment ID as the session key to store/retrieve avatar style
+            comment_style_key = f"avatar_style_{comment.id}"
+            avatar_style = self.request.session.get(comment_style_key, 'pixel-art')  # Default to 'pixel-art' if not found
+            comments_with_styles.append({'comment': comment, 'avatar_style': avatar_style})
 
         context = {
             'event': event,
-            'comments': comments,
+            'comments_with_styles': comments_with_styles,  # Pass the comments with avatar styles
             'client_ip': client_ip,
             'is_superuser': self.request.user.is_superuser,
             'is_staff': self.request.user.is_staff,
@@ -132,6 +145,9 @@ class ContentManagerUtility:
                 event.content_manager = self.request.user
                 event.save()
 
+                if 'generate_caption' in self.request.POST:
+                    return handle_caption_generation_request(self.request)
+
                 if 'post_to_facebook' in self.request.POST:
                     post_to_facebook(event)
 
@@ -139,7 +155,11 @@ class ContentManagerUtility:
         else:
             form = EventForm()
 
-        events = Event.objects.all().exclude(id=1).order_by('-date')
+        events = Event.objects.all()\
+        .exclude(title__startswith='Dummy Event')\
+        .exclude(title__startswith='Daily Event')\
+        .order_by('-date')
+        
         return render(self.request, 'content_manager/event_posts.html', {'form': form, 'events': events})
 
     def update_event(self, event_id):
@@ -200,22 +220,94 @@ class ContentManagerUtility:
             'liked': liked,
             'total_likes': event_stats.total_likes
         })
-
+    
+    
+    
     def add_comment(self, event_id):
         if self.request.method == 'POST':
             event = get_object_or_404(Event, pk=event_id)
             comment_text = self.request.POST.get('comment_text')
             ip_address = self.get_client_ip()
+            honeypot = self.request.POST.get('honeypot')
+            avatar_style = self.request.POST.get('avatar_style', 'pixel-art')  # Get the avatar style from the form
+            recaptcha_token = self.request.POST.get('recaptcha_token')
 
-            if comment_text:
-                Comment.objects.create(event=event, ip_address=ip_address, comment_text=comment_text)
+            recaptcha_response = requests.post(
+                'https://www.google.com/recaptcha/api/siteverify',
+                data={
+                    'secret': settings.RECAPTCHA_SECRET_KEY,
+                    'response': recaptcha_token,
+                    'remoteip': ip_address,
+                }
+            )
+            recaptcha_result = recaptcha_response.json()
+            if not recaptcha_result.get('success'):
+                return JsonResponse({'status': 'failed', 'message': 'reCAPTCHA verification failed. Please try again.'})
+            
+            if check_profanity(comment_text):
+                return JsonResponse({'status': 'failed', 'message': 'Your comment contains prohibited language.'})
 
-                event_stats, created = EventStats.objects.get_or_create(event=event)
-                event_stats.total_comments += 1
-                event_stats.save()
+            if contains_links(comment_text):
+                return JsonResponse({'status': 'failed', 'message': 'Comments with links are not allowed.'})
 
-                return JsonResponse({'status': 'success', 'message': 'Comment added'})
-            return JsonResponse({'status': 'failed', 'message': 'Invalid request'})
+            if honeypot:
+                return JsonResponse({'status': 'failed', 'message': 'Spam detected. Please refrain from spamming the comment section.'})
+
+            # Rate limiting logic
+            rate_limit_key = f"comment_rate_limit_{self.request.user.id or ip_address}_{event_id}"
+            rate_data = cache.get(rate_limit_key)
+            if not rate_data:
+                rate_data = {'count': 0, 'start_time': datetime.now().timestamp()}
+            time_diff = datetime.now().timestamp() - rate_data['start_time']
+            if time_diff > 60:
+                rate_data = {'count': 0, 'start_time': datetime.now().timestamp()}
+            if rate_data['count'] >= 5:
+                remaining_time = 60 - int(time_diff)
+                return JsonResponse({'status': 'failed', 'message': 'You have reached the comment limit of 5 per minute.', 'remaining_time': remaining_time})
+            rate_data['count'] += 1
+            cache.set(rate_limit_key, rate_data, timeout=60)  
+
+            # Create comment first to get the comment ID
+            comment = Comment.objects.create(event=event, ip_address=ip_address, comment_text=comment_text)
+            comment_date = comment.comment_date.strftime('%Y-%m-%d %H:%M:%S')
+                
+
+            # Format the comment date to the desired string format with the correct time zone
+            formatted_comment_date = localtime(comment.comment_date).strftime('%b. %d, %Y, %I:%M %p')
+
+            # Replace leading zero in the day component manually
+            formatted_comment_date = formatted_comment_date.replace(" 0", " ")
+
+            # Replace AM/PM with a.m./p.m.
+            formatted_comment_date = formatted_comment_date.replace("AM", "a.m.").replace("PM", "p.m.")
+
+            # Capitalize the first letter in the formatted string
+            formatted_comment_date = formatted_comment_date[0].upper() + formatted_comment_date[1:]
+
+
+            # Use the actual comment ID for the session key
+            comment_id = comment.id  # Use comment's ID instead of generating a UUID
+            unique_comment_style_key = f"avatar_style_{comment_id}"
+            self.request.session[unique_comment_style_key] = avatar_style
+
+            event_stats, _ = EventStats.objects.get_or_create(event=event)
+            event_stats.total_comments = Comment.objects.filter(event=event).count()
+            event_stats.save()
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Comment added',
+                'comment_text': comment.comment_text,
+                'comment_id': comment.id,
+                'comment_date': comment_date,
+                'comment_date': formatted_comment_date, 
+                'avatar_style': avatar_style,
+                'ip_address': ip_address,
+                'unique_id': comment_id,
+                'total_comments': event_stats.total_comments   
+            })
+
+        return JsonResponse({'status': 'failed', 'message': 'Invalid request'}, status=400)
 
     def edit_comment(self, comment_id):
         if self.request.method == 'POST':
@@ -251,7 +343,8 @@ class ContentManagerUtility:
             else:
                 return JsonResponse({'status': 'failed', 'message': 'Unauthorized'})
         return JsonResponse({'status': 'failed', 'message': 'Invalid request method'})
-    
+
+
     def get_total_likes_and_comments(self):
         total_likes = EventStats.objects.aggregate(Sum('total_likes'))['total_likes__sum'] or 0
         total_comments = EventStats.objects.aggregate(Sum('total_comments'))['total_comments__sum'] or 0
@@ -264,27 +357,109 @@ class ContentManagerUtility:
     @staticmethod
     def record_click(request):
         if request.method == 'POST':
-            dummy_event = get_object_or_404(Event, id=1)  # Assuming the dummy event has ID 1
-            stats, created = EventStats.objects.get_or_create(event=dummy_event)
-            stats.total_clicks += 1
-            stats.save()
+            # Track clicks for the current month using the dummy event
+            content_manager = ContentManager.objects.first()  # Assuming at least one content manager
+            if content_manager:
+                current_month = timezone.now().strftime('%Y-%m')  # Get the current month as 'YYYY-MM'
+                dummy_event, created = Event.objects.get_or_create(
+                    title=f'Dummy Event {current_month}',
+                    content_manager=content_manager
+                )
+                stats, created = EventStats.objects.get_or_create(event=dummy_event)
+                stats.total_clicks += 1
+                stats.save()
+
             return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'failure'}, status=400)
 
     def dashboard_analytics(self):
         if AuthUtils.is_superuser(self.request.user):
             data = facebook_analytics(PAGE_ID, ACCESS_TOKEN)
-            context = {'data': data}
+            context = {'data': data, 'facebook_chart_data': data}
 
+            # Extract post preview data (most liked, commented, and shared posts)
+            most_liked_post_message = data['most_liked_post']['message'] if 'message' in data['most_liked_post'] else 'No message'
+            most_liked_post_image = data['most_liked_post']['full_picture'] if 'full_picture' in data['most_liked_post'] else None
+
+            most_commented_post_message = data['most_commented_post']['message'] if 'message' in data['most_commented_post'] else 'No message'
+            most_commented_post_image = data['most_commented_post']['full_picture'] if 'full_picture' in data['most_commented_post'] else None
+
+            most_shared_post_message = data['most_shared_post']['message'] if 'message' in data['most_shared_post'] else 'No message'
+            most_shared_post_image = data['most_shared_post']['full_picture'] if 'full_picture' in data['most_shared_post'] else None
+
+            # Get today's date
+            today = timezone.now().date()
+
+            # Fetch the daily visitor count by filtering for today's event (daily event)
+            daily_event_title = f'Daily Event {today}'
+            daily_event = Event.objects.filter(title=daily_event_title).first()
+            daily_visitors = EventStats.objects.filter(event=daily_event).aggregate(Sum('total_visitors'))['total_visitors__sum'] or 0
+
+            # Get the total visitor count by filtering the current month (monthly event)
+            current_month = timezone.now().strftime('%Y-%m')
+            monthly_event = Event.objects.filter(title=f'Dummy Event {current_month}').first()
+            total_visitors = EventStats.objects.filter(event=monthly_event).aggregate(Sum('total_visitors'))['total_visitors__sum'] or 0
+
+            # Get the most liked event
+            most_liked_event = Event.objects.annotate(total_likes=Sum('eventstats__total_likes')).order_by('-total_likes').first()
+
+            # Get the most commented event
+            most_commented_event = Event.objects.annotate(total_comments=Sum('eventstats__total_comments')).order_by('-total_comments').first()
+
+            
+
+            facebook_pie_data = {
+                'reactions': data['total_reactions_count'],
+                'comments': data['total_comments'],
+                'shares': data['total_shares'],
+                'page_views': data['total_page_views']
+            }
+            
             stats = self.get_total_likes_and_comments()
             context.update(stats)
 
-            dummy_event_stats = EventStats.objects.filter(event__id=1).first()
-            total_visitors = dummy_event_stats.total_visitors if dummy_event_stats else 0
-            total_clicks = dummy_event_stats.total_clicks if dummy_event_stats else 0
+            website_analytics_data = get_website_analytics_data() 
+            website_pie_data = get_website_pie_data()
+
+
+            print(website_analytics_data)
+
+            current_month = timezone.now().strftime('%Y-%m')
+
+            dummy_event = Event.objects.filter(title=f'Dummy Event {current_month}').first()
+
+            # If the dummy event exists, get the total visitors and clicks for this month
+            if dummy_event:
+                dummy_event_stats = EventStats.objects.filter(event=dummy_event).first()
+                total_visitors = dummy_event_stats.total_visitors if dummy_event_stats else 0
+                total_clicks = dummy_event_stats.total_clicks if dummy_event_stats else 0
+            else:
+                # No event found for the current month, set visitors and clicks to 0
+                total_visitors = 0
+                total_clicks = 0
 
             context['total_visitors'] = total_visitors
             context['total_clicks'] = total_clicks
+            context['chart_data'] = website_analytics_data
+            context['website_pie_data'] = website_pie_data
+            context['facebook_pie_data'] = facebook_pie_data
+            context['daily_visitors'] = daily_visitors
+            context['most_liked_event'] = most_liked_event
+            context['most_commented_event'] = most_commented_event
+            
+            context['most_liked_post_message'] = most_liked_post_message
+            context['most_liked_post_image'] = most_liked_post_image
+
+            context['most_commented_post_message'] = most_commented_post_message
+            context['most_commented_post_image'] = most_commented_post_image
+
+            context['most_shared_post_message'] = most_shared_post_message
+            context['most_shared_post_image'] = most_shared_post_image
+
+            context['most_liked_post'] = data['most_liked_post']
+            context['most_commented_post'] = data['most_commented_post']
+            context['most_shared_post'] = data['most_shared_post']
+                
 
             return render(self.request, 'content_manager/dashboard_analytics.html', context)
         else:
@@ -310,6 +485,7 @@ class ContentManagerUtility:
                         user = form.save(commit=False)
                         user.set_password(password)
                         user.save()
+                        form.save_m2m()
                         return redirect('list_content_managers')
                     except ValidationError as e:
                         error_message = ', '.join(e.messages)
@@ -345,6 +521,9 @@ class ContentManagerUtility:
                     return redirect('list_content_managers')
                 else:
                     error_message = 'Form is not valid. Please correct the errors below.'
+        else:
+            form = ContentManagerForm(instance=content_manager)
+            form.fields['user_permissions'].initial = content_manager.user_permissions.all()
 
         return render(request, 'user_management/edit_content_manager.html', {
             'form': form,
@@ -392,6 +571,7 @@ def event_detail(request, event_id):
 def like_event(request, event_id):
     content_manager_utility = ContentManagerUtility(request)
     return content_manager_utility.like_event(event_id)
+
 
 @csrf_exempt
 def add_comment(request, event_id):

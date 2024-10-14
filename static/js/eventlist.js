@@ -7,13 +7,14 @@ function loadJQuery(callback) {
 
 function handleEventActions() {
     $(document).ready(function() {
+        // Handle Like Button Click
         $('.event-like-btn').click(function() {
             var eventId = $(this).data('event-id');
             var $this = $(this);  // Cache this to use in the callback
 
             // Check current state
             var isLiked = $this.hasClass('highlighted');
-            
+
             // Optimistically update the UI
             $this.toggleClass('highlighted', !isLiked);
             $this.find('span').text(!isLiked ? 'Liked' : 'Like');
@@ -23,7 +24,7 @@ function handleEventActions() {
                 icon.removeClass('animate');
             }, 600); // Duration of the animation
 
-            // Send the AJAX request
+            // Send the AJAX request to like/unlike the event
             $.ajax({
                 url: '/like_event/' + eventId + '/',
                 method: 'POST',
@@ -32,90 +33,89 @@ function handleEventActions() {
                 },
                 success: function(response) {
                     console.log(response);
-                    if (response.status !== 'success') {
+                    if (response.status === 'success') {
+                        // Update the like count dynamically based on response
+                        var likeCountElement = $this.closest('.event').find('.like-count');
+                        if (likeCountElement.length) {
+                            likeCountElement.text(`${response.total_likes} Likes`);
+                        }
+                    } else {
                         // Revert the UI changes if the request fails
                         $this.toggleClass('highlighted', isLiked);
                         $this.find('span').text(isLiked ? 'Liked' : 'Like');
                     }
+                },
+                error: function() {
+                    // In case of an error, revert the UI changes
+                    $this.toggleClass('highlighted', isLiked);
+                    $this.find('span').text(isLiked ? 'Liked' : 'Like');
+                    alert('Something went wrong. Please try again.');
                 }
             });
         });
-
-        
-        $('.event-comment-btn').click(function(){
-            var eventId = $(this).data('event-id');
-            var commentText = prompt("Enter your comment:");
-            if(commentText) {
-                sendAjaxRequest('/add_comment/', eventId, {'comment_text': commentText, 'csrfmiddlewaretoken': getCsrfToken()});
-            }
-        });
     });
-
-    function sendAjaxRequest(url, eventId, data) {
-        $.ajax({
-            url: url + eventId + '/',
-            method: 'POST',
-            data: data,
-            success: function(response){
-                alert(response.message);
-            }
-        });
-    }
+   
 
     function getCsrfToken() {
         return $('meta[name="csrf-token"]').attr('content');
     }
+
+    
 }
 
-function handleEventClicks() {
+function updateCommentCountInEventList(eventId, newCommentCount) {
+    const eventElement = document.querySelector(`.event[data-event-id="${eventId}"]`);
+    if (eventElement) {
+      const commentCountElement = eventElement.querySelector('.comment-count');
+      if (commentCountElement) {
+        commentCountElement.textContent = `${newCommentCount} Comments`;
+      }
+    }
+  }
+
+  function handleEventClicks() {
     document.querySelectorAll('.event-clicks-btn').forEach(button => {
         button.addEventListener('click', function () {
             const eventId = this.getAttribute('data-event-id');
-            fetch(`/events/record_click/${eventId}/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Click recorded');
-                } else {
-                    console.error('Failed to record click');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+            recordClick(`/events/record_click/${eventId}/`);
         });
     });
 }
 
+// Handle general clicks on the landing page
 function handleGeneralClickRecording() {
-    document.addEventListener('click', function() {
-        const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
-        if (!csrfTokenElement) {
-            console.error('CSRF token not found.');
-            return;
-        }
-        const csrfToken = csrfTokenElement.value;
-        fetch('/record_click/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Click recorded: ", data);
-        })
-        .catch((error) => {
-            console.error("Error recording click: ", error);
-        });
+    document.addEventListener('click', function () {
+        recordClick('/record_click/');  // General click recording
     });
 }
 
+// Unified function to send the click recording request
+function recordClick(url) {
+    const csrfToken = getCookie('csrftoken');
+    if (!csrfToken) {
+        console.error('CSRF token not found.');
+        return;
+    }
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            console.log('Click recorded successfully');
+        } else {
+            console.error('Failed to record click');
+        }
+    })
+    .catch(error => console.error('Error recording click:', error));
+}
+
+// Function to retrieve CSRF token from cookies
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -210,6 +210,63 @@ function handleModal() {
 
 
 }
+
+function toggleText(eventId) {
+    const captionText = document.getElementById('caption-text_' + eventId);
+    const toggleBtn = document.getElementById('toggle-btn_' + eventId);
+
+    // Retrieve full and truncated text from data attributes
+    const fullText = captionText.getAttribute('data-fulltext');
+    const truncatedText = captionText.getAttribute('data-truncated');
+
+    // Log the current state for debugging
+    console.log("Current Button Text:", toggleBtn.textContent);
+    console.log("Full Text:", fullText);
+    console.log("Truncated Text:", truncatedText);
+
+    // Check the current button state and toggle text accordingly
+    if (toggleBtn.textContent === 'See More') {
+        captionText.innerHTML = fullText; // Show full text
+        toggleBtn.textContent = 'See Less'; // Change button text
+    } else {
+        captionText.innerHTML = truncatedText; // Show truncated text
+        toggleBtn.textContent = 'See More'; // Change button text
+    }
+
+    // Log after changing the text
+    console.log("Updated Button Text:", toggleBtn.textContent);
+    console.log("Updated Caption Text:", captionText.innerHTML);
+}
+
+window.onload = function() {
+    const captions = document.querySelectorAll('.caption-text');
+
+    captions.forEach(caption => {
+        const fullText = caption.innerHTML.trim();
+        const maxLength = 100;  // Maximum character length before truncating
+
+        if (fullText.length > maxLength) {
+            const truncatedText = fullText.substring(0, maxLength) + '...';
+
+            // Store full and truncated text in custom attributes
+            caption.setAttribute('data-fulltext', fullText);
+            caption.setAttribute('data-truncated', truncatedText);
+
+            // Set the initial truncated text
+            caption.innerHTML = truncatedText; // Show truncated text initially
+        } else {
+            // If the text is short enough, just set it without truncation
+            caption.setAttribute('data-fulltext', fullText);
+            caption.setAttribute('data-truncated', fullText);
+            // Optionally, you might want to hide the toggle button if not needed
+            const toggleBtn = document.getElementById('toggle-btn_' + caption.id.split('_')[1]); // Assuming IDs like 'caption_1'
+            if (toggleBtn) {
+                toggleBtn.style.display = 'none'; // Hide if no truncation needed
+            }
+        }
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', handleModal);
 

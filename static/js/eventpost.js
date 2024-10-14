@@ -447,6 +447,152 @@
         }
     }
 
+
+
+
+    function updateMaxWordsValue() {
+        const maxWordsSlider = document.getElementById('max-words-slider');
+        const maxWordsValue = document.getElementById('max-words-value');
+        
+        // Update the displayed value of max words when the slider is moved
+        maxWordsSlider.oninput = function() {
+            maxWordsValue.textContent = this.value;
+        };
+    }
+
+    function lengthMaxWords(){
+        const lengthWordsSlider = document.getElementById('length-words-slider')
+        const lengthWordsValue = document.getElementById('length-words-value')
+
+        lengthWordsSlider.oninput = function(){
+            lengthWordsValue.textContent = this.value;
+        }
+    }
+    
+    function handleCaptionGeneration() {
+        const generateCaptionBtn = document.getElementById('generate-caption-btn');
+        const generateImageDescriptionBtn = document.getElementById('generate-image-description-btn');
+        const maxWordsSlider = document.getElementById('max-words-slider');
+        const lengthWordsSlider = document.getElementById('length-words-slider');
+        const generatedCaption = document.getElementById('generated-caption');
+        const generatedImageDescription = document.getElementById('generated-image-description');
+        const imageInput = document.getElementById('caption-image-input');
+        const imagePreviewGroq = document.getElementById('image-preview-groq'); // Image preview element
+        
+        // Preview the uploaded image
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreviewGroq.src = e.target.result;
+                    imagePreviewGroq.style.display = 'block'; // Show the image preview
+                };
+                reader.readAsDataURL(file); // Convert file to base64 URL for preview
+            }
+        });
+    
+        // Text caption generation
+        generateCaptionBtn.addEventListener('click', function() {
+            const eventDescription = document.getElementById('event-desc-input').value;
+            const location = document.getElementById('location-input').value;
+            const date = document.getElementById('date-input').value;
+            const eventType = document.getElementById('event-type-select').value;
+            const eventCategory = document.getElementById('event-category-select').value;
+            const tone = document.getElementById('tone-select').value;
+            const maxWords = maxWordsSlider.value;
+    
+            const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+    
+            fetch('/generate-caption/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({
+                    event_description: eventDescription,
+                    location: location,
+                    date: date,
+                    event_type: eventType,
+                    event_category: eventCategory,
+                    tone: tone,
+                    max_words: maxWords
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.generated_caption) {
+                    generatedCaption.value = data.generated_caption;
+                } else {
+                    alert('Error generating caption.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    
+        // Image description generation
+        generateImageDescriptionBtn.addEventListener('click', function() {
+            const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+            const maxWords = lengthWordsSlider.value;  
+
+            if (imageInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.readAsDataURL(imageInput.files[0]);
+    
+                reader.onload = function() {
+                    const imageBase64 = reader.result.split(',')[1];  // Get base64 portion of DataURL
+    
+                    fetch('/generate-caption/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                        },
+                        body: JSON.stringify({
+                            image_base64: imageBase64,
+                            max_words: maxWords 
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.generated_image_description) {
+                            generatedImageDescription.value = data.generated_image_description;
+                        } else {
+                            alert('Error generating image description.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                };
+            } else {
+                alert('Please upload an image to generate a description.');
+            }
+        });
+    }
+    
+
+    function adjustTextareaHeight(textarea) {
+        textarea.style.height = 'auto';  
+        textarea.style.height = Math.min(textarea.scrollHeight, 500) + 'px';  
+    }
+    
+    function initializeTextareaResize() {
+        const textareas = document.querySelectorAll('textarea');
+        
+        textareas.forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                adjustTextareaHeight(textarea);
+            });
+    
+            adjustTextareaHeight(textarea);
+        });
+    }
+
+    
     function initializeEventListeners() {
         document.addEventListener('DOMContentLoaded', (event) => {
             initializeFileInput();
@@ -457,6 +603,11 @@
             observeVisibleElements();
             initializeFacebookModalMain();
             initializeModal();
+            updateMaxWordsValue();
+            lengthMaxWords();
+            handleCaptionGeneration();
+            initializeTextareaResize();
+
 
             const publishButton = document.querySelector('.publish-button');
             if (publishButton) {
@@ -465,7 +616,62 @@
             
         });
     }
-
+    function toggleText(eventId) {
+        const captionText = document.getElementById('caption-text_' + eventId);
+        const toggleBtn = document.getElementById('toggle-btn_' + eventId);
+    
+        // Retrieve full and truncated text from data attributes
+        const fullText = captionText.getAttribute('data-fulltext');
+        const truncatedText = captionText.getAttribute('data-truncated');
+    
+        // Log the current state for debugging
+        console.log("Current Button Text:", toggleBtn.textContent);
+        console.log("Full Text:", fullText);
+        console.log("Truncated Text:", truncatedText);
+    
+        // Check the current button state and toggle text accordingly
+        if (toggleBtn.textContent === 'See More') {
+            captionText.innerHTML = fullText; // Show full text
+            toggleBtn.textContent = 'See Less'; // Change button text
+        } else {
+            captionText.innerHTML = truncatedText; // Show truncated text
+            toggleBtn.textContent = 'See More'; // Change button text
+        }
+    
+        // Log after changing the text
+        console.log("Updated Button Text:", toggleBtn.textContent);
+        console.log("Updated Caption Text:", captionText.innerHTML);
+    }
+    
+    window.onload = function() {
+        const captions = document.querySelectorAll('.caption-text');
+    
+        captions.forEach(caption => {
+            const fullText = caption.innerHTML.trim();
+            const maxLength = 100;  // Maximum character length before truncating
+    
+            if (fullText.length > maxLength) {
+                const truncatedText = fullText.substring(0, maxLength) + '...';
+    
+                // Store full and truncated text in custom attributes
+                caption.setAttribute('data-fulltext', fullText);
+                caption.setAttribute('data-truncated', truncatedText);
+    
+                // Set the initial truncated text
+                caption.innerHTML = truncatedText; // Show truncated text initially
+            } else {
+                // If the text is short enough, just set it without truncation
+                caption.setAttribute('data-fulltext', fullText);
+                caption.setAttribute('data-truncated', fullText);
+                // Optionally, you might want to hide the toggle button if not needed
+                const toggleBtn = document.getElementById('toggle-btn_' + caption.id.split('_')[1]); // Assuming IDs like 'caption_1'
+                if (toggleBtn) {
+                    toggleBtn.style.display = 'none'; // Hide if no truncation needed
+                }
+            }
+        });
+    }
+    
     initializeEventListeners();
 
 

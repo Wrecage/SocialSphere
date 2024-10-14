@@ -9,19 +9,23 @@
     </script>
     <script src="{% static 'js/eventpost.js' %}"></script>
     <script src="{% static 'js/logout.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Posts</title>
     <link rel="stylesheet" href="{% static 'event_posts/event_posts.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
 </head>
 
 <body>
+    
     <div class="header"></div>
-    <div class="container">
-        <a class="profile-button" style="text-decoration: none;" href="{% url 'user_logout' %}">Logout</a>
+    <div class="container123">
+        <a class="profile-button" style="text-decoration: none;" href="{% url 'user_logout' %}">Log out</a>
   
 
 
@@ -29,7 +33,7 @@
         <div class="new-text2">ADMIN</div>
         <a href="{% url 'dashboard_analytics' %}" style="text-decoration: none;" class="admin_url">Admin Dashboard</a>
         {% elif user.is_staff or not user.is_superuser %}
-        <div class="new-text2">CONTENT MANAGER</div>
+        <div class="new-text2">S O C I A L S P H E R E</div>
         {% endif %}
      
         
@@ -41,9 +45,123 @@
         <form id="event-form" method="post" action="{% url 'event_posts' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <textarea type="text" name="title" placeholder="Title" required></textarea><br>
-            <textarea type="text" name="caption" placeholder="Post an announcement" required></textarea><br>
+            <textarea id="dynamic-textarea" type="text" name="caption" placeholder="Post an announcement" required></textarea><br>
+            
+
+        <!-- Collapsible section starts here -->
+        <p>
+            <a class="btn-generate-caption-btn" data-bs-toggle="collapse" href="#generate-caption-collapse" role="button" aria-expanded="false" aria-controls="generate-caption-collapse" style="text-decoration: none; ">
+                Generate Caption
+            </a>
+         <span style="margin-left: 10px; font-size: 0.9em; display: flex; align-items: center;"> 
+             <span style="margin-left: 5px; margin-top: 10px;"><strong>Powered by</strong><img src="{% static 'general/GroqLogo_Black.svg' %}" alt="Groq Logo" ></span>
+         </span>
+        </p>
+
+
+
+        <!--Collapsible contents -->
+
+        <div class="collapse" id="generate-caption-collapse">
+            <div class="card card-body">
+                <!-- Tab navigation -->
+                <ul class="nav nav-tabs" id="captionTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="text-caption-tab" data-bs-toggle="tab" href="#text-caption" role="tab" aria-controls="text-caption" aria-selected="true">Generate Caption (Text)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="image-description-tab" data-bs-toggle="tab" href="#image-description" role="tab" aria-controls="image-description" aria-selected="false">Generate Image Description</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="captionTabsContent">
+                    <div class="tab-pane fade show active" id="text-caption" role="tabpanel" aria-labelledby="text-caption-tab">
+                        <input type="text" id="event-desc-input" name="event_description" placeholder="Event Description"><br>
+                        <input type="text" id="location-input" name="location" placeholder="Location"><br>
+                        <input type="text" id="date-input" name="date" placeholder="Date (YYYY-MM-DD)"><br>
+                        
+                        <label for="event-type-select">Event Type:</label>
+                        <select id="event-type-select" name="event_type">
+                            <option value="" disabled selected>Select an event type</option>
+                            <option value="Award ceremonies">Award ceremonies</option>
+                            <option value="Birthday parties">Birthday parties</option>
+                            <option value="Career Fairs">Career Fairs</option>
+                            <option value="Charity">Charity</option>
+                            <option value="Company parties">Company parties</option>
+                            <option value="Conferences">Conferences</option>
+                            <option value="Convention">Convention</option>
+                            <option value="Cultural events">Cultural events</option>
+                            <option value="Exhibitions">Exhibitions</option>
+                            <option value="Event management">Event management</option>
+                            <option value="Festivals">Festivals</option>
+                            <option value="Food Festival">Food Festival</option>
+                            <option value="Fundraising">Fundraising</option>
+                            <option value="International events">International events</option>
+                            <option value="Meetings">Meetings</option>
+                            <option value="Meetups">Meetups</option>
+                            <option value="Music Performance">Music Performance</option>
+                            <option value="Networking events">Networking events</option>
+                            <option value="Product launches">Product launches</option>
+                            <option value="Seminars">Seminars</option>
+                            <option value="Shareholder meetings">Shareholder meetings</option>
+                            <option value="Sports events">Sports events</option>
+                            <option value="Summits">Summits</option>
+                            <option value="Team building">Team building</option>
+                            <option value="Trade shows">Trade shows</option>
+                            <option value="Training sessions">Training sessions</option>
+                            <option value="Virtual events">Virtual events</option>
+                            <option value="Wedding">Wedding</option>
+                            <option value="Webinars">Webinars</option>
+                            <option value="Workshops">Workshops</option>
+                        </select><br>
+
+                        <label for="event-category-select">Event Category:</label>
+                        <select id="event-category-select" name="event_category">
+                            <option value="" disabled selected>Select an event category</option>
+                            <option value="Past Event">Past Event</option>
+                            <option value="Upcoming Event">Upcoming Event</option>
+                            <option value="Current Event">Current Event</option>
+                            <option value="Future Event">Future Event</option>
+                        </select><br>
+
+                        <label for="tone-select">Tone:</label>
+                        <select id="tone-select" name="tone">
+                            <option value="casual">Casual</option>
+                            <option value="formal">Formal</option>
+                            <option value="informal">Informal</option>
+                        </select><br>
+
+                        <label for="max-words-slider">Length <span id="max-words-value"></span></label>
+                        <input type="range" id="max-words-slider" min="10" max="500" value="100" name="max_words"><br>
+
+                        <button type="button" id="generate-caption-btn">Generate Caption</button><br>
+
+                        <textarea id="generated-caption" name="groqcaption" placeholder="Generated caption will appear here"></textarea><br>
+                    </div>
+
+                    <div class="tab-pane fade" id="image-description" role="tabpanel" aria-labelledby="image-description-tab">
+                        <label for="caption-image-input"  id="styled-file-input">Upload Image</label>
+                        <input type="file" id="caption-image-input" accept="image/*" style="display: none;"><br>
+                        <img id="image-preview-groq" src="" alt="Image Preview" style="max-width: 100%; margin-top: 10px; "><br>
+
+                        <label for="length-words-slider">Length <span id="length-words-value"></span></label>
+                        <input type="range" id="length-words-slider" min="10" max="500" value="100" name="length_words"><br>
+                        
+                        <button type="button" id="generate-image-description-btn">Generate Image Description</button><br>
+
+                        <textarea id="generated-image-description" name="groqimagecaption" placeholder="Generated image description will appear here" style="resize:none; min-height: 300px; max-height: 500px;"></textarea><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+
+        
+        <!-- Collapsible section ends here -->
             <div id="image-preview"></div>
             <button type="button" id="clear-image-button" style="display: none;">Clear Image</button>
+
 
             <div class="attach-buttons">
                 <button type="button" id="attach-image-button"><i class="fa-solid fa-image"></i> Attach Image</button>
@@ -97,50 +215,49 @@
     </div>
 
     {% for event in events %}
-        <div class="event" data-id="{{ event.id }}">
-            <div class="event_buttons">
-                <button class="event-delete-btn" data-id="{{ event.id }}" data-delete-url="{% url 'delete_event' event.id %}">  &#10006;</button>
-
-                <button type="button" data-id="{{ event.id }}" class="edit-btn">&#9998;</button>
-            </div>
-
-            <div class="event-title" id="title_{{ event.id }}">{{ event.title }}</div>
-            <div class="event-caption" id="caption_{{ event.id }}">{{ event.caption }}</div>
-            <div class="event-date">{{ event.date }}</div>
-
-            {% if event.photo %}
-            <div class="event-img">
-                {% if event.photo.url %}
-                    <a href="{% url 'event_detail' event.id %} " >    <!--class="event-detail-link" data-event-id="{{ event.id }}-->
-                        <img id="photo_{{ event.id }}" src="{{ event.photo.url }}" alt="Event Image">
-                    </a>
-                {% else %}
-                <video controls>
-                    <source src="{{ event.photo.url }}" type="video/mp4">  
-                    Your browser does not support the video tag.
-                </video>
-                {% endif %}
-            </div>
-            {% endif %}
-
-
-            <button class="post-to-facebook-btn" data-event-id="{{ event.id }}" data-facebook-url="{% url 'post_to_facebook' event.id %}">Post to <span class="fab fa-facebook facebook-icon"></span></button>
-        
+    <div class="event" data-id="{{ event.id }}">
+        <div class="event_buttons">
+            <button class="event-delete-btn" data-id="{{ event.id }}" data-delete-url="{% url 'delete_event' event.id %}">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+            <button type="button" data-id="{{ event.id }}" class="edit-btn">&#9998;</button>
         </div>
-    {% empty %}
-        <p>No events available.</p>
-    {% endfor %}
 
-    <div class="icon-bar">
-        <img src="{% static 'event_list/locationIcon.svg' %}" alt="Location Icon">
-        <img src="{% static 'event_list/emailIcon.svg' %}" alt="Email Icon">
-        <img src="{% static 'event_list/contactIcon.svg' %}" alt="Contact Icon">
+        <div class="event-title" id="title_{{ event.id }}">{{ event.title }}</div>
+        <div class="event-date">{{ event.date }}</div>
+        <!-- THE SEE MORE FEATURE ------------------------------------------------------------------------------------------>
+        <!-- Caption with 'See More' feature -->
+        <div class="event-caption" id="caption_{{ event.id }}">
+            <span class="caption-text" id="caption-text_{{ event.id }}">
+                {{ event.caption|linebreaksbr|safe }}
+            </span>
+            <button class="toggle-btn" id="toggle-btn_{{ event.id }}" onclick="toggleText('{{ event.id }}')">See More</button>
+        </div>
+        <!-- THE SEE MORE FEATURE----------------------------------------------------------------------------------------- -->
+        {% if event.photo %}
+        <div class="event-img">
+            {% if event.photo.url %}
+                <a href="{% url 'event_detail' event.id %}">
+                    <img id="photo_{{ event.id }}" src="{{ event.photo.url }}" alt="Event Image">
+                </a>
+            {% else %}
+            <video controls>
+                <source src="{{ event.photo.url }}" type="video/mp4">  
+                Your browser does not support the video tag.
+            </video>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <button class="post-to-facebook-btn" data-event-id="{{ event.id }}" data-facebook-url="{% url 'post_to_facebook' event.id %}">
+            Post to <span class="fab fa-facebook facebook-icon"></span>
+        </button>
     </div>
+{% empty %}
+    <p>No events available.</p>
+{% endfor %}
 
-    <div class="new-text">#FARFIRSTFASTFOCUSEDFEROCIUS</div>
 
 </body>
-
 </html>
-
 

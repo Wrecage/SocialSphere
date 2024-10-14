@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'navbar/navbar.css' %}">
+
+
+    <script src="{% static 'js/logout.js' %}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="maintitle">S O C I A L S P H E R E</div>
+        <a class="page1 {% if request.resolver_match.url_name == 'dashboard_analytics' %}active{% endif %}" href="{% url 'dashboard_analytics' %}">Dashboard</a>
+        <a class="page2 {% if request.resolver_match.url_name == 'list_content_managers' or request.resolver_match.url_name == 'add_content_manager' or request.resolver_match.url_name == 'edit_content_manager' %}active{% endif %}" href="{% url 'list_content_managers' %}">User Management</a>
+        <a class="profile-button" style="text-decoration: none;" href="{% url 'user_logout' %}">Log out</a>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
+    

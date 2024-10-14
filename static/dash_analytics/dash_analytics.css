@@ -1,475 +1,281 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
-
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+ 
 body {
-    color: #000000;
-    font-family: Arial, sans-serif;
-    padding: 0;
-    margin: 0;
-    min-height: 100vh;
-    overflow: auto;
-    background: url('../event_list/Honeycomb.svg') no-repeat center center fixed;
-    background-size: cover;
-    overflow-x: hidden;
+  color: #000000;
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
-
-.header{
-    position: relative;
-    padding: 5em;
-}
-
-.container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin: auto;
-    height: 200px; /* Adjust height as needed */
-    background: linear-gradient(to bottom, rgba(255, 204, 0, 0.5), rgba(255, 204, 0, 0)); /* Yellow color fading to transparent */
-    z-index: 1;
-    backdrop-filter: blur(2px); /* Add a blur effect to the background */
-    opacity: 1; /* Set opacity to 1 (fully opaque) */
-    overflow: hidden;
-    transition: box-shadow 0.3s ease-in-out;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.bold1 {
-    position: fixed; /* Position fixed */
-    top: 10px; /* Adjust top position as needed */
-    left: 30px; /* Adjust left position as needed */
-    font-size: 60px; /* Adjust size as needed */
-    color: #000000; /* Text color */
-    font-family: 'Bebas Neue', sans-serif; /* Specify font family */
-    text-align: left; /* Align text to the left */
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Add shadow effect */
-}
-
-.fb {
-    width: 500px;
-    height: 500px;
-    background-color: #4158D0;
-    background-image: linear-gradient(43deg, #332f2f 0%, #1a1a17 46%, #020202 100%);
-    border-radius: 8px;
-    color: white;
-    overflow: hidden;
-    position: relative;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-    cursor: pointer;
-    margin-inline: auto;
-  }
-  
-  .fb-content {
-    padding: 20px;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    color: white;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 200px;
-}
-  
-.fb-title {
-    color: rgb(9, 99, 233);
-}
-
- .fb-content .fb-title {
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 5px;
- }
-  
- .fb-content .fb-para {
-    font-size: 18px;
-    opacity: 0.8;
-    margin: 0;
- }
-  
-  .fb:hover {
-    transform: rotateY(10deg) rotateX(10deg) scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  .fb:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-    z-index: 1;
-  }
-  
-  .fb:hover:before {
-    transform: translateX(-100%);
-  }
-  
-  .fb:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-    z-index: 1;
-  }
-  
-  .fb:hover:after {
-    transform: translateX(100%);
-  }
-  
-  
-  /* wb nga style */
-  
-  .wb {
-    width: 300px;
-    height: 200px;
-    background-color: #4158D0;
-    background-image: linear-gradient(43deg, #332f2f 0%, #1a1a17 46%, #020202 100%);
-    border-radius: 8px;
-    color: white;
-    overflow: hidden;
-    position: relative;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-    cursor: pointer;
-    margin-inline: auto;
-  }
-  
-  .wb-content {
-    padding: 20px;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    color: white;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 100%;
-}
-  
-.wb-title {
-    color: #ffd000;
-}
-
- .wb-content .wb-title {
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 5px;
- }
-  
- .wb-content .wb-para {
-    font-size: 18px;
-    opacity: 0.8;
-    margin: 0;
- }
-  
-  .wb:hover {
-    transform: rotateY(10deg) rotateX(10deg) scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  .wb:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-    z-index: 1;
-  }
-  
-  .wb:hover:before {
-    transform: translateX(-100%);
-  }
-  
-  .wb:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-    z-index: 1;
-  }
-  
-  .wb:hover:after {
-    transform: translateX(100%);
-  }
-
-
-.profile-button {
-  position: fixed; 
-  top: 20px; 
-  right: 20px;
-  display: flex;
-  padding: 1rem 2.5rem;
-  background-color: #000000;
-  color: #fff;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  border-radius: 50px;
-  overflow: hidden;
-}
-
-.profile-button:hover {
-  background-color: #555;
-  transform: scale(1.07);
-
-}
-
-.event_url {
-  position: fixed; 
-  top: 20px; 
-  float: right;
-  display: flex;
-  padding: 1rem 2.5rem;
-  background-color: #000000;
-  color: #fff;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  border-radius: 50px;
-  overflow: hidden;
-  margin-inline: 10em;
-}
-
-.event_url:hover {
-  background-color: #555;
-  transform: scale(1.07);
-
-} 
-
-.manage_url {
-  position: fixed; 
-  top: 20px; 
-  float: right;
-  display: flex;
-  padding: 1rem 2.5rem;
-  background-color: #000000;
-  color: #fff;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  border-radius: 50px;
-  overflow: hidden;
-  margin-inline: 21em;
-}
-
-.manage_url:hover {
-  background-color: #555;
-  transform: scale(1.07);
-
-} 
-
-
-
-.confirmation-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 40px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  z-index: 1000;
-  text-align: center;
-  max-width: 400px;
-  width: 100%;
-  animation: popupAnimation 0.3s ease-out;
-}
-
-@keyframes popupAnimation {
-  from {
-      transform: translate(-50%, -60%);
-      opacity: 0;
-  }
-  to {
-      transform: translate(-50%, -50%);
-      opacity: 1;
-  }
-}
-
-.confirmation-popup h2 {
-  margin: 0 0 20px;
-  font-size: 24px;
-  color: #333;
-  font-weight: bold;
-}
-
-.confirmation-popup p {
-  margin: 0 0 30px;
-  font-size: 18px;
-  color: #555;
-}
-
-.confirmation-popup button {
-  padding: 12px 24px;
-  margin: 0 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.yes-button {
-  background-color: #4CAF50; /* Green */
-  color: white;
-}
-
-.no-button {
-  background-color: #f44336; /* Red */
-  color: white;
-}
-
-.yes-button:hover {
-  background-color: #45a049;
-  transform: scale(1.05);
-}
-
-.no-button:hover {
-  background-color: #e53935;
-  transform: scale(1.05);
-}
-
-.yes-button:focus, .no-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(100, 100, 255, 0.5);
-}
-
-.loading-overlay {
+ 
+body::after {
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 2000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: url('bgwhite.svg') no-repeat center center;
+  background-size: cover;
+  opacity: 0.5;
+  z-index: -1;
+  pointer-events: none;
 }
 
-.loading-spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #3498db;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
+body::-webkit-scrollbar {
+  width: 12px;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+body::-webkit-scrollbar-track {
+  background: #000; /* Black background for track */
 }
+
+body::-webkit-scrollbar-thumb {
+  background-color: #FDCC00; /* Yellow background for thumb */
+  border-radius: 20px; /* Rounded corners for thumb */
+  border: 3px solid #000; /* Padding around thumb */
+}
+
+
+.bold1 {
+  position: fixed;
+  top: 10px;
+  left: 30px;
+  font-size: 60px;
+  color: #000000;
+  font-family: 'Bebas Neue', sans-serif;
+  text-align: left;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+
 
 .analytics-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 30px; /* Increased gap for visual separation */
-  padding: 20px; /* Padding around the container */
-  background: url('../event_list/Honeycomb.svg') no-repeat center center fixed;
-  background-size: cover;
-  width: 100%; /* Full width to accommodate the background */
-  margin-top: 80px;
- 
-}
-
-.fb, .wb {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 700px; /* Adjusted width to make it more rectangular */
-  height: 300px; /* Reduced height */
-  padding: 10px; /* Reduced padding for a tighter layout */
-  background-color: #333;
-  background-image: linear-gradient(160deg, #333 0%, #000 100%);
-  border-radius: 5px; /* Smaller radius for a sharper look */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  color: white;
-  overflow: hidden;
-  transform: none;
-  margin-inline: auto;
-}
-
-.fb-title, .wb-title {
-  font-size: 30px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-bottom: 0px; /* Space below the title */
-  position: relative;
-  top: -15px;
-}
-
-.fb-para, .wb-para {
-  font-size: 20px; /* Larger font size for better readability */
-  margin: 0;
-}
-
-/* Remove hover effects for simplicity and match the provided image */
-.fb:hover, .wb:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Remove before and after pseudo-elements as they are not visible in the provided image */
-.fb:before, .fb:after, .wb:before, .wb:after {
-  display: none;
-}
-
-.fb-content, .wb-content {
+  display: inline-block;
+  align-items:center;
+  gap: 100px;
   padding: 20px;
-  position: relative;
-  z-index: 1;
+  background-size: cover;
+  width: 100%;
+  margin-top: 125px;
+  margin-left: 50px;
+}
+
+
+    /* Style for the dropdown container */
+      .dropdown-container {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          margin: 20px 0;
+      }
+      
+      /* Style for the label */
+      .dropdown-label {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 20px;
+          margin-right: 15px;
+          color: #333;
+      }
+      
+      /* Style for the dropdown menu */
+      .styled-dropdown {
+          padding: 10px;
+          font-size: 16px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          background-color: #f5f5f5;
+          color: #333;
+          cursor: pointer;
+          transition: background-color 0.3s, border-color 0.3s;
+      }
+      
+      /* Hover effect for the dropdown */
+      .styled-dropdown:hover {
+          background-color: #e0e0e0;
+          border-color: #bbb;
+      }
+      
+      /* Focused state */
+      .styled-dropdown:focus {
+          outline: none;
+          border-color: #888;
+      }
+      
+      /* Option styles */
+      .styled-dropdown option {
+          padding: 10px;
+          color: #333;
+      }
+
+
+
+      /* Website Analytics */
+      /* Container styling */
+.kpi-cards-container {
   display: flex;
-  flex-direction: column;
-  gap: 20px; /* Increased gap between items for better visual separation */
-  color: white;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+/* Individual KPI Card styling */
+.kpi-card {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
   text-align: center;
+  width: 200px;
+  transition: transform 0.3s ease;
 }
 
-.fb-content .fb-para, .wb-content .wb-para {
+/* Title and value styling */
+.kpi-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.kpi-value {
+ 
+  font-size: 40px;
+  font-weight: bold;
+  color: #FDCC01;
+}
+
+.kpi-value-facebook {
+  font-size: 40px;
+  font-weight: bold;
+  color: #FDCC01;
+}
+
+/* Hover effect */
+.kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Facebook Analytics */
+/* Facebook-specific card styling */
+.fb-card {
+  background: #4267B2;  /* Facebook Blue */
+  color: #FDCC01;
+}
+
+.fb-card .kpi-title {
+  color: #FDCC01;
+}
+
+.fb-card .kpi-value {
+  color: #FDCC01;
+}
+
+
+
+
+
+
+.content-wrapper {
   display: flex;
-  justify-content: space-between; /* Align text label to left and number to right */
-  width: 100%; /* Ensure the flex container takes full width */
+  align-items: flex-start;
+}
+
+/* website most cards */
+.analytics-extra-cards {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.event-card {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+}
+
+.event-preview {
+  margin-top: 10px;
+}
+
+.event-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.event-title {
   font-size: 18px;
-  color: #FFF; /* White color for visibility */
-  margin-bottom: 20px; /* Additional margin for more space between paragraphs */
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
 }
 
-.fb-content, .wb-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Space between each item */
-  
+.event-likes, .event-comments, .event-shares {
+  font-size: 50px;
+  color: #FDCC01;
+
 }
 
-.fb-item, .wb-item {
-  display: flex;
-  justify-content: space-between; /* Ensures space between labels and values */
-  width: 100%; 
-  /* Ensures full width for separation */
+.event-value {
+  font-size: 100px;
+  color: #FDCC01;
+
 }
+
+
+
+
+
+
+
+/* Line Chart Container */
+.line-chart-container , .bar-chart-container, .area-chart-container{
+  width: 50%;  /* Make the chart containers smaller */
+  margin: 20px auto;  /* Center them on the page */
+  padding: 15px;  /* Reduce padding */
+  background-color: rgba(105, 105, 105, 0.1);  /* Dark grey background with slight transparency */
+  border-radius: 10px;  /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+.pie-chart-container{
+  width: 50%;  /* Make the chart containers smaller */
+  margin: 20px auto;  /* Center them on the page */
+  padding: 15px;  /* Reduce padding */
+  background-color: rgba(105, 105, 105, 0.1);  /* Dark grey background with slight transparency */
+  border-radius: 10px;  /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+.line-chart-container canvas, .bar-chart-container canvas , .area-chart-container canvas, .pie-chart-container canvas {
+  width: 100%;  /* Maintain responsiveness */
+  height: 250px;  /* Set a smaller fixed height for the charts */
+}
+
+/* Ensure the container adjusts properly on smaller screens */
+@media screen and (max-width: 768px) {
+  .line-chart-container {
+    width: 95%;  /* Use nearly full width on smaller screens */
+    padding: 10px;  /* Reduce padding on small screens */
+  }
+}
+

@@ -2,73 +2,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="{% static 'js/login.js' %}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static '/content_login/content_login.css' %}"> <!-- Updated CSS link -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="{% static 'js/login.js' %}"></script>
 </head>
 <body>
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
     </div>
 
-
     <div class="background">
         <div class="center-container">
-            <img src="{% static 'content_login/latin.svg' %}" alt="Latin words" class="latin"> <!-- Updated image source -->
-            <div class="welcome-container">
-                <div class="welcome">WELCOME</div>
-                <div class="to">TO</div>
-                <img src="{% static 'general/Wildcatlogo.svg' %}" alt="Wildcat Logo" class="wildcat-logo"> <!-- Updated logo source -->
+            <!-- Left section with yellow background -->
+            <div class="left-section">
+                <div class="welcome-container">
+                    <div class="welcome">WELCOME</div>
+                    <div class="to">TO</div>
+                    <img src="{% static 'general/Wildcatlogo.svg' %}" alt="Wildcat Logo" class="wildcat-logo">
+                </div>
             </div>
-            <div class="sign-in-container">
-                <h2 class="sign-in-title">SIGN IN</h2>
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <input type="text" name="username" placeholder="Username" id="username"  class="input-field" required><br>
-                    <input type="password" name="password" placeholder="Password" id="password" class="input-field" required><br>
-                    
-                    <button class="loginbutton " type="submit" value="Login">
-                        <span class="shadow"></span>
-                        <span class="edge"></span>
-                        <span class="front text"> LOGIN </span>
+
+            <!-- Right section with white background -->
+            <div class="right-section">
+                <div class="sign-in-container">
+                    <h2 class="sign-in-title">SIGN IN</h2>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="username" placeholder="Username" id="username" class="input-field" required><br>
+                        <input type="password" name="password" placeholder="Password" id="password" class="input-field" required><br>
+                        <button class="loginbutton" type="submit" value="Login">
+                            <span class="shadow"></span>
+                            <span class="edge"></span>
+                            <span class="front text"> LOGIN </span>
                         </button>
-                        
-                    </button>
-                </form>
-                {% if message %}
-                <div class="error-message">{{ message }}</div>
-                {% endif %} 
-                <div class="topline"></div>
-                <div class="underline"></div>
+                    </form>
+                    {% if message %}
+                    <div class="error-message">{{ message }}</div>
+                    {% endif %}
+                    <div class="topline"></div>
+                    <div class="underline"></div>
+                </div>
             </div>
-            <div class="login-container"> 
-            </div>
-        </div>  
-        
-        <div class="text" style="top: 6%; left: 60%; font-size: 3.0rem; transform: rotate(0deg);opacity: 0.6;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="bottom: -2%; right: 13%; font-size: 3.5rem; transform: rotate(0deg);">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 14.9%; left: 12%; font-size: 1.8rem; transform: rotate(0deg); opacity: 0.3;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 50%; left: 82%; font-size: 2.0rem; transform: rotate(0deg);">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 73%; left: -8%; font-size: 3.7rem; transform: rotate(0deg);">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 8%; right: -15%; font-size: 3.8rem; transform: rotate(0deg);">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 5%; left: 65%; font-size: 1.9rem; transform: rotate(0deg); opacity: 0.4;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 51%; left: 78%; font-size: 2.8rem; transform: rotate(0deg);opacity: 0.4;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 46%; left: 76.5%; font-size: 3.8rem; transform: rotate(0deg);opacity: 0.5;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 93%; right: 19%; font-size: 2.8rem; transform: rotate(0deg);opacity: 0.5;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 92%; left: 43%; font-size: 2.3rem; transform: rotate(0deg);opacity: 0.3;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 71.5%; left: -8%; font-size: 3.4rem; transform: rotate(0deg);opacity: 0.5;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 72%; left: 8%; font-size: 1.2rem; transform: rotate(0deg);opacity: 0.4;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 130%; left: 1%; font-size: 2.1rem; transform: rotate(0deg);">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 105%; left: 1%; font-size: 2.5rem; transform: rotate(0deg);">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 100%; left: 4%; font-size: 2.8rem; transform: rotate(0deg);">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 16.5%; left: 1%; font-size: 3.5rem; transform: rotate(0deg);">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        <div class="text" style="top: 15.8%; left: 7%; font-size: 2.5rem; transform: rotate(0deg); opacity: 0.5;">#FARFIRSTFASTFOCUSEDFEROCIOUS</div>
-        
-        
+        </div>
     </div>
 </body>
 </html>

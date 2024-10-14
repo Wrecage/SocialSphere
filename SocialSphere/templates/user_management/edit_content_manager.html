@@ -1,17 +1,22 @@
+{% extends "navbar/navbar.html" %}
 {% load static %}
-
+{% block title %}Edit Content Manager{% endblock %}
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ title }}</title>
     <link rel="stylesheet" href="{% static 'user_management/edit_content_manager.css' %}">
     <script src="{% static 'js/editcontentmanager.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>{{ title }}</h1>
-    </div>
+
+    <div class="title">EDIT CONTENT MANAGER
+
+        <a class="description">Modifying and maintaining administrative content management users effectively.</a>
+
+        </div>
+    <div class="form-container">
     <form class="form1" method="post">
         {% csrf_token %}
         {% if message %}
@@ -55,11 +60,14 @@
         {% endfor %}
 
         <label for="user_permissions">Permissions:</label>
-        <select multiple id="user_permissions" name="user_permissions">
+        <div id="user_permissions">
             {% for permission in form.user_permissions.field.queryset %}
-                <option value="{{ permission.id }}" {% if permission in form.user_permissions.value %}selected{% endif %}>{{ permission.name }}</option>
+                <div>
+                    <input type="checkbox" id="permission_{{ permission.id }}" name="user_permissions" value="{{ permission.id }}" {% if permission in form.user_permissions.value %}checked{% endif %}>
+                    <label for="permission_{{ permission.id }}">{{ permission.name }}</label>
+                </div>
             {% endfor %}
-        </select>
+        </div>
         {% for error in form.user_permissions.errors %}
         <div class="error">{{ error }}</div>
         {% endfor %}
@@ -74,13 +82,12 @@
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Confirm Deletion</h2>
-           
+            
             <div id="modal-error-message" class="error" style="display: none;"></div>
            
             <p>Are you sure you want to delete this user? Please enter your password to confirm.</p>
             <input type="password" id="confirm-password" placeholder="Enter your password">
-            <form method="post" action="{% url 'edit_content_manager' content_manager.pk %}">
+            <form method="post" action="{% url 'edit_content_manager' content_manager.pk %}" class="exclude-global-form-styles">
                 {% csrf_token %}
                 <input type="hidden" name="delete" value="true">
                 <input type="hidden" id="password-input" name="confirm_password">
@@ -101,11 +108,12 @@
     <div id="modal-error-message" class="error" style="display: none;" >{{ modal_error_message }}</div>
     {% endif %} -->
 
-  
-    <a href="{% url 'list_content_managers' %}"  class="button" >Back to list</a>
+</div>
+    <a href="{% url 'list_content_managers' %}"  class="buttonback" >&lt;- Back</a>
 
     
     
    
 </body>
 </html>
+{%endblock%}

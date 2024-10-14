@@ -7,7 +7,6 @@
 /* Base styles */
 body {
     font-family: 'Poppins', sans-serif;
-    background: url('../event_list/Honeycomb.svg') no-repeat center center fixed; /* Retaining your background */
     background-size: cover;
     margin: 0;
     padding: 0;
@@ -17,31 +16,76 @@ body {
     height: 100vh;
     overflow: auto;
 }
-
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('bgwhite.svg') no-repeat center center;
+  background-size: cover;
+  opacity: 0.5; /* Adjust transparency level here */
+  z-index: -1; /* Ensures the background stays behind content */
+  pointer-events: none; /* Prevents interaction with the background */
+}
 /* Title styling */
-h1 {
-    position: fixed; /* Position fixed */
-    top: -30px; /* Adjust top position as needed */
-    left: 30px; /* Adjust left position as needed */
-    font-size: 60px; /* Adjust size as needed */
-    color: #000000; /* Text color */
-    font-family: 'Bebas Neue', sans-serif; /* Specify font family */
-    text-align: left; /* Align text to the left */
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Add shadow effect */
+
+.title {
+  font-size: 3rem; /* Adjust the font size */
+  font-weight: bolder; /* Use a heavier weight if available */
+  color: #ffcc00; /* Set text color */
+  text-align: left; /* Align the text to the left */
+  margin-left: -450px; /* Space it away from the left side */
+  position: relative; /* Allow vertical centering adjustments */
+  top: 400px; /* Adjust to center vertically */
+  transform: translateY(-50%); /* Perfect vertical center */
+}
+
+.description {
+  display: block; /* Display the description as a block element */
+  font-size: 23.5px; /* Font size for the description */
+  color: #000; /* Black text color */
+  margin-top: 15px; /* Adds spacing between title and description */
+  margin-right: 20%; /* Aligns with the title */
+  position: relative; /* Keep position relative */
+  max-width: 450px; /* Adjust this value to control the width and line breaks */
+  line-height: 1.5; /* Adjust line spacing for better readability */
+  text-align: left; /* Align text to the left */
+  word-spacing: normal;
+}
+
+.form-container {
+  width: 670px;  /* Set a fixed width */
+  height: 670px; /* Set a fixed height */
+  margin: 0 auto; /* Center the form container horizontally */
+  padding: 3%;
+  border: 2px solid #ccc; /* Optional: Add a border */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+  background-color: #fff; /* Set a background color */
+  border-radius: 10px; /* Optional: Add rounded corners */
+  position: relative; /* To enable positioning within the container */
+  left: 325px; /* Moves the container to the right */
+  top: -50px;
 }
 
 /* Form styles */
-.form1 {
-    background-color: #fff; /* White background for the form */
-    max-width: 600px; /* Maximum width of the form */
-    width: 100%; /* Full width */
-    margin: 20px auto; /* Centering the form */
-    padding: 20px; /* Inner padding */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    text-align: left; /* Align text to the left */
-    z-index: 99 !important;
+form:not(.exclude-global-form-styles){
+  background-color: #f7f7f7; /* Lighter background */
+  width: 100%;
+  margin: 40px auto; /* Centering the form */
+  padding: 30px; /* Added more padding for a spacious feel */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);    
+  height: 90%; /* Adjust height auomatically based on content */
+  overflow-y: auto; /* Scrollable if content exceeds max height */
+  scrollbar-color: black transparent;
+  top: 44%;
+  max-width: 600px;
+  text-align: left;
+  position: relative;
+  transform: translateY(-50%);
+
 }
 
 /* Label styles */
@@ -207,79 +251,109 @@ a {
     transition: color 0.3s ease; /* Transition for hover */
 }
 
-/* Back link hover effect */
-a:hover {
-    color: #ffbb00; /* Change color on hover */
-}
 
-.container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin: auto;
-    height: 200px; /* Adjust height as needed */
-    background: linear-gradient(to bottom, rgba(255, 204, 0, 0.5), rgba(255, 204, 0, 0)); /* Yellow color fading to transparent */
-    z-index: 1;
-    backdrop-filter: blur(2px); /* Add a blur effect to the background */
-    opacity: 1; /* Set opacity to 1 (fully opaque) */
-    overflow: hidden;
-    transition: box-shadow 0.3s ease-in-out;
-    display: flex;
-    justify-content: flex-end;
-  }
 
-.button{
-  position: fixed;
-  right: -300px; 
-  top: 1px; 
+.buttonback {
+  position: absolute;
+  left: -315px; 
+  top: 90px; 
   float: right;
   display: flex;
-  padding: 1rem 2.5rem;
+  padding: .5rem 2rem;
   background-color: #000000;
   color: #fff;
   font-weight: bold;
   transition: background-color 0.3s ease;
   border-radius: 50px;
+  border: 2px solid;
   overflow: hidden;
   margin-inline: 21em;
-  font-family: Poppins, sans-serif;
+  font-family: 'Poppins', sans-serif;
   z-index: 99 !important;
+  text-align: center;
+  text-decoration: none; /* Remove underline from link */
 }
 
+.buttonback:hover {
+  background-color: #555;
+  transform: scale(1.1);
+}
+@media (max-width: 1024px) {
+  .buttonback {
+    left: -200px; /* Adjust button position for medium screens */
+    padding: 0.5rem 1.5rem; /* Smaller padding */
+    margin-inline: 15em; /* Adjust margin */
+  }
+}
+
+@media (max-width: 768px) {
+  .buttonback {
+    left: 10px; /* Move the button to be visible on small screens */
+    top: 60px; /* Adjust top position */
+    margin-inline: 0; /* Reset margin */
+    padding: 0.4rem 1.2rem; /* Smaller padding */
+    font-size: 14px; /* Smaller font size */
+    border-radius: 30px; /* Reduce border-radius */
+  }
+}
 .button:hover {
-    background-color: #555;
-    transform: scale(1.07);
-    color: #fff;
-  }
-
-
-
-
-
-  .loading-icon {
-    font-size: 20px;
-    color: gold;
-  }
-  
-  .spinner {
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    border-top: 3px solid gold;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  .modal .loading-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: none; /* Hidden by default */
+  background-color: #555;
+  transform: scale(1.1);
 }
+
+#user_permissions {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 90%;
+  max-height: 150px;  /* Adjust this value as needed */
+  overflow-y: scroll;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+  font-size: 14px;  /* Smaller font size */
+}
+
+#user_permissions div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+#user_permissions input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+  #user_permissions {
+      max-height: 100px;  /* Adjust for smaller screens */
+      font-size: 12px;    /* Smaller font size for smaller screens */
+  }
+}
+
+
+.loading-icon {
+  font-size: 20px;
+  color: gold;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top: 3px solid gold;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.modal .loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none; /* Hidden by default */
+}
+

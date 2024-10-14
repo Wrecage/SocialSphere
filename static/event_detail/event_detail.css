@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background: url('../event_list/Honeycomb.svg') repeat ;
+  background: url('../event_list/bgwhite.svg') repeat ;
   background-size: contain; 
   margin: 0;
   padding: 0;
@@ -126,56 +126,72 @@ body {
 .comments-section {
   border-top: 1px solid #ddd;
   padding-top: 20px;
-  flex-grow: 1;
+  margin-top: 20px;
+  background-color: #f8f8f8;
 }
 
 .comments-section h3 {
-  margin: 0 0 10px 0;
   color: #333;
+  font-size: 1.4em;
+  margin-bottom: 15px;
 }
 
 .comment {
-  border-top: 1px solid #eee;
-  padding: 10px 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
 }
 
-/* Styles for the comment content */
+.avatar-wrapper {
+  flex: 0 0 60px;  /* Avatar width */
+  margin-right: 15px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
 .comment-content {
-  display: flex;
-  flex-direction: column;
+  flex: 1;
 }
 
 .comment-text {
-  font-size: 1em;
-  color: #333;
+  background: #c2bebe;  /* Dark background color */
+  color: #202020;  /* White text for contrast */
+  padding: 10px 15px;  /* Spacing inside the container */
+  border-radius: 8px;  /* Rounded corners */
+  display: inline-block;  /* Keep the width tight around the content */
+  margin-bottom: 5px;  /* Space between text and date */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);  /* Slight shadow for depth */
+  max-width: 90%;  /* Limit width to prevent overflow */
+  line-height: 1.4;  /* Improve text readability */
 }
 
 .comment-date {
-  font-size: 0.8em;
-  color: #666;
+  font-size: 8px;  /* Tiny font size */
+  color: #888;  /* Slightly darker gray color */
+  margin-top: 5px;  /* Space above the date */
+  display: block;  /* Display on a separate line */
 }
-
-.comment-form {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-}
-
-/* Styles for the delete button */
 .comment-delete-btn {
   background-color: transparent;
   color: #ff0000;
   border: none;
   cursor: pointer;
-  font-size: 18px; /* Adjusted the font size for visibility */
+  font-size: 10px;
 }
 
 .comment-delete-btn:hover {
   color: #cc0000;
+}
+
+.comment-form {
+  width: 100%;
+  margin-top: 20px;
 }
 
 .textarea-wrapper {
@@ -185,18 +201,19 @@ body {
 
 .comment_textarea {
   width: 100%;
-  height: 50px;
-  padding: 10px 40px 10px 10px;
-  font-size: 14px;
+  height: 100px;
+  padding: 15px 20px;
+  font-size: 16px;
   border-radius: 15px;
   border: 1px solid #ccc;
-  resize: none;
   box-sizing: border-box;
+  resize: none;
+  margin-bottom: 10px;
 }
 
 .enter-icon, .loading-icon {
   position: absolute;
-  right: 10px;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 20px;
@@ -204,19 +221,19 @@ body {
 }
 
 .enter-icon {
-  color: gold;
+  color: #ffcc00;
 }
 
 .loading-icon {
   font-size: 20px;
-  color: gold;
+  color: #ffcc00;
 }
 
 .spinner {
   width: 20px;
   height: 20px;
   border: 3px solid rgba(0, 0, 0, 0.1);
-  border-top: 3px solid gold;
+  border-top: 3px solid #ffcc00;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -304,4 +321,236 @@ body {
 }
 
 /* Styles for the loading icon */
+.modal-custom,
+.ratelimit-modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.6); /* Darker black w/ more opacity for stronger emphasis */
+}
 
+/* Modal Container Styling */
+.modal-content-custom,
+.ratelimit-modal-content {
+  background-color: #ffffff;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 30px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  width: 30%; /* Adaptable width */
+  max-width: 500px; /* Max width for larger screens */
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+  border: 1px solid #e0e0e0; /* Light border */
+}
+
+/* Warning Header Styling */
+.modal-header-custom,
+.ratelimit-modal-header {
+  background-color: #f44336; /* Red background for critical warnings */
+  color: white; /* White text */
+  font-size: 20px;
+  font-weight: bold;
+  padding: 15px;
+  border-top-left-radius: 10px; /* Rounded top corners */
+  border-top-right-radius: 10px;
+}
+
+/* Close Button Styling */
+.close-custom,
+.ratelimit-close-modal {
+  color: white;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close-custom:hover,
+.close-custom:focus,
+.ratelimit-close-modal:hover,
+.ratelimit-close-modal:focus {
+  color: #ffcccb; /* Light red on hover */
+  text-decoration: none;
+}
+
+/* Warning Text Styling */
+.modal-message-custom,
+.ratelimit-message {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #333; /* Dark text */
+  padding: 10px;
+}
+
+/* Emphasize Critical Text */
+.modal-message-custom strong,
+.ratelimit-message strong {
+  color: #f44336; /* Red for emphasis */
+  font-weight: bold;
+}
+
+/* Rate Limit Message Styling */
+.ratelimit-remaining-time {
+  font-size: 14px;
+  color: #555; /* Slightly lighter for remaining time */
+}
+
+/* Modal Buttons Styling */
+.modal-button-custom,
+.ratelimit-modal-button {
+  background-color: #f44336; /* Red background */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px 10px 0 10px; /* Button spacing */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Button Hover Effects */
+.modal-button-custom:hover,
+.ratelimit-modal-button:hover {
+  background-color: #d32f2f; /* Darker red */
+}
+
+/* Animation for the Modal */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.avatar-selection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 20px 0;
+  gap: 20px;
+  background: #f9f9f9;  /* Light background to distinguish the selection area */
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom dropdown styling */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  width: 200px;
+}
+
+.dropdown-selected {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.dropdown-selected:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);  /* Subtle hover effect */
+}
+
+.dropdown-selected img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.dropdown-options {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ddd;
+  width: 100%;
+  z-index: 100;
+  display: none;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);  /* Dropdown shadow */
+}
+
+.dropdown-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;  /* Smooth background and color transition */
+}
+
+.dropdown-option:hover {
+  background: #f0f0f0;  /* Light gray on hover */
+}
+
+.dropdown-option img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+/* Live preview container */
+.live-avatar-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #ddd;  /* Dashed border for distinct look */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+  background: #fff;  /* White background for contrast */
+}
+
+/* Live preview image */
+.large-avatar-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;  /* Circular image */
+  border: 3px solid #ddd;  /* Border around the avatar */
+  transition: transform 0.3s ease-in-out;  /* Smooth transform on hover */
+}
+
+.large-avatar-preview:hover {
+  transform: scale(1.05);  /* Slight zoom effect on hover */
+}
+
+/* Avatar label inside the live preview */
+.live-avatar-preview-label {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+/* Responsive adjustments for mobile screens */
+@media (max-width: 768px) {
+  .avatar-selection {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .custom-dropdown {
+    width: 100%;
+  }
+
+  .large-avatar-preview {
+    width: 80px;
+    height: 80px;
+  }
+}

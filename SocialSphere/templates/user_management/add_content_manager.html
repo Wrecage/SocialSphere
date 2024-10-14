@@ -1,18 +1,23 @@
+{% extends "navbar/navbar.html" %}
 {% load static %}
-
+{% block title %}Add Content Manager{% endblock %}
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'user_management/add_content_manager.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>{{ title }}</h1>
-    </div>
-    <form method="post">
+        <div class="title">ADD CONTENT MANAGER
+
+        <a class="description">Creating and managing administrative content management users efficiently.</a>
+
+        </div>
+        <div class="form-container">
+        <form method="post">
         {% csrf_token %}
-   
+
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" value="{{ form.username.value }}">
         {% for error in form.username.errors %}
@@ -61,18 +66,22 @@
         {% endfor %}
 
         <label for="user_permissions">Permissions:</label>
-        <select multiple id="user_permissions" name="user_permissions">
+        <div id="user_permissions">
             {% for permission in form.user_permissions.field.queryset %}
-                <option value="{{ permission.id }}" {% if permission in form.user_permissions.value %}selected{% endif %}>{{ permission.name }}</option>
+                <div>
+                    <input type="checkbox" id="permission_{{ permission.id }}" name="user_permissions" value="{{ permission.id }}" {% if permission in form.user_permissions.value %}checked{% endif %}>
+                    <label for="permission_{{ permission.id }}">{{ permission.name }}</label>
+                </div>
             {% endfor %}
-        </select>
+        </div>
         {% for error in form.user_permissions.errors %}
         <div class="error">{{ error }}</div>
         {% endfor %}
 
         <button type="submit">Save</button>
     </form>
-    
-    <a href="{% url 'list_content_managers' %}"  class="buttonbck">Back to list</a>
+    </div>
+    <a href="{% url 'list_content_managers' %}" class="buttonbck">&lt;- Back</a>
 </body>
 </html>
+{% endblock %}
