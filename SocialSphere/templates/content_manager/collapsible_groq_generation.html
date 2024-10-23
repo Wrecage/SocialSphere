@@ -1,0 +1,62 @@
+<div class="collapse" id="generate-caption-collapse">
+    <div class="card card-body">
+        <!-- Tab navigation -->
+        <ul class="nav nav-tabs" id="captionTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="text-caption-tab" data-bs-toggle="tab" href="#text-caption" role="tab" aria-controls="text-caption" aria-selected="true">Generate Caption (Text)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="image-description-tab" data-bs-toggle="tab" href="#image-description" role="tab" aria-controls="image-description" aria-selected="false">Generate Image Description</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="captionTabsContent">
+            <div class="tab-pane fade show active" id="text-caption" role="tabpanel" aria-labelledby="text-caption-tab"><br>
+                <textarea type="text" id="event-desc-input" name="event_description" placeholder="Event Description"  style="color: rgb(0, 0, 0); font-weight: bold;"></textarea><br>
+                <input type="text" id="location-input" name="location" placeholder="Location" style="color: rgb(0, 0, 0);"><br>
+                <input type="date" id="date-input" name="date" placeholder="Date" style="color: rgb(0, 0, 0);"><br>
+                
+                <!-- Include the event options -->
+                {% include 'content_manager/event_type_options.html' %}
+                
+                <br>
+                <label for="event-category-select">Event Category:</label>
+                <select id="event-category-select" name="event_category">
+                    <option value="" disabled selected>Select an event category</option>
+                    <option value="Past Event">Past Event</option>
+                    <option value="Upcoming Event">Upcoming Event</option>
+                    <option value="Current Event">Current Event</option>
+                    <option value="Future Event">Future Event</option>
+                </select><br>
+
+                <label for="tone-select">Tone:</label>
+                <select id="tone-select" name="tone">
+                    <option value="casual">Casual</option>
+                    <option value="formal">Formal</option>
+                    <option value="informal">Informal</option>
+                </select><br>
+
+                <label for="max-words-slider">Length <span id="max-words-value"></span></label>
+                <input type="range" id="max-words-slider" min="10" max="500" value="100" name="max_words"><br>
+
+                <button type="button" id="generate-caption-btn">Generate Caption</button><br>
+
+                <textarea id="generated-caption" name="groqcaption" placeholder="Generated caption will appear here"></textarea><br>
+            </div>
+
+            <div class="tab-pane fade" id="image-description" role="tabpanel" aria-labelledby="image-description-tab">
+                <label for="caption-image-input" id="styled-file-input">Upload Image</label> 
+                <p class="max-image-text">MAX IMAGE SIZE: <span class="max-image-size">1120x1120 pixels</span></p>
+                <input type="file" id="caption-image-input" accept="image/*" style="display: none;">
+                <img id="image-preview-groq" src="" alt="Image Preview" style="max-width: 100%; margin-top: 10px; "><br>
+
+                <label for="length-words-slider">Length <span id="length-words-value"></span></label>
+                <input type="range" id="length-words-slider" min="10" max="500" value="100" name="length_words"><br>
+                
+                <button type="button" id="generate-image-description-btn">Generate Image Description</button><br>
+
+                <textarea id="generated-image-description" name="groqimagecaption" placeholder="Generated image description will appear here" style="resize:none; min-height: 300px; max-height: 500px;"></textarea><br>
+            </div>
+        </div>
+    </div>
+</div>

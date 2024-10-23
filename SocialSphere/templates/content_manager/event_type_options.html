@@ -1,0 +1,79 @@
+<label for="event-type-select">Event Type:</label>
+<select id="event-type-select" name="event_type" onchange="toggleOtherEventTypeInput(this.value)">
+    <option value="" disabled selected>Select an event type</option>
+
+    <optgroup label="Business & Professional Events">
+        <option value="Conferences">Conferences</option>
+        <option value="Seminars">Seminars</option>
+        <option value="Workshops">Workshops</option>
+        <option value="Trade Shows">Trade Shows</option>
+        <option value="Networking Events">Networking Events</option>
+        <option value="Product Launches">Product Launches</option>
+        <option value="Corporate Parties">Corporate Parties</option>
+        <option value="Team Building">Team Building</option>
+    </optgroup>
+
+    <optgroup label="Educational & Learning Events">
+        <option value="Webinars">Webinars</option>
+        <option value="Workshops">Workshops</option>
+        <option value="Seminars">Seminars</option>
+        <option value="Training Sessions">Training Sessions</option>
+    </optgroup>
+
+    <optgroup label="Social Events">
+        <option value="Birthday Parties">Birthday Parties</option>
+        <option value="Weddings">Weddings</option>
+        <option value="Anniversaries">Anniversaries</option>
+        <option value="Meetups">Meetups</option>
+        <option value="Family Reunions">Family Reunions</option>
+    </optgroup>
+
+    <optgroup label="Fundraising & Charity Events">
+        <option value="Fundraisers">Fundraisers</option>
+        <option value="Charity Events">Charity Events</option>
+        <option value="Benefit Dinners">Benefit Dinners</option>
+    </optgroup>
+
+    <optgroup label="Entertainment & Cultural Events">
+        <option value="Music Performances">Music Performances</option>
+        <option value="Festivals">Festivals</option>
+        <option value="Exhibitions">Exhibitions</option>
+        <option value="Art Shows">Art Shows</option>
+        <option value="Theatre Performances">Theatre Performances</option>
+    </optgroup>
+
+    <optgroup label="Sports & Fitness Events">
+        <option value="Sports Events">Sports Events</option>
+        <option value="Marathons">Marathons</option>
+        <option value="Tournaments">Tournaments</option>
+        <option value="Fitness Competitions">Fitness Competitions</option>
+        <option value="Yoga Retreats">Yoga Retreats</option>
+    </optgroup>
+
+    <optgroup label="Ceremonial Events">
+        <option value="Award Ceremonies">Award Ceremonies</option>
+        <option value="Religious Ceremonies">Religious Ceremonies</option>
+        <option value="Graduations">Graduations</option>
+        <option value="Baptisms">Baptisms</option>
+        <option value="Funerals">Funerals</option>
+    </optgroup>
+
+    <optgroup label="Public & Community Events">
+        <option value="Festivals">Festivals</option>
+        <option value="Parades">Parades</option>
+        <option value="Fairs">Fairs</option>
+        <option value="Community Gatherings">Community Gatherings</option>
+    </optgroup>
+
+    <optgroup label="Virtual & Online Events">
+        <option value="Webinars">Webinars</option>
+        <option value="Virtual Conferences">Virtual Conferences</option>
+        <option value="Virtual Meetups">Virtual Meetups</option>
+    </optgroup>
+
+    <option value="Others">Others</option>
+</select>
+
+<!-- Input field for 'Others' -->
+<input type="text" id="other-event-type" name="other_event_type" placeholder="Please specify the event type" style="display:none; margin-top:10px;">
+

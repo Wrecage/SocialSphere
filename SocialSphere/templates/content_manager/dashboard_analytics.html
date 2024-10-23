@@ -1,0 +1,274 @@
+{% extends "navbar/navbar.html" %}
+ 
+{% load static %}
+ 
+{% block title %}Dashboard Analytics{% endblock %}
+ 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    
+    <script src="{% static 'js/dashboardanalytics.js' %}"></script>
+    <script src="{% static 'js/website_line_chart.js' %}"></script>
+    <script src="{% static 'js/website_bar_chart.js' %}"></script>
+    <script src="{% static 'js/website_area_chart.js' %}"></script>
+    <script src="{% static 'js/website_pie_chart.js' %}"></script>
+
+
+    <script src="{% static 'js/facebook_line_chart.js' %}"></script>
+    <script src="{% static 'js/facebook_bar_chart.js' %}"></script>
+    <script src="{% static 'js/facebook_area_chart.js' %}"></script>
+    <script src="{% static 'js/facebook_pie_chart.js' %}"></script>
+
+
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analytics</title>
+    <link rel="stylesheet" href="{% static 'dash_analytics/dash_analytics.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+
+</head>
+
+<body>
+    <div id="progress-bar"></div>
+
+    <div class="content-wrapper">  
+    <div id="progress-bar"></div>
+
+    <div class="analytics-container">
+        <!-- Dropdown for selecting analytics type -->
+        <div class="dropdown-container">
+            <label for="analyticsDropdown" class="dropdown-label">Select Analytics Type:</label>
+            <select id="analyticsDropdown" class="styled-dropdown">
+                <option value="website">Website Analytics</option>
+                <option value="facebook">Facebook Analytics</option>
+            </select>
+        </div>
+
+        <!-- Website Analytics Container -->
+        <div class="wb" id="website-analytics" style="display: block;">
+            <div class="kpi-cards-container">
+                <!-- KPI Card: Total Visitors -->
+                <div class="kpi-card">
+                    <p class="kpi-title">Total Visitors</p>
+                    <p class="kpi-value">{{ total_visitors }}</p>
+                </div>
+        
+                <!-- KPI Card: Total Clicks -->
+                <div class="kpi-card">
+                    <p class="kpi-title">Total Clicks</p>
+                    <p class="kpi-value">{{ total_clicks }}</p>
+                </div>
+        
+                <!-- KPI Card: Total Comments -->
+                <div class="kpi-card">
+                    <p class="kpi-title">Total Comments</p>
+                    <p class="kpi-value">{{ total_comments }}</p>
+                </div>
+        
+                <!-- KPI Card: Total Likes -->
+                <div class="kpi-card">
+                    <p class="kpi-title">Total Likes</p>
+                    <p class="kpi-value">{{ total_likes }}</p>
+                </div>
+
+                
+            </div>
+
+                        <!-- website daily and most -->
+                        <div class="analytics-extra-cards">
+                            <!-- Daily Visitors Card -->
+                            <div class="event-card-website">
+                                <p class="event-title">Daily Visitors</p>
+                                <p class="event-value"><strong>{{ daily_visitors }}</strong></p>
+                            </div>
+                        
+                            <!-- Most Liked Event Card -->
+                            <div class="event-card-website">
+                                <p class="kpi-title">Most Liked Event</p>
+                                {% if most_liked_event %}
+                                    <div class="event-preview">
+                                        <img src="{% url 'view_image' most_liked_event.id %}" alt="{{ most_liked_event.title }}" class="event-image">
+                                        <p class="event-title">{{ most_liked_event.title }}</p>
+                                        <p class="event-title"><strong>Likes: </strong><span class="event-likes"> {{ most_liked_event.eventstats.total_likes }}</span></p>
+                                    </div>
+                                {% else %}
+                                    <p>No likes yet</p>
+                                {% endif %}
+                            </div>
+                        
+                            <!-- Most Commented Event Card -->
+                            <div class="event-card-website">
+                                <p class="kpi-title">Most Commented Event</p>
+                                {% if most_commented_event %}
+                                    <div class="event-preview">
+                                        <img src="{% url 'view_image' most_commented_event.id %}" alt="{{ most_commented_event.title }}" class="event-image">
+                                        <p class="event-title">{{ most_commented_event.title }}</p>
+                                        <p class="event-title"><strong>Comments: </strong> <span class="event-comments"> {{ most_commented_event.eventstats.total_comments }}</span></p>
+                                    </div>
+                                {% else %}
+                                    <p>No comments yet</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+            <!-- line chart -->
+            <div class="line-chart-container">
+                <canvas id="websiteLineChart"></canvas>
+                {{ chart_data|json_script:"website-chart-data" }}
+            </div>
+            
+            
+
+            <!-- bar chart -->
+            <div class="bar-chart-container">
+                <canvas id="websiteBarChart"></canvas>
+                {{ chart_data|json_script:"website-bar-chart-data" }}
+            </div>
+           
+                
+            <!-- area chart -->
+            <div class="area-chart-container">
+                <canvas id="websiteAreaChart"></canvas>
+                {{ chart_data|json_script:"website-area-chart-data" }}
+            </div>
+            
+
+            <!--pie chart  -->
+            <div class="pie-chart-container">
+                <canvas id="websitePieChart"></canvas>
+                {{ website_pie_data|json_script:"website-pie-chart-data" }}
+            </div>
+           
+                    
+        </div>
+
+        <!-- Facebook Analytics Container -->
+        <div class="fb" id="facebook-analytics" style="display: none;">
+            <div class="kpi-cards-container">
+                <!-- KPI Card: Total Reactions -->
+                <div class="kpi-card fb-card">
+                    <p class="kpi-title">Total Reactions</p>
+                    <p class="kpi-value-facebook">{{ data.total_reactions_count }}</p>
+                </div>
+        
+                <!-- KPI Card: Total Comments -->
+                <div class="kpi-card fb-card">
+                    <p class="kpi-title">Total Comments</p>
+                    <p class="kpi-value-facebook">{{ data.total_comments }}</p>
+                </div>
+        
+                <!-- KPI Card: Total Shares -->
+                <div class="kpi-card fb-card">
+                    <p class="kpi-title">Total Shares</p>
+                    <p class="kpi-value-facebook">{{ data.total_shares }}</p>
+                </div>
+        
+                <!-- KPI Card: Total Views -->
+                <div class="kpi-card fb-card">
+                    <p class="kpi-title">Total Views</p>
+                    <p class="kpi-value-facebook">{{ data.total_page_views }}</p>
+                </div>
+            </div>
+
+
+            <div class="analytics-extra-cards">
+                <!-- facebook most -->
+                        <div class="event-card">
+                            <h3 class="kpi-title">Most Liked Post</h3>
+                            {% if most_liked_post_image %}
+                            <div class="event-preview">
+                                    <img src="{{ most_liked_post_image }}" alt="Most Liked Post Image"  class="event-image" />
+                                {% else %}
+                                    <p>No image available.</p>
+                                {% endif %}
+                                    <p  class="kpi-title"><strong>Likes:</strong> <span class="event-likes">{{ most_liked_post.likes.summary.total_count }}</span><!-- Display like count --></p>
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <h3 class="kpi-title">Most Commented Post</h3>
+                            {% if most_commented_post_image %}
+                            <div class="event-preview">
+                                    <img src="{{ most_commented_post_image }}" alt="Most Commented Post Image" class="event-image" />
+                                {% else %}
+                                    <p>No image available.</p>
+                                {% endif %}
+                                <div class="post-details">
+                                    <p class="kpi-title"><strong>Comments:</strong> <span class="event-comments">{{ most_commented_post.comments.summary.total_count }} </span><!-- Display comment count --></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <h3 class="kpi-title">Most Shared Post</h3>
+                            {% if most_shared_post_image %}
+                            <div class="event-preview">
+                                
+                                    <img src="{{ most_shared_post_image }}" alt="Most Shared Post Image" class="event-image"/>
+                                {% else %}
+                                    <p>No image available.</p>
+                                {% endif %}
+                                <div class="post-details">
+                                    <p class="kpi-title"><strong>Shares:</strong><span class="event-shares"> {{ most_shared_post.shares.count }} </span> <!-- Display share count --></p>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            <!-- line chart -->
+            <div class="line-chart-container">
+                <canvas id="facebookLineChart"></canvas>
+                {{ facebook_chart_data|json_script:"facebook-chart-data" }}
+            </div>
+            
+            
+
+            <!-- bar chart -->
+            <div class="bar-chart-container">
+                <canvas id="facebookBarChart"></canvas>
+                {{ facebook_chart_data|json_script:"facebook-bar-chart-data" }}
+            </div>
+            
+            
+            
+            
+             <!-- area chart -->
+             <div class="area-chart-container">
+                <canvas id="facebookAreaChart"></canvas>
+                {{ facebook_chart_data|json_script:"facebook-area-chart-data" }}
+             </div>
+
+            
+
+            <!-- pie chart -->
+            <div class="pie-chart-container">
+                <canvas id="facebookPieChart"></canvas>
+                {{ facebook_pie_data|json_script:"facebook-pie-chart-data" }}
+            </div>
+           
+            
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+{% endblock %}
+

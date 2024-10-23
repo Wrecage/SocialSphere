@@ -1,0 +1,448 @@
+/* Importing fonts and styles */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+
+/* Base styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: auto;
+}
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('bgwhite.svg') no-repeat center center;
+  background-size: cover;
+  opacity: 0.5; /* Adjust transparency level here */
+  z-index: -1; /* Ensures the background stays behind content */
+  pointer-events: none; /* Prevents interaction with the background */
+}
+/* Title styling */
+
+.title {
+  font-size: 3rem; /* Adjust the font size */
+  font-weight: bolder; /* Use a heavier weight if available */
+  color: #ffcc00; /* Set text color */
+  text-align: left; /* Align the text to the left */
+  margin-left: -450px; /* Space it away from the left side */
+  position: relative; /* Allow vertical centering adjustments */
+  top: 400px; /* Adjust to center vertically */
+  transform: translateY(-50%); /* Perfect vertical center */
+}
+
+.description {
+  display: block; /* Display the description as a block element */
+  font-size: 23.5px; /* Font size for the description */
+  color: #000; /* Black text color */
+  margin-top: 15px; /* Adds spacing between title and description */
+  margin-right: 20%; /* Aligns with the title */
+  position: relative; /* Keep position relative */
+  max-width: 450px; /* Adjust this value to control the width and line breaks */
+  line-height: 1.5; /* Adjust line spacing for better readability */
+  text-align: left; /* Align text to the left */
+  word-spacing: normal;
+}
+
+.form-container {
+  width: 670px;  /* Set a fixed width */
+  height: 670px; /* Set a fixed height */
+  margin: 0 auto; /* Center the form container horizontally */
+  padding: 3%;
+  border: 2px solid #ccc; /* Optional: Add a border */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+  background-color: #fff; /* Set a background color */
+  border-radius: 10px; /* Optional: Add rounded corners */
+  position: relative; /* To enable positioning within the container */
+  left: 325px; /* Moves the container to the right */
+  
+}
+
+/* Form styles */
+form:not(.exclude-global-form-styles){
+  background-color: #f7f7f7; /* Lighter background */
+  width: 100%;
+  margin: 40px auto; /* Centering the form */
+  padding: 30px; /* Added more padding for a spacious feel */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);    
+  height: 90%; /* Adjust height auomatically based on content */
+  overflow-y: auto; /* Scrollable if content exceeds max height */
+  scrollbar-color: black transparent;
+  top: 44%;
+  max-width: 600px;
+  text-align: left;
+  position: relative;
+  transform: translateY(-50%);
+
+}
+
+/* Label styles */
+label {
+    display: block; /* Block display for labels */
+    margin-bottom: 8px; /* Space below the label */
+    font-weight: bold; /* Bold text */
+    color: #333; /* Dark text color */
+}
+
+/* Input field styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    width: 100%; /* Full width */
+    padding: 10px; /* Inner padding */
+    margin-bottom: 20px; /* Space below each input */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    box-sizing: border-box; /* Box sizing */
+}
+
+/* Checkbox styles */
+input[type="checkbox"] {
+    margin-right: 10px; /* Space to the right of the checkbox */
+}
+
+/* Button styles */
+button[type="submit"]
+ {
+    background-color: #ffcc00; /* Yellow background */
+    color: #333; /* Dark text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Inner padding */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    border-radius: 50px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
+}
+
+/* Button hover effects */
+button[type="submit"]:hover{
+    background-color: #ffbb00; /* Darker yellow on hover */
+}
+
+button#delete-button {
+    background-color: #ff0000; /* Yellow background */
+    color: #ffffff; /* Dark text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Inner padding */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    border-radius: 50px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
+}
+
+button#delete-button:hover{
+    background-color: #c00;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  button#confirm-delete {
+    background-color: #ffcc00;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button#confirm-delete:hover {
+    background-color: #ffbb00;
+  }
+  
+  #cancel-delete {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #cancel-delete:hover {
+    background-color: #bbb;
+  }
+  
+  .error {
+    color: #ff0000;
+    background-color: #ffdddd;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+   
+  }
+
+  #error-modal {
+    z-index: 1000;
+    display: none;
+    opacity: 1;
+  }
+
+ 
+
+
+
+/* Back link styles */
+a {
+    display: inline-block; /* Inline block for spacing */
+    margin-top: 20px; /* Space above the link */
+    color: #000000; /* Text color */
+    text-decoration: none; /* No underline */
+    font-weight: bold; /* Bold text */
+    transition: color 0.3s ease; /* Transition for hover */
+}
+
+
+
+.buttonback {
+  position: absolute;
+  left: -315px; 
+  top:130px; 
+  float: right;
+  display: flex;
+  padding: .5rem 2rem;
+  background-color: #000000;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border-radius: 50px;
+  border: 2px solid;
+  overflow: hidden;
+  margin-inline: 21em;
+  font-family: 'Poppins', sans-serif;
+  z-index: 99 !important;
+  text-align: center;
+  text-decoration: none; /* Remove underline from link */
+}
+
+.buttonback:hover {
+  background-color: #555;
+  transform: scale(1.1);
+}
+@media (max-width: 1024px) {
+  .buttonback {
+    left: -200px; /* Adjust button position for medium screens */
+    padding: 0.5rem 1.5rem; /* Smaller padding */
+    margin-inline: 15em; /* Adjust margin */
+  }
+}
+
+@media (max-width: 768px) {
+  .buttonback {
+    left: 10px; /* Move the button to be visible on small screens */
+    top: 60px; /* Adjust top position */
+    margin-inline: 0; /* Reset margin */
+    padding: 0.4rem 1.2rem; /* Smaller padding */
+    font-size: 14px; /* Smaller font size */
+    border-radius: 30px; /* Reduce border-radius */
+  }
+}
+.button:hover {
+  background-color: #555;
+  transform: scale(1.1);
+}
+
+#user_permissions {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 90%;
+  max-height: 150px;  /* Adjust this value as needed */
+  overflow-y: scroll;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+  font-size: 14px;  /* Smaller font size */
+}
+
+#user_permissions div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+#user_permissions input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+  #user_permissions {
+      max-height: 100px;  /* Adjust for smaller screens */
+      font-size: 12px;    /* Smaller font size for smaller screens */
+  }
+}
+
+
+.loading-icon {
+  font-size: 20px;
+  color: gold;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top: 3px solid gold;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.modal .loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none; /* Hidden by default */
+}
+
+
+
+
+.modal-accountmax-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  z-index: 1000; /* Below the popup */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Content */
+.modal-accountmax-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f9f9f9; 
+  padding: 40px 30px;
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15); 
+  border-radius: 16px; 
+  z-index: 1000;
+  text-align: center;
+  max-width: 450px; 
+  width: 90%; 
+  animation: popupAnimation 0.4s ease-out; 
+  transition: all 0.3s ease;
+}
+
+/* Header */
+.modal-accountmax-header {
+  margin-bottom: 20px;
+  color: #000; 
+  font-weight: 600; 
+  font-size: large;
+  left: 35%;
+}
+
+/* Message */
+.modal-accountmax-message {
+  font-size: 16px;
+  color: #666; 
+  margin-bottom: 30px;
+}
+
+/* Close Button */
+.modal-accountmax-close {
+  background-color: #d9534f;  /* Red close button */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;  /* Smooth transition */
+}
+
+/* Hover effect on close button */
+.modal-accountmax-close:hover {
+  background-color: #c9302c;  /* Darker red on hover */
+}
+
+/* Fade-in Animation */
+@keyframes modal-accountmax-fadeIn {
+  from {
+      opacity: 0;
+      transform: scale(0.9);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 4px; /* Adjust the height as needed */
+  background-color: orange; /* Orange color for the progress bar */
+  z-index: 10000; /* Make sure it's on top of everything */
+  transition: width 0.2s ease; /* Smooth progress */
+}

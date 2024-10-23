@@ -1,57 +1,80 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <style>
-        body {
-            background-color: #FDCC00;
-            color: #000000;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 36px;
-        }
-        input[type="text"], input[type="password"] {
-            padding: 10px;
-            margin: 10px;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            width: 300px;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #000000;
-            color: #FDCC00;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .error-message {
-            color: red;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/content_login/content_login.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="{% static 'js/login.js' %}"></script>
 </head>
 <body>
-    <h1>Login</h1>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" id="username"   required><br>
-        <input type="password" name="password" placeholder="Password" id="password" required><br>
+    <div class="loading-overlay" id="loadingOverlay" style="display:none;">
+        <div class="loading-spinner"></div>
+    </div>
 
-        {% if message %}
-        <div class="error-message">{{ message }}</div>
-        {% endif %}  
+    <div class="background">
+        <div class="center-container">
+            <div class="left-section">
+                <div class="welcome-container">
+                    <div class="welcome">WELCOME</div>
+                    <div class="to">TO</div>
+                    <img src="{% static 'general/Wildcatlogo.svg' %}" alt="Wildcat Logo" class="wildcat-logo">
+                </div>
+            </div>
 
-        <input type="submit" value="Login">
-    </form>
+            <div class="right-section">
+                <div class="sign-in-container" id="signInContainer" data-password-reset-url="{% url 'password_reset' %}" data-show-modal="{% if messages %}true{% else %}false{% endif %}">
+                    <h2 class="sign-in-title" id="formTitle">SIGN IN</h2>
+                    <div id="authForm">
+                        <form id="loginForm" action="" method="POST">
+                            {% csrf_token %}
+                            <input type="text" name="username" placeholder="Username" id="username" class="input-field" required><br>
+                            <input type="password" name="password" placeholder="Password" id="password" class="input-field" required><br>
+                            <button class="loginbutton" type="submit" value="Login">
+                                <span class="shadow"></span>
+                                <span class="edge"></span>
+                                <span class="front text"> LOGIN </span>
+                            </button>
+                        </form>
+                        
+                        <div id="error-container">
+                            {% if message %}
+                            <div class="error-message">{{ message }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="topline"></div>
+                        <div class="underline"></div>
+
+                        <!-- Forgot Password Link -->
+                        <div>
+                            <button id="forgotPasswordBtn" class="loginbutton">Forgot your password?</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Sent Modal -->
+    <div id="emailSentModal" class="modal">
+        <div class="modal-content">
+            <h4>Email Sent</h4>
+            <p>A password reset link has been sent to your email address.</p>
+            <button id="closeEmailModal">Close</button>
+        </div>
+    </div>
+
+    <!-- Success Password Reset Modal -->
+    <div id="passwordResetSuccessModal" class="modal">
+        <div class="modal-content">
+            <h4>Password Changed</h4>
+            <p>Your password has been successfully changed.</p>
+            <button id="closeSuccessModal">Close</button>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -1,0 +1,151 @@
+{% extends "navbar/navbar.html" %}
+{% load static %}
+{% block title %}Edit Content Manager{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'user_management/edit_content_manager.css' %}">
+    <script src="{% static 'js/editcontentmanager.js' %}"></script>
+    <script src="{% static 'js/accountmax.js' %}"></script>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+ 
+
+    <div class="title">EDIT USER
+
+        <a class="description">Modifying and maintaining users effectively.</a>
+
+        </div>
+    <div class="form-container">
+    <form class="form1" method="post">
+        {% csrf_token %}
+        
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ form.username.value }}">
+        {% for error in form.username.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value }}">
+        {% for error in form.first_name.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value }}">
+        {% for error in form.last_name.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+
+        <!-- Role Selection -->
+        <label for="role">Role</label>
+        <select id="role" name="role">
+            <option value="none" {% if not form.is_superuser.value and not form.is_staff.value %}selected{% endif %}>None</option>
+            <option value="admin" {% if form.is_superuser.value %}selected{% endif %}>Admin</option>
+            <option value="content_manager" {% if form.is_staff.value and not form.is_superuser.value %}selected{% endif %}>Content Manager</option>
+        </select>
+        {% for error in form.is_superuser.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+
+        <label for="is_active">Is Active:</label>
+        <input type="checkbox" id="is_active" name="is_active" {% if form.is_active.value %}checked{% endif %}>
+        {% for error in form.is_active.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <!-- <label for="user_permissions">Permissions:</label>
+        <div id="user_permissions">
+            {% for permission in form.user_permissions.field.queryset %}
+                <div>
+                    <input type="checkbox" id="permission_{{ permission.id }}" name="user_permissions" value="{{ permission.id }}" {% if permission in form.user_permissions.value %}checked{% endif %}>
+                    <label for="permission_{{ permission.id }}">{{ permission.name }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        {% for error in form.user_permissions.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %} -->
+        
+
+          
+        <!-- Change new password -->
+        <label for="old_password">Old Password:</label>
+        <input type="password" id="old_password" name="old_password">
+        {% if message == "Old password is incorrect." %}
+        <div class="error">Old password is incorrect.</div>
+        {% endif %}
+
+        <label for="new_password">New Password:</label>
+        <input type="password" id="new_password" name="new_password">
+        {% if message == "New passwords do not match." %}
+        <div class="error">New passwords do not match.</div>
+        {% endif %}
+
+        <label for="confirm_new_password">Confirm New Password:</label>
+        <input type="password" id="confirm_new_password" name="confirm_new_password">
+        {% if message == "New passwords do not match." %}
+        <div class="error">New passwords do not match.</div>
+        {% endif %}
+
+
+
+
+
+
+        <button type="submit">Save</button>
+        <button type="button" id="delete-button">Delete</button>
+
+    </form>
+
+
+    <!-- Modal HTML -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <div id="modal-error-message" class="error" style="display: none;"></div>
+           
+            <p>Are you sure you want to delete this user? Please enter your password to confirm.</p>
+            <input type="password" id="confirm-password" placeholder="Enter your password">
+            <form method="post" action="{% url 'edit_content_manager' content_manager.pk %}" class="exclude-global-form-styles">
+                {% csrf_token %}
+                <input type="hidden" name="delete" value="true">
+                <input type="hidden" id="password-input" name="confirm_password">
+                <button type="button" id="confirm-delete">Yes</button>
+                <button type="button" id="cancel-delete">No</button>
+            </form>
+
+            <!-- {% if modal_error_message %}
+            <div id="modal-error-message" class="error"  >{{ modal_error_message }}</div>
+             {% endif %} -->
+            
+        </div>
+        
+       
+    </div>
+
+    <!-- {% if modal_error_message %}
+    <div id="modal-error-message" class="error" style="display: none;" >{{ modal_error_message }}</div>
+    {% endif %} -->
+
+</div>
+    <a href="{% url 'list_content_managers' %}"  class="buttonback" >&lt;- Back</a>
+
+    
+    {% if modal_error_message %}
+    <!-- Hidden error message element that JS will read from -->
+    <span id="django-error-message" style="display: none;">{{ modal_error_message }}</span>
+    {% endif %}
+   
+</body>
+</html>
+{%endblock%}

@@ -1,0 +1,188 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Detail</title>
+  <link rel="stylesheet" href="{% static 'event_detail/event_detail.css' %}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="{% static 'js/eventdetail.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ld_NFkqAAAAAH_Zq5GLRSBSVHme3y5md8nWd9zs"></script>
+</head>
+<body>
+
+  <div id="event-detail-overlay" class="event-detail-overlay">
+    <div class="event-detail-container">
+      <div id="close-button" class="close-button" onclick="closeEventDetail()">×</div>
+      <div id="home-button" class="home-button" onclick="goHome()">Home</div>
+      {% if event.photo %}
+      <div class="event-img">
+        <div class="photo-wrapper">
+          <img src="{% url 'view_image' event.id %}" alt="Event Image">
+        </div>
+      </div>
+      {% endif %}
+      <div class="event-content">
+        <div class="event-title">{{ event.title }}</div>
+        <div class="event-date">{{ event.date }}</div>
+        <div class="event-caption">{{ event.caption|linebreaksbr|safe}}</div>
+        <div class="comments-section">
+          <h3>Comments</h3>
+          {% for item in comments_with_styles %}
+          <div class="comment">
+            <div class="avatar-wrapper">
+              <!-- Use the specific avatar style for each comment -->
+              {% with avatar_url="https://api.dicebear.com/9.x/"|add:item.avatar_style|add:"/svg?seed="|add:item.comment.ip_address %}
+              <img src="{{ avatar_url }}" alt="Avatar" class="avatar">
+              {% endwith %}
+            </div>
+            <div class="comment-content">
+              <div class="comment-text">{{ item.comment.comment_text }}</div>
+              <div class="comment-date">{{ item.comment.comment_date }}</div>
+            </div>
+            {% if item.comment.ip_address == client_ip or is_superuser or is_staff %}
+            <button class="comment-delete-btn" data-id="{{ item.comment.id }}" data-delete-url="{% url 'delete_comment' item.comment.id %}">
+              <i class="material-icons" style="font-size: 28px;">&#xe872;</i>
+            </button>
+            {% endif %}
+          </div>
+          {% empty %}
+          <!-- <p>No comments available.</p> -->
+          {% endfor %}
+        </div>
+          
+          <div class="comment-form">
+            <form method="post" action="{% url 'add_comment' event.id %}" id="commentForm">
+                {% csrf_token %}
+                <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+                <input type="hidden" id="clientIpAddress" name="clientIpAddress" value="{{ client_ip }}">
+
+                <div style="display: none;">
+                  <label for="honeypot">Leave this field blank</label>
+                  <input type="text" id="honeypot" name="honeypot" value="">
+              </div>
+
+              
+                <div class="textarea-wrapper">
+                    <textarea class="comment_textarea" id="commentTextarea" name="comment_text" placeholder="Add a comment...." required></textarea>
+                    
+                    <span class="enter-icon" id="enterIcon">&#9166;</span>
+                    <span class="loading-icon" id="loadingIcon" style="display: none;">
+                        <div class="spinner"></div>
+                    </span>
+                </div>
+                <div class="avatar-selection">
+                  <label for="avatarStyle">Choose Avatar Style:</label>
+                  <div id="customAvatarDropdown" class="custom-dropdown">
+                    <div id="selectedAvatar" class="dropdown-selected">
+                      <img id="selectedAvatarImage" src="https://api.dicebear.com/9.x/pixel-art/svg?seed=example" alt="Selected Avatar" />
+                      <span class="avatar-style-text">Pixel Art</span>
+                    </div>
+                    <div id="avatarOptions" class="dropdown-options">
+                      <div class="dropdown-option" data-style="pixel-art">
+                        <img src="https://api.dicebear.com/9.x/pixel-art/svg?seed=example" alt="Pixel Art" class="option-avatar" />
+                        <span>Pixel Art</span>
+                      </div>
+                      <div class="dropdown-option" data-style="bottts">
+                        <img src="https://api.dicebear.com/9.x/bottts/svg?seed=example" alt="Bottts" class="option-avatar" />
+                        <span>Bottts</span>
+                      </div>
+                      <div class="dropdown-option" data-style="adventurer">
+                        <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=example" alt="Adventurer" class="option-avatar" />
+                        <span>Adventurer</span>
+                      </div>
+                      <div class="dropdown-option" data-style="croodles">
+                        <img src="https://api.dicebear.com/9.x/croodles/svg?seed=example" alt="Croodles" class="option-avatar" />
+                        <span>Croodles</span>
+                      </div>
+                      <div class="dropdown-option" data-style="lorelei">
+                        <img src="https://api.dicebear.com/9.x/lorelei/svg?seed=example" alt="Lorelei" class="option-avatar" />
+                        <span>Lorelei</span>
+                      </div>
+                      <div class="dropdown-option" data-style="miniavs">
+                        <img src="https://api.dicebear.com/9.x/miniavs/svg?seed=example" alt="Miniavs" class="option-avatar" />
+                        <span>Miniavs</span>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="avatarStyle" name="avatar_style" value="pixel-art">
+                  <div class="live-avatar-preview">
+                    <img id="livePreview" src="https://api.dicebear.com/9.x/pixel-art/svg?seed=example" alt="Avatar Preview" class="large-avatar-preview" >
+                  </div>
+                </div>
+
+                <button class="buttoncomment" type="submit">Submit</button>
+            </form>
+        </div>
+        
+        
+        
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="deleteCommentModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeDeleteModal()">&times;</span>
+      <p>Are you sure you want to delete this comment?</p>
+      <button id="confirmDeleteButton" class="confirm-button">Yes</button>
+      <button class="cancel-button" onclick="closeDeleteModal()">No</button>
+      <span class="loading-icon" id="deleteLoadingIcon" style="display: none;">
+        <div class="spinner"></div>
+      </span>
+    </div>
+  </div>
+
+  <div id="errorModal-profanity" class="modal-custom">
+    <div class="modal-content-custom">
+      <div class="modal-header-custom">
+        <span class="close-custom">&times;</span>
+        <div class="modal-icon-custom">
+          <i class="material-icons">error_outline</i> <!-- Warning icon for emphasis -->
+        </div>
+        Warning
+      </div>
+      <div class="modal-message-custom">
+        <p id="modalMessage-profanity">
+          <strong>Prohibited Language Detected!</strong><br>
+          Please avoid using inappropriate words in your comments. Try rephrasing your message.
+        </p>
+      </div>
+      <button class="modal-button-custom" onclick="document.getElementById('errorModal-profanity').style.display='none'">
+        Dismiss
+      </button>
+    </div>
+  </div>
+  
+  <!-- Rate Limit Modal (Too Many Comments) -->
+  <div id="rateLimitRatelimitModal" class="ratelimit-modal">
+    <div class="ratelimit-modal-content">
+      <div class="ratelimit-modal-header" style="background-color: #ff9800;"> <!-- Yellow header for rate limit warnings -->
+        <span class="ratelimit-close-modal" onclick="closeRateLimitRatelimitModal()">&times;</span>
+        <div class="modal-icon-custom">
+          <i class="material-icons">hourglass_empty</i> <!-- Hourglass icon for waiting -->
+        </div>
+        Rate Limit Reached
+      </div>
+      <div class="ratelimit-message">
+        <p id="ratelimitMessage">
+          <strong>Slow Down!</strong><br>
+          You’ve reached the comment limit. Please wait a bit before commenting again.
+        </p>
+        <p id="ratelimitRemainingTimeMessage" class="ratelimit-remaining-time">
+          <!-- Remaining time will be dynamically filled here -->
+        </p>
+      </div>
+      <button class="ratelimit-modal-button" onclick="closeRateLimitRatelimitModal()" style="background-color: #ff9800;">
+        Got it
+      </button>
+    </div>
+  </div>
+
+</body>
+</html>
