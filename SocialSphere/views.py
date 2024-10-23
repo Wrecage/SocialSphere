@@ -735,7 +735,6 @@ class ContentManagerUtility:
             'modal_error_message': modal_error_message
         })
 
-
     def list_content_managers(self, request):
         error_message = ""
         if request.method == 'POST':
@@ -871,21 +870,17 @@ def like_event(request, event_id):
     return content_manager_utility.like_event(event_id)
 
 
-
 def add_comment(request, event_id):
     content_manager_utility = ContentManagerUtility(request)
     return content_manager_utility.add_comment(event_id)
-
 
 def edit_comment(request, comment_id):
     content_manager_utility = ContentManagerUtility(request)
     return content_manager_utility.edit_comment(comment_id)
 
-
 def delete_comment(request, comment_id):
     content_manager_utility = ContentManagerUtility(request)
     return content_manager_utility.delete_comment(comment_id)
-
 
 def record_click(request):
     return ContentManagerUtility.record_click(request)
