@@ -355,6 +355,12 @@ window.onload = function() {
   }
 };
 
+
+
+
+
+
+// for settings
 function initializeCustomAvatarDropdown() {
   const customDropdown = document.getElementById('customAvatarDropdown');
   const selectedAvatar = document.getElementById('selectedAvatar');

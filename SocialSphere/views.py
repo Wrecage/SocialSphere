@@ -157,13 +157,8 @@ class ContentManagerUtility:
         comments = Comment.objects.filter(event=event).order_by('-comment_date')
         client_ip = self.get_client_ip()
         
-        # Create a list of comments with their corresponding avatar styles using a consistent session key
-        comments_with_styles = []
-        for comment in comments:
-            # Use the comment ID as the session key to store/retrieve avatar style
-            comment_style_key = f"avatar_style_{comment.id}"
-            avatar_style = self.request.session.get(comment_style_key, 'pixel-art')  # Default to 'pixel-art' if not found
-            comments_with_styles.append({'comment': comment, 'avatar_style': avatar_style})
+        # Prepare the context by including comments and their avatar styles directly from the model
+        comments_with_styles = [{'comment': comment, 'avatar_style': comment.avatar_style} for comment in comments]
 
         context = {
             'event': event,
@@ -299,7 +294,6 @@ class ContentManagerUtility:
         })
     
     
-    
     def add_comment(self, event_id):
         if self.request.method == 'POST':
             event = get_object_or_404(Event, pk=event_id)
@@ -308,21 +302,8 @@ class ContentManagerUtility:
             honeypot = self.request.POST.get('honeypot')
             avatar_style = self.request.POST.get('avatar_style', 'pixel-art')  # Get the avatar style from the form
             recaptcha_token = self.request.POST.get('recaptcha_token')
-            # FOR TESTING ONLY
-            # if settings.DEBUG:
-            #     recaptcha_result = {'success': True}
-            # else:
-            #         recaptcha_result = verify_recaptcha(recaptcha_token, 'submit')
 
-            # if not recaptcha_result.get('success'):
-            #         return JsonResponse({'status': 'failed', 'message': 'reCAPTCHA verification failed. Please try again.'})
-
-
-
-
-
-
-            #THE REAL ONE
+            # Recaptcha validation
             recaptcha_response = requests.post(
                 'https://www.google.com/recaptcha/api/siteverify',
                 data={
@@ -333,18 +314,16 @@ class ContentManagerUtility:
             )
             recaptcha_result = recaptcha_response.json()
 
-
-            print(recaptcha_result) 
-
             if not recaptcha_result.get('success'):
                 return JsonResponse({'status': 'failed', 'message': 'reCAPTCHA verification failed. Please try again.'})
-            
+
+            # Check for prohibited language or links
             if check_profanity(comment_text):
                 return JsonResponse({'status': 'failed', 'message': 'Your comment contains prohibited language.'})
-
             if contains_links(comment_text):
                 return JsonResponse({'status': 'failed', 'message': 'Comments with links are not allowed.'})
 
+            # Honeypot check (anti-spam)
             if honeypot:
                 return JsonResponse({'status': 'failed', 'message': 'Spam detected. Please refrain from spamming the comment section.'})
 
@@ -360,31 +339,22 @@ class ContentManagerUtility:
                 remaining_time = 60 - int(time_diff)
                 return JsonResponse({'status': 'failed', 'message': 'You have reached the comment limit of 5 per minute.', 'remaining_time': remaining_time})
             rate_data['count'] += 1
-            cache.set(rate_limit_key, rate_data, timeout=60)  
+            cache.set(rate_limit_key, rate_data, timeout=60)
 
-            # Create comment first to get the comment ID
-            comment = Comment.objects.create(event=event, ip_address=ip_address, comment_text=comment_text)
-            comment_date = comment.comment_date.strftime('%Y-%m-%d %H:%M:%S')
-                
-
-            # Format the comment date to the desired string format with the correct time zone
+            # Create the comment and save the avatar style
+            comment = Comment.objects.create(
+                event=event,
+                ip_address=ip_address,
+                comment_text=comment_text,
+                avatar_style=avatar_style  # Save the chosen avatar style in the database
+            )
+            
+            # Format the comment date for display
             formatted_comment_date = localtime(comment.comment_date).strftime('%b. %d, %Y, %I:%M %p')
-
-            # Replace leading zero in the day component manually
-            formatted_comment_date = formatted_comment_date.replace(" 0", " ")
-
-            # Replace AM/PM with a.m./p.m.
-            formatted_comment_date = formatted_comment_date.replace("AM", "a.m.").replace("PM", "p.m.")
-
-            # Capitalize the first letter in the formatted string
+            formatted_comment_date = formatted_comment_date.replace(" 0", " ").replace("AM", "a.m.").replace("PM", "p.m.")
             formatted_comment_date = formatted_comment_date[0].upper() + formatted_comment_date[1:]
 
-
-            # Use the actual comment ID for the session key
-            comment_id = comment.id  # Use comment's ID instead of generating a UUID
-            unique_comment_style_key = f"avatar_style_{comment_id}"
-            self.request.session[unique_comment_style_key] = avatar_style
-
+            # Update event stats
             event_stats, _ = EventStats.objects.get_or_create(event=event)
             event_stats.total_comments = Comment.objects.filter(event=event).count()
             event_stats.save()
@@ -394,12 +364,10 @@ class ContentManagerUtility:
                 'message': 'Comment added',
                 'comment_text': comment.comment_text,
                 'comment_id': comment.id,
-                'comment_date': comment_date,
                 'comment_date': formatted_comment_date, 
-                'avatar_style': avatar_style,
+                'avatar_style': comment.avatar_style,  # Include avatar style in the response
                 'ip_address': ip_address,
-                'unique_id': comment_id,
-                'total_comments': event_stats.total_comments   
+                'total_comments': event_stats.total_comments
             })
 
         return JsonResponse({'status': 'failed', 'message': 'Invalid request'}, status=400)

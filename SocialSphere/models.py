@@ -32,6 +32,7 @@ class Like(models.Model):
 class Comment(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     ip_address = models.GenericIPAddressField()
+    avatar_style = models.CharField(max_length=50, default='pixel-art')
     comment_text = models.TextField()
     comment_date = models.DateTimeField(auto_now_add=True)
 

@@ -32,8 +32,10 @@
         <div class="event-caption">{{ event.caption|linebreaksbr|safe}}</div>
         <div class="comments-section">
           <h3>Comments</h3>
+
+
           {% for item in comments_with_styles %}
-          <div class="comment">
+          <div class="comment" data-id="{{ item.comment.id }}">
             <div class="avatar-wrapper">
               <!-- Use the specific avatar style for each comment -->
               {% with avatar_url="https://api.dicebear.com/9.x/"|add:item.avatar_style|add:"/svg?seed="|add:item.comment.ip_address %}
@@ -75,6 +77,9 @@
                         <div class="spinner"></div>
                     </span>
                 </div>
+
+
+
                 <div class="avatar-selection">
                   <label for="avatarStyle">Choose Avatar Style:</label>
                   <div id="customAvatarDropdown" class="custom-dropdown">
