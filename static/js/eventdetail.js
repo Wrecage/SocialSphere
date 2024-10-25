@@ -431,3 +431,54 @@ function initializeCustomAvatarDropdown() {
 
 document.addEventListener('DOMContentLoaded', initializeCustomAvatarDropdown);
 
+
+function toggleText(eventId) {
+  const captionText = document.getElementById('caption-text_' + eventId);
+  const toggleBtn = document.getElementById('toggle-btn_' + eventId);
+
+  // Retrieve full and truncated text from data attributes
+  const fullText = captionText.getAttribute('data-fulltext');
+  const truncatedText = captionText.getAttribute('data-truncated');
+
+
+
+  // Check the current button state and toggle text accordingly
+  if (toggleBtn.textContent === 'See More') {
+      captionText.innerHTML = fullText; // Show full text
+      toggleBtn.textContent = 'See Less'; // Change button text
+  } else {
+      captionText.innerHTML = truncatedText; // Show truncated text
+      toggleBtn.textContent = 'See More'; // Change button text
+  }
+
+
+}
+
+window.onload = function() {
+  const captions = document.querySelectorAll('.caption-text');
+
+  captions.forEach(caption => {
+      const fullText = caption.innerHTML.trim();
+      const maxLength = 100;  // Maximum character length before truncating
+
+      if (fullText.length > maxLength) {
+          const truncatedText = fullText.substring(0, maxLength) + '...';
+
+          // Store full and truncated text in custom attributes
+          caption.setAttribute('data-fulltext', fullText);
+          caption.setAttribute('data-truncated', truncatedText);
+
+          // Set the initial truncated text
+          caption.innerHTML = truncatedText; // Show truncated text initially
+      } else {
+          // If the text is short enough, just set it without truncation
+          caption.setAttribute('data-fulltext', fullText);
+          caption.setAttribute('data-truncated', fullText);
+          // Optionally, you might want to hide the toggle button if not needed
+          const toggleBtn = document.getElementById('toggle-btn_' + caption.id.split('_')[1]); // Assuming IDs like 'caption_1'
+          if (toggleBtn) {
+              toggleBtn.style.display = 'none'; // Hide if no truncation needed
+          }
+      }
+  });
+};

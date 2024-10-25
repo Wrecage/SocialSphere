@@ -27,35 +27,47 @@
       </div>
       {% endif %}
       <div class="event-content">
-        <div class="event-title">{{ event.title }}</div>
-        <div class="event-date">{{ event.date }}</div>
-        <div class="event-caption">{{ event.caption|linebreaksbr|safe}}</div>
-        <div class="comments-section">
-          <h3>Comments</h3>
+        <div class="phonescroll">
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-date">{{ event.date }}</div>
+
+            <div class="event-caption">
+              <span id="caption-text_{{ event.id }}" class="caption-text">
+                {{ event.caption|linebreaksbr|safe }}
+              </span>
+              <button id="toggle-btn_{{ event.id }}" class="toggle-btn" onclick="toggleText('{{ event.id }}')">See More</button>
+            </div>
+
+        
+
+            <div class="comments-section">
+              <h3>Comments</h3>
 
 
-          {% for item in comments_with_styles %}
-          <div class="comment" data-id="{{ item.comment.id }}">
-            <div class="avatar-wrapper">
-              <!-- Use the specific avatar style for each comment -->
-              {% with avatar_url="https://api.dicebear.com/9.x/"|add:item.avatar_style|add:"/svg?seed="|add:item.comment.ip_address %}
-              <img src="{{ avatar_url }}" alt="Avatar" class="avatar">
-              {% endwith %}
+              {% for item in comments_with_styles %}
+              <div class="comment" data-id="{{ item.comment.id }}">
+                    <div class="avatar-wrapper">
+                      <!-- Use the specific avatar style for each comment -->
+                      {% with avatar_url="https://api.dicebear.com/9.x/"|add:item.avatar_style|add:"/svg?seed="|add:item.comment.ip_address %}
+                      <img src="{{ avatar_url }}" alt="Avatar" class="avatar">
+                      {% endwith %}
+                    </div>
+                    <div class="comment-content">
+                      <div class="comment-text">{{ item.comment.comment_text }}</div>
+                      <div class="comment-date">{{ item.comment.comment_date }}</div>
+                    </div>
+                    {% if item.comment.ip_address == client_ip or is_superuser or is_staff %}
+                    <button class="comment-delete-btn" data-id="{{ item.comment.id }}" data-delete-url="{% url 'delete_comment' item.comment.id %}">
+                      <i class="material-icons" style="font-size: 28px;">&#xe872;</i>
+                    </button>
+                    {% endif %}
+                </div>
+              {% empty %}
+              <!-- <p>No comments available.</p> -->
+              {% endfor %}
             </div>
-            <div class="comment-content">
-              <div class="comment-text">{{ item.comment.comment_text }}</div>
-              <div class="comment-date">{{ item.comment.comment_date }}</div>
-            </div>
-            {% if item.comment.ip_address == client_ip or is_superuser or is_staff %}
-            <button class="comment-delete-btn" data-id="{{ item.comment.id }}" data-delete-url="{% url 'delete_comment' item.comment.id %}">
-              <i class="material-icons" style="font-size: 28px;">&#xe872;</i>
-            </button>
-            {% endif %}
           </div>
-          {% empty %}
-          <!-- <p>No comments available.</p> -->
-          {% endfor %}
-        </div>
+          
           
           <div class="comment-form">
             <form method="post" action="{% url 'add_comment' event.id %}" id="commentForm">
@@ -122,6 +134,7 @@
 
                 <button class="buttoncomment" type="submit">Submit</button>
             </form>
+            
         </div>
         
         
