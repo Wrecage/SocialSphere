@@ -19,7 +19,7 @@ def generate_caption(event_description, location, date, event_type, tone, max_wo
         )
 
         # Initialize GROQ client
-        GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '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')
+        GROQ_API_KEY = os.getenv('GROQ_API_KEY')
         client = Groq(api_key=GROQ_API_KEY)
         
         # Prepare the message with image (if available)
@@ -59,7 +59,7 @@ def generate_image_description(image_base64, max_words):
         prompt = f"Describe the event image accurately and in no more than {max_words} words."
         
         # Initialize GROQ client
-        GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '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')
+        GROQ_API_KEY = os.getenv('GROQ_API_KEY')
         client = Groq(api_key=GROQ_API_KEY)
 
         messages = [

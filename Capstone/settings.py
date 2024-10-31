@@ -18,7 +18,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DATABASE_URL = "postgresql://socialsphere_user:MfMqXV7NI7F4bJOpQvvWDtRS74SrsB8W@dpg-csc8sm5ds78s738ku2k0-a.oregon-postgres.render.com/socialsphere"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -26,7 +26,7 @@ DATABASE_URL = "postgresql://socialsphere_user:MfMqXV7NI7F4bJOpQvvWDtRS74SrsB8W@
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-1w$wd8hlmz85cgiybc(cesn3co%ylz0o8invgh32)dt&$lqkvl'
 
-SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-1w$wd8hlmz85cgiybc(cesn3co%ylz0o8invgh32)dt&$lqkvl')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -216,9 +216,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # }
 
 #recaptcha
-RECAPTCHA_SITE_KEY = os.getenv('RECAPTCHA_SITE_KEY', '6Ld_NFkqAAAAAH_Zq5GLRSBSVHme3y5md8nWd9zs')
-RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY', '6Ld_NFkqAAAAAAlQQORxBkBNnUmqY1IbpF4S4O9L')
-
+RECAPTCHA_SITE_KEY = os.getenv('RECAPTCHA_SITE_KEY')
+RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY')
 
 #CRON
 CRON_CLASSES = [
@@ -227,13 +226,12 @@ CRON_CLASSES = [
 
 
 #PASSWORD RESET
-# settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'socialsphere829@gmail.com'
-EMAIL_HOST_PASSWORD = 'cacm xjau zweu ncby'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
 
