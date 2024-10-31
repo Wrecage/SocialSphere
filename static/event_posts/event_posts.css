@@ -1,0 +1,1437 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    color: #000000;
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    overflow-y: scroll;
+    position: relative;
+    z-index: 1;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('bgwhite.svg') no-repeat center center;
+    background-size: cover;
+    opacity: 0.5; /* Adjust transparency level here */
+    z-index: -1; /* Ensures the background stays behind content */
+    pointer-events: none; /* Prevents interaction with the background */
+}
+
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #000; /* Black background for track */
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #FDCC00; /* Yellow background for thumb */
+    border-radius: 20px; /* Rounded corners for thumb */
+    border: 3px solid #000; /* Padding around thumb */
+}
+
+@media (max-width: 1200px) {
+    body::-webkit-scrollbar {
+        width: 10px; /* Medium devices */
+    }
+}
+
+@media (max-width: 768px) {
+    body::-webkit-scrollbar {
+        width: 8px; /* Small devices */
+    }
+}
+
+@media (max-width: 480px) {
+    body::-webkit-scrollbar {
+        width: 6px; /* Extra small devices */
+    }
+}
+
+header{
+    position: relative;
+}
+h1 {
+    font-size: 36px;
+}
+
+#attach-image-button {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border-radius: 25px;
+}
+
+#attach-image-button:hover {
+    background-color: #444; /* a darker gray shade */
+    color: #fff; /* keep the text color white */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.1);/* add a subtle shadow effect */
+  }
+
+textarea[name="caption"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;  /* Prevent manual resize */
+    overflow-y: auto;  /* Allow vertical scroll when content exceeds the max height */
+    min-height: 50px;  /* Initial height */
+    max-height: 500px;  /* Maximum height before scrolling */
+    line-height: 1.5;
+}
+
+textarea[name="event_description"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;  /* Prevent manual resize */
+    overflow-y: auto;  /* Allow vertical scroll when content exceeds the max height */
+    min-height: 100px;  /* Initial height */
+    max-height: 500px;  /* Maximum height before scrolling */
+    line-height: 1.5;
+}
+
+textarea[name="caption"]::placeholder {
+    font-family: 'Poppins', sans-serif; 
+    font-size: 20px;
+}
+
+textarea[name="caption"]::-webkit-input-placeholder {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+}
+
+textarea[name="title"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;  /* Prevent manual resize */
+    overflow-y: hidden;  /* Allow vertical scroll when content exceeds the max height */
+    min-height: 50px;  /* Initial height */
+    max-height: 500px;  /* Maximum height before scrolling */
+    line-height: 1;
+    font-family: 'Poppins', sans-serif;
+    font-size: 25px;
+}
+
+textarea[name="title"]::placeholder {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
+}
+
+textarea[name="groqcaption"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: vertical; /* Prevent manual resize */
+    overflow-y: auto;  /* Allow vertical scroll when content exceeds the max height */
+    min-height: 400px;  /* Initial height */
+}
+
+input[type="file"] {
+    padding: 5px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 50%;
+}
+
+input[type="datetime-local"] {
+    padding: 20px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    max-width: fit-content;
+    font-size: 16px;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    width: 30px;
+    height: 30px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    border-radius: 50px;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 8px; /* Add margin below the label */
+    font-size: 16px;
+}
+
+input[type="range"] {
+    width: 100%; /* Ensure slider takes full width */
+    margin-bottom: 20px; /* Add space below the slider */
+}
+
+
+.post-to-facebook-btn{
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #3a67e4;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    border-radius: 50px;
+    text-align: right;
+}
+
+.postfacebook{
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #3a67e4;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border-radius: 50px;
+    text-align: right;
+}
+
+.postfacebook:hover{
+    background-color: #2c4ce8; /* a darker blue shade */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* add a subtle shadow effect */
+    transform: scale(1.1); 
+}
+
+.post-to-facebook-btn:hover {
+    background-color: #2c4ce8; /* a darker blue shade */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* add a subtle shadow effect */
+    transform: scale(1.1); /* slightly enlarge the button on hover */
+  }
+
+.facebook-icon {
+    margin-left: 5px;
+}
+
+#image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+#image-preview img {
+    max-width: 200px;
+    max-height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#file-input {
+    margin-bottom: 10px;
+}
+
+/* buttons */
+.event-buttons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+}
+.event-buttons button {
+    background-color: #fff; /* White background for contrast */
+    border: 1px solid #ccc; /* Light gray border for subtle definition */
+    cursor: pointer;
+    font-size: 20px;
+    color: #222121; /* Dark text color */
+    transition: color 0.3s ease, transform 0.3s, background-color 0.3s;
+    border-radius: 5px; /* Rounded corners for a modern look */
+    width: 40px; /* Fixed width for uniform buttons */
+    height: 40px; /* Fixed height for uniform buttons */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the icons */
+    padding: 0; /* Remove any padding for a cleaner look */
+}
+
+.event-buttons button:hover {
+    color: #ffd000;
+    transform: scale(1.1);
+}
+
+/* Styles for the event-delete button */
+/* Modal styles */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.5s;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    width: 80%;
+    max-width: 500px;
+    margin: 10% auto;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.5s ease;
+}
+
+
+.loader {
+    margin: 20px auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #ffcc00;
+    animation: spin 1.5s linear infinite;
+}
+  
+
+@keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-30%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .modal-content {
+      width: 90%;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    z-index: 1000; /* Below the popup */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  
+.event-delete-btn {
+    float: right;
+}
+
+.event-delete-btn:hover {
+    background-color: #ff0000; /* Darker blue on hover */
+}
+
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.confirm-delete-btn,
+.cancel-delete-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.confirm-delete-btn {
+    background-color: #c0392b; /* Red background */
+    color: white; /* White text */
+}
+
+.cancel-delete-btn {
+    background-color: #7f8c8d; /* Grey background */
+    color: white; /* White text */
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        max-width: 400px; /* Adjust max-width for smaller screens */
+    }
+
+    .confirm-delete-btn,
+    .cancel-delete-btn {
+        padding: 8px 16px; /* Adjust padding for smaller buttons */
+        font-size: 14px; /* Decrease font size for smaller screens */
+    }
+}
+
+/* Styles for the edit button */
+.edit-btn {
+    color: rgb(0, 0, 0); /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    float: right;
+}
+
+.edit-btn:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+.cancel-btn{
+    color: rgb(0, 0, 0); /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    float: left;
+}
+
+.cancel-btn:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+
+h1 {
+    font-size: 36px;
+}
+
+
+
+.event {
+    margin-inline: auto;
+    width: 55%; /* Adjust the width as needed */
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    max-width: 700px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-width: medium;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+    box-shadow: inset 0 0 0 2px #000; /* Black stroke on the inside */
+}
+
+.event.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.event:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 0 0 2px #000; /* Black stroke on the inside */ 
+}
+
+.event img {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.event-title {
+    font-family: 'Poppins', sans-serif; /* Consistent font for better readability */
+    font-weight: bold; /* Strong emphasis */
+    font-size: 30px; /* Larger font size for visibility */
+    color: #333; /* Darker text for better contrast */
+    margin-bottom: 8px; /* Space between title and date */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.event-date {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; /* Smaller font size than the title */
+    font-style: italic; /* Stylistic choice for date */
+    color: #666; /* Gray for subtlety */
+    margin-bottom: 12px; /* Space between date and caption */
+}
+
+.event-caption {
+    font-family: 'Poppins', sans-serif; /* Maintain font consistency */
+    font-size: 20px; /* Legible font size */
+    color: #444; /* Dark gray for readability */
+    line-height: 1.5; /* Improved line spacing for better readability */
+    text-align: justify; /* Justified text for a neat look */
+    margin-bottom: 20px; /* Space below the caption before next section */
+    background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+    padding: 15px; /* Padding for better text framing */
+    border-left: 5px solid #fdcc00; /* Accent line for style */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for floating effect */
+}
+
+.caption-text {
+    display: contents;
+    max-height: 3em;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    /* white-space: nowrap;  */
+    transition: max-height 0.3s ease;
+}
+
+.caption-text.expanded {
+    max-height: fit-content;
+    white-space: normal;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: blue;
+    cursor: pointer;
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+/* Interact buttons */
+.interact-buttons {
+    margin-top: 10px;
+}
+
+.interact-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #222121;
+    transition: color 0.3s ease, transform 0.3s;
+    margin-right: 10px;
+}
+
+.interact-buttons button:hover {
+    color: #ffd000;
+    transform: scale(1.1);
+}
+
+.event-posts {
+    width: 80%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    position: relative;
+    top: 5px;
+    box-shadow: inset 0 0 0 2px #000; /* Black stroke on the inside */
+} 
+
+.profile-button {
+    position: fixed; 
+    top: 20px; 
+    right: 20px;
+    display: flex;
+    padding: 1rem 2.5rem;
+    background-color: #000000;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 50px;
+    margin-left: auto;
+    overflow: hidden;
+}
+
+
+.profile-button:hover {
+    background-color: #555;
+    transform: scale(1.1);
+
+}
+
+
+/* Comment Section */
+.comment-section {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.submit-comment-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.submit-comment-btn:hover {
+    background-color: #333;
+}
+
+.icon-bar {
+    display: flex;
+    position: fixed;
+    left: 10px; /* Adjusted to ensure consistency */
+    bottom: 20px; /* Position at the bottom with a consistent gap */
+    gap: 35px; /* Space between icons */
+}
+
+.icon-bar img {
+    width: 27px; 
+    /* z-index: 1; */
+}
+
+.new-text {
+    position: relative;
+    font-size: 37px; 
+    color: #333; /* Text color */
+    font-family: 'Bebas Neue', sans-serif; /* Specify font family */
+    text-align: right;
+    position: fixed; /* Position fixed */
+    bottom: 10px; /* Adjust bottom position as needed */
+    right: 30px; /* Adjust right position as needed */
+    /* z-index: -1; */
+}
+
+.new-text2 {
+    position: absolute; /* Position fixed */
+    top: 1px; /* Adjust top position as needed */
+    left: 30px; /* Adjust left position as needed */
+    font-size: 60px; /* Adjust size as needed */
+    color: #000000; /* Text color */
+    font-family: 'Bebas Neue', sans-serif; /* Specify font family */
+    text-align: left; /* Align text to the left */
+    font-weight: bold;
+    text-shadow: 2px 2px #ffffff; /* Add shadow effect */
+}
+
+.container123 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: auto;
+    height: 90px; /* Adjust height as needed */
+    background-color: #FDCC01; /* Solid yellow color */
+    z-index: 1;
+    align-items: center;
+    opacity: 1; /* Set opacity to 1 (fully opaque) */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    justify-content: flex-end;
+    border: solid #000; /* Black stroke on the inside */
+    background:url('WILogo.png') no-repeat center top #FDCC01;
+    background-size: contain;
+    background-position: center;
+}
+
+input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    border-right: 1px;
+}
+
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    border-right: 1px;
+}
+
+.attach-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#attach-image-button {
+    background-color: #000;
+    color: #fff;
+}
+
+input {
+    background-color: #000;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: bold;
+    color: #fff;
+    margin-right: 10px;
+    margin-bottom: 8px; 
+}
+
+.publish-button {
+    background-color: #000;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 8px; 
+    width: 15.8%;
+}
+.publish-button:hover {
+    background-color: #333; /* a darker gray shade */
+    color: #fff; /* keep the text color white */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* add a subtle shadow effect */
+    transform: scale(1.1);
+  }
+
+  button, input[type="submit"], .nav-link, select, label {
+    box-sizing: border-box;
+    
+    max-width: 100%; /* Avoid overflow */
+}
+
+
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.nav-item {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    max-width: 100%; /* Prevent the tabs from breaking */
+}
+
+.nav-link {
+    flex: 1;
+    text-align: center;
+    padding: 10px 20px;
+    white-space: nowrap; /* Prevent buttons from wrapping */
+    max-width: 100%; /* Prevent overflow */
+}
+
+
+  
+  .admin_url {
+    position: fixed; 
+    top: 20px; 
+    float: right;
+    display: flex;
+    padding: 1rem 2.5rem;
+    background-color: #000000;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 50px;
+    overflow: hidden;
+    margin-inline: 10em;
+  }
+  
+  .admin_url:hover {
+    background-color: #555;
+    transform: scale(1.1);
+  
+  } 
+
+/* steverns new */
+
+.confirmation-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9; 
+    padding: 40px 30px;
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15); 
+    border-radius: 16px; 
+    z-index: 1000;
+    text-align: center;
+    max-width: 450px; 
+    width: 90%; 
+    animation: popupAnimation 0.4s ease-out; 
+    transition: all 0.3s ease;
+  }
+  
+  .confirmation-popup h2 {
+    margin-bottom: 20px;
+    color: #000; 
+    font-weight: 600; 
+    font-size: large;
+    left: 35%;
+  }
+  
+  .confirmation-popup p {
+    font-size: 16px;
+    color: #666; 
+    margin-bottom: 30px;
+  }
+  
+  .confirmation-popup button {
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px 15px;
+    transition: all 0.3s ease;
+    min-width: 100px; 
+  }
+  
+  .yes-button {
+    background-color: #ffcc00; 
+    color: white;
+  }
+  
+  
+  .no-button {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  
+  
+  .yes-button:focus, .no-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.4); 
+  }
+  
+  @keyframes popupAnimation {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .confirmation-popup {
+      padding: 30px 20px;
+    }
+  
+    .confirmation-popup p {
+      font-size: 14px;
+    }
+  
+    .confirmation-popup button {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  }
+  
+  
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .loading-spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #FDCC01;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .btn-generate-caption-btn {
+    background-color: #FF7F50; /* Coral color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif; /* Make sure you are using a modern font */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    position: relative; /* Necessary for the hover animation */
+    overflow: hidden; /* To handle the hover effect */
+}
+
+/* Hover Effect */
+.btn-generate-caption-btn:hover {
+    background: linear-gradient(90deg, #FF7F50 0%, #FF6347 100%); /* Gradient effect */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Elevate the shadow */
+    transform: translateY(-3px); /* Slight lift when hovering */
+}
+
+/* Adding an inner glow and subtle motion effect */
+.btn-generate-caption-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.75s ease;
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.btn-generate-caption-btn:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0; /* Fade out the inner glow as it expands */
+}
+
+#generate-caption-btn, #generate-image-description-btn {
+    background-color: #FF7F50; /* Coral color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for buttons */
+#generate-caption-btn:hover, #generate-image-description-btn:hover {
+    background-color: #FF6347; /* Tomato color */
+    color: #fff;
+}
+
+/* Make buttons stand out more */
+#generate-caption-btn:active, #generate-image-description-btn:active {
+    background-color: #FF4500; /* Darker color on click */
+    color: #fff;
+}
+
+select {
+    padding: 10px;
+    font-size: 1em;
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    appearance: none; /* Removes default arrow */
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+/* Hover effect for select */
+select:hover {
+    border-color: #FF7F50;
+}
+
+/* Custom arrow for select */
+select:after {
+    content: '▼'; /* Custom arrow */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+input[name="event_description"], input[name="location"], input[name="date"], textarea[name="groqcaption"], textarea[name="groqimagecaption"], input[name="date"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+input[name="event_description"]:focus, input[name="location"]:focus, input[name="date"]:focus, textarea[name="groqcaption"]:focus, textarea[name="groqimagecaption"]:focus {
+    border-color: #FF7F50;
+    box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
+    outline: none; /* Removes the default outline */
+}
+
+
+
+#image-preview-groq {
+    border-radius: 8px;
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    display: none; /* Initially hidden until an image is selected */
+}
+
+
+#styled-file-input {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    border-radius: 25px;
+    padding: 10px 20px;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+/* Hover effect */
+#styled-file-input:hover {
+    background-color: #333;
+}
+
+/* Focus effect */
+#styled-file-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
+}
+
+/* responsive for all device? codes */
+/* For Phones (up to 600px) */
+@media (max-width: 600px) {
+    .event {
+        width: 95%; /* Adjust width for phones */
+        padding: 10px; /* Reduce padding for smaller screens */
+        font-size: 14px; /* Smaller text size for phones */
+    }
+    
+    .event-title {
+        font-size: 1.25rem; /* Smaller title for phones */
+    }
+
+    .event-caption {
+        font-size: 0.875rem; /* Smaller font size for captions */
+    }
+
+    .profile-button {
+        padding: 0.5rem 1.5rem; /* Adjust padding for small screens */
+        margin-right: 10px;
+    }
+
+    .container123 {
+        padding: 10px 10px 20px; /* Adjust padding for phones */
+    }
+}
+
+/* For Tablets (600px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .event {
+        width: 80%; /* Adjust width for tablets */
+        padding: 15px; /* Slightly less padding for tablets */
+    }
+    
+    .event-title {
+        font-size: 1.75rem; /* Larger title on tablets */
+    }
+
+    .event-caption {
+        font-size: 1rem; /* Adjust caption size for tablets */
+    }
+
+    .profile-button {
+        padding: 0.8rem 2rem; /* Adjust padding for tablets */
+    }
+}
+
+/* For Laptops (1024px to 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .event {
+        width: 70%; /* Adjust width for laptops */
+        padding: 20px; /* Slightly more padding for larger screens */
+    }
+
+    .event-title {
+        font-size: 2rem; /* Bigger title for laptops */
+    }
+
+    .event-caption {
+        font-size: 1.125rem; /* Larger font size for captions */
+    }
+
+    .profile-button {
+        padding: 0.8rem 2.5rem; /* Comfortable padding for laptops */
+    }
+}
+
+/* For Desktops (1440px and above) */
+@media (min-width: 1441px) {
+    .event {
+        width: 60%; /* Wider content area for large desktops */
+        padding: 25px; /* More padding for larger screens */
+    }
+
+    .event-title {
+        font-size: 2.25rem; /* Larger title for desktop */
+    }
+
+    .event-caption {
+        font-size: 1.25rem; /* Larger captions for readability */
+    }
+
+    .profile-button {
+        padding: 1rem 3rem; /* Larger padding for large screens */
+    }
+}
+
+
+/* For Phones (up to 600px) */
+@media (max-width: 600px) {
+
+
+    .new-text2 {
+        font-size: 6vw; /* Responsive text size */
+        margin-left: 10px;
+    }
+
+    .profile-button {
+        margin-top: 10px; /* Separate profile button */
+    }
+}
+
+/* For Tablets (600px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .container123 {
+        flex-direction: row; /* Horizontal layout for tablets */
+        padding: 10px 20px; /* Adjust padding */
+    }
+
+    .new-text2 {
+        font-size: 4vw; /* Responsive text size */
+        margin-left: 20px;
+    }
+
+    .profile-button {
+        margin-right: 20px;
+    }
+}
+
+/* For Laptops (1024px to 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .container123 {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 20px 30px; /* More padding for bigger screens */
+    }
+
+
+
+    .profile-button {
+        margin-right: 30px;
+    }
+}
+
+/* For Desktops (1440px and above) */
+@media (min-width: 1441px) {
+    .container123 {
+        padding: 30px 40px;
+    }
+
+ 
+}
+/* For Phones (up to 600px) */
+@media (max-width: 600px) {
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .groq-btn {
+        width: 100%; /* Full width for smaller screens */
+        height: 2.5em; /* Reduced height */
+    }
+}
+
+/* For Tablets (600px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .groq-btn {
+        width: 10em;
+        height: 2.8em; /* Adjusted for tablets */
+    }
+}
+
+/* For Laptops (1024px to 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    button {
+        font-size: 18px;
+        padding: 12px 24px;
+    }
+
+    .groq-btn {
+        width: 12em;
+        height: 3.2em; /* Larger buttons for laptops */
+    }
+}
+
+/* For Phones (up to 600px) */
+@media (max-width: 600px) {
+    .confirmation-popup {
+        padding: 20px;
+        width: 90%; /* Full width for smaller screens */
+    }
+
+    .confirmation-popup h2 {
+        font-size: 18px; /* Smaller title for small screens */
+    }
+
+    .confirmation-popup button {
+        font-size: 14px; /* Smaller button text */
+        padding: 10px 20px;
+    }
+}
+
+/* For Tablets (600px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .confirmation-popup {
+        padding: 30px;
+        width: 80%;
+    }
+
+    .confirmation-popup h2 {
+        font-size: 20px;
+    }
+
+    .confirmation-popup button {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
+}
+
+/* For Laptops (1024px to 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .confirmation-popup {
+        padding: 40px;
+        width: 70%;
+    }
+
+    .confirmation-popup h2 {
+        font-size: 22px;
+    }
+
+    .confirmation-popup button {
+        font-size: 18px;
+        padding: 14px 28px;
+    }
+}
+
+
+/* For Phones (up to 600px) */
+@media (max-width: 600px) {
+    #image-preview img {
+        max-width: 100%; /* Full width on smaller screens */
+        max-height: 80px; /* Adjust height */
+    }
+}
+
+/* For Tablets (600px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    #image-preview img {
+        max-width: 150px; /* Larger images on tablets */
+        max-height: 100px;
+    }
+}
+
+/* For Laptops (1024px to 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    #image-preview img {
+        max-width: 200px; /* Standard image size */
+        max-height: 120px;
+    }
+}
+
+/* For Desktops (1440px and above) */
+@media (min-width: 1441px) {
+    #image-preview img {
+        max-width: 250px; /* Larger image size for desktops */
+        max-height: 150px;
+    }
+}
+
+
+@media (max-width: 600px) {
+    input[type="submit"].publish-button, button {
+        font-size: 14px; /* Adjust font size for small devices */
+        padding: 8px 16px; /* Reduce padding for small screens */
+        width: 100%; /* Make buttons full width */
+    }
+
+    .button-container, .nav-item {
+        flex-direction: column; /* Stack buttons vertically on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-link {
+        font-size: 14px; /* Adjust font size for smaller screens */
+        padding: 8px 12px; /* Adjust padding to prevent overlap */
+        overflow: hidden;
+        text-overflow: ellipsis; /* Add ellipsis if the text is too long */
+    }
+}
+
+.no-events-available {
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #666;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .styled-file-input {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .styled-file-input:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .max-image-size {
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin-left: 10px;
+  }
+  
+  .max-image-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+  @media only screen and (max-width: 1095px) and (max-height: 824px) {
+    .new-text2 {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 1160px) and (max-height: 911px) {
+    .new-text2 {
+        display: none;
+    }
+}
