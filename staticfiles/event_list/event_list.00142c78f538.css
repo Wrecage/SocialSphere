@@ -1,0 +1,753 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    color: #000000;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh; /* Ensure the body covers at least the full view height */
+    overflow: auto; /* Enable scrolling */
+    position: relative; /* Necessary for z-index to take effect */
+    z-index: 1; /* Lowest in the stacking context */
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("bgwhite.e57e28e11edd.svg") no-repeat center center;
+    background-size: cover;
+    opacity: 0.5; /* Adjust transparency level here */
+    z-index: -1; /* Ensures the background stays behind content */
+    pointer-events: none; /* Prevents interaction with the background */
+}
+
+/* Default scrollbar styles */
+body::-webkit-scrollbar {
+    width: 12px; /* Default width */
+}
+
+body::-webkit-scrollbar-track {
+    background: #000; /* Black background for track */
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #FDCC00; /* Yellow background for thumb */
+    border-radius: 20px; /* Rounded corners for thumb */
+    border: 3px solid #000; /* Padding around thumb */
+}
+
+/* Responsive scrollbar styles */
+@media (max-width: 1200px) { /* Medium devices (e.g., tablets) */
+    body::-webkit-scrollbar {
+        width: 10px; /* Slightly smaller width */
+    }
+}
+
+@media (max-width: 768px) { /* Small devices (e.g., phones) */
+    body::-webkit-scrollbar {
+        width: 8px; /* Even smaller width */
+    }
+}
+
+@media (max-width: 480px) { /* Extra small devices (e.g., very small phones) */
+    body::-webkit-scrollbar {
+        width: 6px; /* Smallest width */
+    }
+}
+
+
+.header {
+    text-align: center;
+    padding-top: 20px;
+}
+
+
+/* Styling the container */
+.info-container {
+    position: fixed;
+    display: inline-block;
+    left: 1vw;
+    top: 80vh;
+    width: 100px;
+    height: 100px;
+    z-index: 1;
+}
+
+/* Styling the info icon */
+.information-button {
+    position: fixed; /* Keeps it fixed on the viewport */
+    left: 1vw; /* Use viewport width for responsiveness */
+    top: 90vh; /* Use viewport height for responsiveness */
+    width: 2rem; /* Set to desired width (responsive size) */
+    height: 2rem; /* Set to desired height (responsive size) */
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect for the icon */
+.info-container:hover .information-button {
+    transform: scale(1.1); /* Slightly enlarge the icon */
+}
+
+/* Initially hiding the paragraph */
+.about-paragraph {
+    display: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.125rem; /* 18px */
+    font-weight: bold;
+    color: #000000;
+    line-height: 1.6;
+    background-color: #FDCC01;
+    padding: 1rem; /* 15px */
+    border-radius: 0.625rem; /* 10px */
+    border: 2px solid #000000;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Adjust position if necessary */
+    top: 250px;
+    left: 60px;
+    width: 250px; /* Set a responsive width */
+    z-index: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+}
+
+/* Showing the paragraph when hovering over the logo */
+.information-button:hover + .about-paragraph {
+    display: block;
+}
+
+/* Additionally, ensure about-paragraph stays displayed when hovering over it */
+.about-paragraph:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Optional: Add a subtle background color change on hover */
+.about-paragraph:hover {
+    background-color: #E5C000; /* Slightly darker shade for hover effect */
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .information-button {
+        left: 2vw; /* Adjust left position for medium screens */
+        top: 12vh; /* Adjust top position for medium screens */
+        width: 5rem; /* Increase width for better visibility */
+        height: 5rem;
+        display: none; /* Increase height for better visibility */
+    }
+
+    .about-paragraph {
+        width: 220px; /* Slightly smaller width for medium screens */
+        font-size: 1rem; 
+        display: none;/* Adjust font size */
+    }
+}
+
+@media (max-width: 768px) {
+    .information-button {
+        left: 3vw; /* More left margin for small screens */
+        top: 10vh; /* Adjust top position */
+        width: 4rem; /* Increase width */
+        height: 4rem;
+        display: none; /* Increase height */
+    }
+
+    .about-paragraph {
+        width: 180px; /* Smaller width for small screens */
+        font-size: 0.9rem; /* Adjust font size */
+        padding: 0.8rem; /* Adjust padding */
+        top: 120px; /* Adjust top position */
+        left: 50px;
+        display: none; /* Adjust left position */
+    }
+}
+
+@media (max-width: 480px) {
+    .information-button {
+        left: 5vw; /* More left margin for smaller screens */
+        top: 8vh; /* Adjust top position */
+        width: 5rem; /* Increase width */
+        height: 5rem; 
+        display: none;/* Increase height */
+    }
+
+    .about-paragraph {
+        width: 90%; /* Full width on small screens */
+        max-width: 300px; /* Set a max width */
+        font-size: 0.85rem; /* Smaller font size */
+        padding: 0.5rem; /* Less padding */
+        top: 80px; /* Adjust top position */
+        left: 5%;
+        display: none; /* Center it horizontally */
+    }
+}
+
+
+.event {
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+    width: 55%; /* Adjust the width as needed */
+    margin-bottom: 1.25rem;
+    padding: 1.25rem;
+    background-color: #ffffff;
+    border-radius: 0.625rem;
+    max-width: 43.75rem;
+    box-shadow: 0px 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    border-width: medium;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.0s ease, transform 1.0s ease;
+    box-shadow: inset 0 0 0 2px #000; /* Black stroke on the inside */
+}
+
+
+.event.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.event:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 0 0 2px #000; /* Black stroke on the inside */ 
+}
+
+.event-img {
+    width: 100%;
+    height: 700px; /* Fixed height for the image container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensure that no part of the image overflows the container */
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f0f0f0; /* Optional background color for better visualization */
+}
+
+.event-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* This will scale the image to fit within the container, preserving aspect ratio */
+    display: block;
+    border-radius: 5px;
+}
+
+.event-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.625rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    overflow-wrap: break-word; /* Prevents long words from overflowing */
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .event-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .event-title {
+        font-size: 1.25rem;
+    }
+}
+
+.event-date {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; /* Smaller font size than the title */
+    font-style: italic; /* Stylistic choice for date */
+    color: #666; /* Gray for subtlety */
+    margin-bottom: 12px; /* Space between date and caption */
+}
+
+.event-caption {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.125rem;
+    color: #444;
+    line-height: 1.5;
+    text-align: justify;
+    margin-bottom: 0.9375rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-left: 5px solid #fdcc00;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-wrap: break-word;
+}
+
+/* Adjust font size for smaller screens */
+@media (max-width: 768px) {
+    .event-caption {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .event-caption {
+        font-size: 0.875rem;
+    }
+}
+
+/* Interact buttons */
+.interact-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 0.9375rem;
+    flex-wrap: wrap; /* Ensures wrapping on smaller screens */
+}
+
+.interact-buttons button, .interact-buttons a button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    color: #222121;
+    transition: color 0.3s ease, transform 0.3s;
+    margin-right: 10px;
+}
+
+.interact-buttons button:hover,  .interact-buttons a button:hover  {
+    color: #ffd000;
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .interact-buttons {
+        flex-direction: column; /* Stack buttons vertically */
+    }
+
+    .interact-buttons button, .interact-buttons a button {
+        width: 100%; /* Full width on smaller screens */
+        margin-bottom: 10px;
+    }
+}
+
+.maintitle {
+  font-size: 3vw;
+  color: #000000;
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: bold;
+  text-shadow: 2px 2px #ffffff;
+  margin-left: 20px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+@media (max-width: 1024px) {
+    .maintitle {
+        font-size: 4vw; /* Smaller font size for smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .maintitle {
+        font-size: 3.5vw; /* Smaller font size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .maintitle {
+        font-size: 6vw;
+      margin-left: 10px;
+    }
+
+    .container {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 10px 20px; /* More bottom padding for mobile */
+      }
+}
+
+
+/* Define the font family for the placeholder text */
+input::placeholder {
+    font-family: 'Bebas Neue', sans-serif; /* Specify Bebas Neue font family */
+}
+
+.error-message{
+    color: red;
+    font-family: Bebas Neue;
+}
+
+/* Comment Section */
+.comment-section {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.submit-comment-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.submit-comment-btn:hover {
+    background-color: #333;
+}
+
+.container {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: auto;
+    min-height: 10vh; /* Adjust height as needed */
+    background-color: #FDCC01; /* Solid yellow color */
+    z-index: 1;
+    align-items: center;
+    opacity: 1; /* Set opacity to 1 (fully opaque) */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border: solid #000; /* Black stroke on the inside */
+    background: url("WILogo.62446a09bd4c.png") no-repeat center top #FDCC01;
+    background-size: contain;
+    background-position: center;
+}
+
+#likeButton {
+    
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    align-items: center;
+    gap: 10px;
+}
+
+#likeButton i {
+    font-size: 24px;
+    color: #FFFFFF;
+    -webkit-text-stroke: 1.5px black;
+    transition: color 0.3s, -webkit-text-stroke-color 0.3s;
+}
+
+#likeButton.highlighted i {
+    color: #FDCD01;
+    text-shadow: none;
+}
+
+#likeButton.highlighted {
+    background-color: #FFFFFF(231, 230, 231);
+    text-shadow: none;
+}
+
+#likeButton i.animate {
+    animation: pulseTilt 0.6s;
+}
+
+@keyframes pulseTilt {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.2) rotate(-10deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(10deg);
+    }
+    75% {
+        transform: scale(1.2) rotate(-10deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.counts-container {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    padding-right: 15px; /* Adding padding to align it nicely */
+    font-size: 0.9em; /* Slightly smaller font size for distinction */
+    color: #333; /* Darker color for better readability */
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth transition for transform and opacity */
+}
+
+.counts-container span {
+    margin-left: 15px; /* Increasing margin for better spacing */
+    position: relative;
+    cursor: pointer; /* Change cursor to pointer for interactivity */
+    transition: color 0.2s ease, border-color 0.2s ease; /* Smooth transition for color change */
+}
+
+.counts-container span::before {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -2px;
+    left: 50%;
+    background-color: #FDCC00;
+    transition: width 0.2s ease, left 0.2s ease; /* Smooth transition for width and left properties */
+}
+
+.counts-container span:hover {
+    color: #FDCC00; /* Change color on hover */
+}
+
+.counts-container span:hover::before {
+    width: 100%;
+    left: 0%;
+}
+
+.counts-container:hover {
+    transform: scale(1.02);
+    opacity: 0.98;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: blue;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    margin-top: 10px;
+    display: block;
+    text-align: left;
+}
+
+/* Adjust font size for smaller screens */
+@media (max-width: 768px) {
+    .toggle-btn {
+        font-size: 0.875rem;
+    }
+}
+
+/* Responsive media queries */
+
+@media (max-width: 768px) {
+    .event {
+        width: 90%; /* Adjust width for smaller screens */
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .event {
+        width: 95%; /* Adjust width for phones */
+        padding: 10px;
+    }
+}
+
+/* Small devices (tablets, 37.5rem and down) */
+@media (max-width: 600px) {
+    .event {
+        width: 95%; /* Adjust width for phones */
+        padding: 10px; /* Reduce padding for smaller screens */
+        font-size: 14px; /* Smaller text size for phones */
+    }
+    
+    .event-title {
+        font-size: 1.25rem; /* Smaller title for phones */
+    }
+
+    .event-caption {
+        font-size: 0.875rem; /* Smaller font size for captions */
+    }
+
+    .profile-button {
+        padding: 0.5rem 1.5rem; /* Adjust padding for small screens */
+        margin-right: 10px;
+    }
+
+    .container123 {
+        padding: 10px 10px 20px; /* Adjust padding for phones */
+    }
+}
+
+/* For Tablets (600px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .event {
+        width: 80%; /* Adjust width for tablets */
+        padding: 15px; /* Slightly less padding for tablets */
+    }
+    
+    .event-title {
+        font-size: 1.75rem; /* Larger title on tablets */
+    }
+
+    .event-caption {
+        font-size: 1rem; /* Adjust caption size for tablets */
+    }
+
+    .profile-button {
+        padding: 0.8rem 2rem; /* Adjust padding for tablets */
+    }
+}
+
+/* For Laptops (1024px to 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .event {
+        width: 70%; /* Adjust width for laptops */
+        padding: 20px; /* Slightly more padding for larger screens */
+    }
+
+    .event-title {
+        font-size: 2rem; /* Bigger title for laptops */
+    }
+
+    .event-caption {
+        font-size: 1.125rem; /* Larger font size for captions */
+    }
+
+    .profile-button {
+        padding: 0.8rem 2.5rem; /* Comfortable padding for laptops */
+    }
+}
+
+/* For Desktops (1440px and above) */
+@media (min-width: 1441px) {
+    .event {
+        width: 60%; /* Wider content area for large desktops */
+        padding: 25px; /* More padding for larger screens */
+    }
+
+    .event-title {
+        font-size: 2.25rem; /* Larger title for desktop */
+    }
+
+    .event-caption {
+        font-size: 1.25rem; /* Larger captions for readability */
+    }
+
+    .profile-button {
+        padding: 1rem 3rem; /* Larger padding for large screens */
+    }
+}
+
+
+.fb-link {
+    text-align: left;
+    margin: 1.25rem; /* 20px equivalent (1rem = 16px) */
+}
+
+.fb-link a {
+    display: inline-block;
+    background-color: #145DBF; /* Facebook blue */
+    color: #fff; /* White text */
+    padding: 0.625rem 1.25rem; /* 10px top/bottom, 20px left/right */
+    font-size: 1.125rem; /* 18px */
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border-radius: 1.25rem; /* 20px */
+    text-decoration: none;
+    top: 90%; /* Centering position */
+    right: 0.625rem; /* 10px */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effects */
+    position: fixed;
+    max-width: 400px; /* Maximum width */
+    width: auto; /* Allow the width to adjust based on content */ 
+}
+
+/* Responsive adjustments for smaller screens */
+.fb-link {
+    text-align: left;
+    margin: 1.25rem; /* 20px */
+}
+
+/* Hide or resize on smaller screens */
+@media (max-width: 768px) {
+    .fb-link a {
+        font-size: 0.875rem; /* Reduce font size */
+        padding: 0.5rem 0.9375rem;
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .fb-link {
+        display: none; /* Hide it on extra small screens */
+    }
+}
+@media (min-width: 481px) and (max-width: 1506px) and (max-height: 824px) {
+    .fb-link {
+        display: none; /* Hide the Facebook link */
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1506px) and (max-height: 824px), 
+       (max-width: 1520px) and (max-height: 911px) {
+    .fb-link {
+        display: none; /* Hide the Facebook link */
+    }
+}
+
+/* Hide the Facebook link on smaller screens */
+@media (max-width: 480px) {
+    .fb-link {
+        display: none; /* Hide on extra small screens */
+    }
+}
+
+.fb-link a:hover {
+    background-color: #145DBF; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.fb-link img {
+    vertical-align: middle;
+    width: 1.5625rem; /* 25px */
+    margin-right: 0.625rem; /* 10px */
+}
+
+
+.no-events-available {
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #666;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @media only screen and (max-width: 552px) and (max-height: 824px) {
+    .maintitle {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 604px) and (max-height: 911px) {
+    .maintitle {
+        display: none;
+    }
+}

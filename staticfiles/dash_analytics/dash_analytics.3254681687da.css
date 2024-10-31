@@ -1,0 +1,302 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+ 
+body {
+  color: #000000;
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+ 
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("bgwhite.e57e28e11edd.svg") no-repeat center center;
+  background-size: cover;
+  opacity: 0.5;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #000; /* Black background for track */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #FDCC00; /* Yellow background for thumb */
+  border-radius: 20px; /* Rounded corners for thumb */
+  border: 3px solid #000; /* Padding around thumb */
+}
+
+
+.bold1 {
+  position: fixed;
+  top: 10px;
+  left: 30px;
+  font-size: 60px;
+  color: #000000;
+  font-family: 'Bebas Neue', sans-serif;
+  text-align: left;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+
+
+.analytics-container {
+  display: inline-block;
+  align-items:center;
+  gap: 100px;
+  padding: 20px;
+  background-size: cover;
+  width: 100%;
+  margin-top: 125px;
+  margin-left: 50px;
+}
+
+
+    /* Style for the dropdown container */
+      .dropdown-container {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          margin: 20px 0;
+      }
+      
+      /* Style for the label */
+      .dropdown-label {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 20px;
+          margin-right: 15px;
+          color: #333;
+      }
+      
+      /* Style for the dropdown menu */
+      .styled-dropdown {
+          padding: 10px;
+          font-size: 16px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          background-color: #f5f5f5;
+          color: #333;
+          cursor: pointer;
+          transition: background-color 0.3s, border-color 0.3s;
+      }
+      
+      /* Hover effect for the dropdown */
+      .styled-dropdown:hover {
+          background-color: #e0e0e0;
+          border-color: #bbb;
+      }
+      
+      /* Focused state */
+      .styled-dropdown:focus {
+          outline: none;
+          border-color: #888;
+      }
+      
+      /* Option styles */
+      .styled-dropdown option {
+          padding: 10px;
+          color: #333;
+      }
+
+
+
+      /* Website Analytics */
+      /* Container styling */
+.kpi-cards-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+/* Individual KPI Card styling */
+.kpi-card {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  width: 200px;
+  transition: transform 0.3s ease;
+}
+
+/* Title and value styling */
+.kpi-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #FDCC01;
+}
+
+.kpi-value {
+ 
+  font-size: 40px;
+  font-weight: bold;
+  color: #FDCC01;
+}
+
+.kpi-value-facebook {
+  font-size: 40px;
+  font-weight: bold;
+  color: #FDCC01;
+}
+
+/* Hover effect */
+.kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Facebook Analytics */
+/* Facebook-specific card styling */
+.fb-card {
+  background: #4267B2;  /* Facebook Blue */
+  color: #FDCC01;
+}
+
+.fb-card .kpi-title {
+  color: #FDCC01;
+}
+
+.fb-card .kpi-value {
+  color: #FDCC01;
+}
+
+
+
+
+
+
+.content-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* website most cards */
+.analytics-extra-cards {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.event-card {
+  background: #4267B2;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.event-card-website {
+  background: #F5F5F5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+}
+
+.event-preview {
+  margin-top: 10px;
+}
+
+.event-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.event-title {
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.event-likes, .event-comments, .event-shares {
+  font-size: 50px;
+  color: #FDCC01;
+
+}
+
+.event-value {
+  font-size: 100px;
+  color: #FDCC01;
+
+}
+
+
+
+
+
+
+
+/* Line Chart Container */
+.line-chart-container , .bar-chart-container, .area-chart-container{
+  width: 50%;  /* Make the chart containers smaller */
+  margin: 20px auto;  /* Center them on the page */
+  padding: 15px;  /* Reduce padding */
+  background-color: rgba(105, 105, 105, 0.1);  /* Dark grey background with slight transparency */
+  border-radius: 10px;  /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+.pie-chart-container{
+  width: 50%;  /* Make the chart containers smaller */
+  margin: 20px auto;  /* Center them on the page */
+  padding: 15px;  /* Reduce padding */
+  background-color: rgba(105, 105, 105, 0.1);  /* Dark grey background with slight transparency */
+  border-radius: 10px;  /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+.line-chart-container canvas, .bar-chart-container canvas , .area-chart-container canvas, .pie-chart-container canvas {
+  width: 100%;  /* Maintain responsiveness */
+  height: 250px;  /* Set a smaller fixed height for the charts */
+}
+
+/* Ensure the container adjusts properly on smaller screens */
+@media screen and (max-width: 768px) {
+  .line-chart-container {
+    width: 95%;  /* Use nearly full width on smaller screens */
+    padding: 10px;  /* Reduce padding on small screens */
+  }
+}
+
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 4px; /* Adjust the height as needed */
+  background-color: orange; /* Orange color for the progress bar */
+  z-index: 10000; /* Make sure it's on top of everything */
+  transition: width 0.2s ease; /* Smooth progress */
+}
