@@ -1,25 +1,59 @@
-# Ignore Django migration files
-*.pyc
+# Ignore environment variables
+Capstone/.env
+
+# Python compiled files
 __pycache__/
-*.pyo
-*.pyc
-*.db
+*.py[cod]
+*$py.class
 
-# Ignore static files directory
+# Django migration files
+*/migrations/*
+
+# Ignore Django cache, static, and media directories
+/static/
 /staticfiles/
-
-# Ignore media files directory
 /media/
-
-# Ignore local settings file
-local_settings.py
 
 # Ignore database files
 *.sqlite3
 db.sqlite3
 
-# Ignore dependency directories
+# Ignore virtual environments
 venv/
 env/
 lib/
 node_modules/
+
+# Ignore IDE and editor settings
+.idea/                  # PyCharm settings
+.vscode/                # VSCode settings
+
+# Ignore log files
+*.log
+
+# Ignore temporary files created by editors
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# Ignore local settings file
+local_settings.py
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore coverage files
+.coverage
+htmlcov/
+
+# Ignore test and profiling output
+.tox/
+.pytest_cache/
+.coverage
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
