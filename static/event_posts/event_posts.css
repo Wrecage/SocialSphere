@@ -558,12 +558,28 @@ h1 {
     white-space: normal;
 }
 
+
 .toggle-btn {
-    background: none;
+    background-color: #ffcc00;
     border: none;
-    color: blue;
+    color: #333;
+    padding: 8px 12px;
     cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-top: 10px;
 }
+
+.toggle-btn:hover {
+    background-color: #ffdd44;
+}
+
+@media (max-width: 768px) {
+    .toggle-btn {
+        font-size: 0.875rem;
+    }
+}
+
 
 .image-preview {
     display: flex;
