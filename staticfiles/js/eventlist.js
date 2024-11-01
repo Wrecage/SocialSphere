@@ -219,10 +219,7 @@ function toggleText(eventId) {
     const fullText = captionText.getAttribute('data-fulltext');
     const truncatedText = captionText.getAttribute('data-truncated');
 
-    // Log the current state for debugging
-    console.log("Current Button Text:", toggleBtn.textContent);
-    console.log("Full Text:", fullText);
-    console.log("Truncated Text:", truncatedText);
+
 
     // Check the current button state and toggle text accordingly
     if (toggleBtn.textContent === 'See More') {
@@ -233,9 +230,7 @@ function toggleText(eventId) {
         toggleBtn.textContent = 'See More'; // Change button text
     }
 
-    // Log after changing the text
-    console.log("Updated Button Text:", toggleBtn.textContent);
-    console.log("Updated Caption Text:", captionText.innerHTML);
+
 }
 
 window.onload = function() {

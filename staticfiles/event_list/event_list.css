@@ -531,16 +531,25 @@ input::placeholder {
 }
 
 .toggle-btn {
-    background: none;
+    background-color: #ffcc00;
     border: none;
-    color: blue;
+    color: #333;
+    padding: 8px 12px;
     cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
+    font-size: 14px;
+    border-radius: 5px;
     margin-top: 10px;
-    display: block;
-    text-align: left;
 }
+
+.toggle-btn:hover {
+    background-color: #ffdd44;
+}
+
+.caption-text {
+    font-size: 1.1rem;
+    color: #555;
+}
+
 
 /* Adjust font size for smaller screens */
 @media (max-width: 768px) {

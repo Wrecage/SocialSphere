@@ -11,7 +11,7 @@ __pycache__/
 
 # Ignore Django cache, static, and media directories
 
-
+/staticfiles/
 /media/
 
 # Ignore database files

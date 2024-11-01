@@ -4,9 +4,10 @@ body {
   background-size: cover;
   margin: 0;
   padding: 0;
-  min-height: 100vh; /* Adjusted to allow scrolling if content overflows */
+  min-height: 100vh;
 }
 
+/* Customize the scrollbar for the event content */
 .event-content::-webkit-scrollbar {
   width: 12px; /* Default width */
 }
@@ -16,6 +17,21 @@ body {
 }
 
 .event-content::-webkit-scrollbar-thumb {
+  background-color: #FDCC00; /* Yellow background for thumb */
+  border-radius: 20px; /* Rounded corners for thumb */
+  border: 3px solid #000; /* Padding around thumb */
+}
+
+/* Customize the scrollbar for the comments section */
+.comments-section::-webkit-scrollbar {
+  width: 12px; /* Default width */
+}
+
+.comments-section::-webkit-scrollbar-track {
+  background: #000; /* Black background for track */
+}
+
+.comments-section::-webkit-scrollbar-thumb {
   background-color: #FDCC00; /* Yellow background for thumb */
   border-radius: 20px; /* Rounded corners for thumb */
   border: 3px solid #000; /* Padding around thumb */
@@ -43,27 +59,20 @@ body {
   height: 95%;
   display: flex;
   position: relative;
-
-}
-
-@media (max-width: 768px) {
-  .event-detail-container {
-    flex-direction: column; /* Stack content on mobile */
-    height: auto;
-    width: 100%; /* Full width for smaller screens */
-  }
 }
 
 @media (max-width: 768px) {
   .event-detail-container {
     flex-direction: column;
-    padding: 10px;
-  }
-
-  .event-content {
-    padding: 10px;
+    height: 100vh;
     width: 100%;
+    padding: 10px;
   }
+}
+
+@media (max-width: 768px) {
+
+
 
   .comment {
     flex-direction: column;
@@ -114,7 +123,7 @@ body {
 @media (max-width: 768px) {
   .close-button, .home-button {
     font-size: 1rem; /* Smaller buttons for mobile */
-    padding: 6px 12px;
+    padding: 3px 5px;
   }
 }
 
@@ -143,23 +152,19 @@ body {
   background-color: #000;
 }
 
-
 @media (max-width: 768px) {
   .event-img img {
-    max-height: 60vh; /* Reduce height for smaller screens */
+    max-height: 50vh; /* Reduce height for smaller screens */
   }
 }
 
-
-
-
 .event-content {
-  width: 50%;
+  width: 100%; /* Full width for event content */
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow-y: auto;
+  overflow-y: auto; /* Ensure scrollability */
 }
 
 .event-title {
@@ -180,7 +185,6 @@ body {
   color: #555;
 }
 
-
 @media (max-width: 768px) {
   .event-title {
     font-size: 1.8rem; /* Slightly smaller for smaller screens */
@@ -196,7 +200,10 @@ body {
   padding-top: 20px;
   margin-top: 20px;
   background-color: #f8f8f8;
+  overflow-y: auto; /* Make the comments section scrollable */
 }
+
+
 
 .comments-section h3 {
   color: #333;
@@ -235,7 +242,7 @@ body {
   display: inline-block;
   margin-bottom: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 90%;
+  max-width: 100%; /* Ensure text fits the screen on mobile */
 }
 
 @media (max-width: 768px) {
@@ -250,6 +257,7 @@ body {
   margin-top: 5px;  /* Space above the date */
   display: block;  /* Display on a separate line */
 }
+
 .comment-delete-btn {
   background-color: transparent;
   color: #ff0000;
@@ -319,12 +327,6 @@ body {
 .buttoncomment {
   display: none; /* Hide the submit button */
 }
-
-
-
-/* Styles for the delete button */
-
-
 
 /* Styles for the modal */
 .modal {
@@ -402,7 +404,7 @@ body {
 /* Styles for the loading icon */
 .modal-custom,
 .ratelimit-modal {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
   z-index: 1000; /* Sit on top */
   left: 0;
@@ -510,6 +512,7 @@ body {
   to { opacity: 1; }
 }
 
+/* Avatar Selection Section */
 .avatar-selection {
   display: flex;
   align-items: flex-start; /* Align items at the top */
@@ -526,7 +529,7 @@ body {
 
 /* Custom dropdown styling */
 .custom-dropdown {
-  flex:1;
+  flex: 1;
   position: relative;
   display: inline-block;
   cursor: pointer;
@@ -597,7 +600,6 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
   background: #fff;  /* White background for contrast */
   transition: transform 0.3s ease-in-out; /* Smooth transform on hover */
-
 }
 
 /* Live preview image */
@@ -633,8 +635,69 @@ body {
   }
 
   .live-avatar-preview {
-    max-width: 100%; /* Ensure avatar preview fits within the container */
+    display: none;  /* Ensure avatar preview fits within the container */
+  }
+  label{
+    display: none;
   }
 }
 
 /* Responsive adjustments for mobile screens */
+
+/* Additional responsive CSS for phone screens */
+@media (max-width: 768px) {
+
+  /* Make the event content (image + comments) scrollable */
+  .event-content {
+    width: 100%; /* Full width for event content */
+    flex-grow: 1; /* Take up remaining space */
+     /* Scrollable content */
+    height: calc(100vh - 160px); /* Adjust to fit fixed comment form */
+  }
+
+  /* Fixed position for the comment form at the bottom */
+  .comment-form {
+  
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow to separate from content */
+    z-index: 10; /* Ensure the form is on top of everything */
+    
+  }
+
+  /* The textarea for comment input should resize for mobile */
+  .comment_textarea {
+    width: 100%;
+    height: 60px; /* Reduced height for mobile */
+    padding: 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  .comments-section {
+    padding-bottom: 150px; /* Adjust this value based on the height of the comment form */
+  }
+
+
+}
+
+.toggle-btn {
+  background-color: #ffcc00;
+  border: none;
+  color: #333;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+  display: inline-block; /* Keep the button width compact */
+  margin-top: 5px;
+}
+
+.toggle-btn:hover {
+  background-color: #ffdd44;
+}

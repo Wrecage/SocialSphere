@@ -14,9 +14,10 @@ from pathlib import Path
 
 import os
 import dj_database_url
-from decouple import config
+from dotenv import load_dotenv
 
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,16 +29,16 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-1w$wd8hlmz85cgiybc(cesn3co%ylz0o8invgh32)dt&$lqkvl'
+
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['socialsphere-83da.onrender.com', 'socialsphere.pythonanywhere.com']
+ALLOWED_HOSTS = ['socialsphere-83da.onrender.com', 'socialsphere.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 if DEBUG:
@@ -96,44 +97,50 @@ WSGI_APPLICATION = 'Capstone.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# SQLite (Default for Local Development)
 
-#DEFAULT SQLITE
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+#RAILWAY
+
+    # Github account
+
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),    }
-# }
-
-
-#trisanjae email
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER': 'postgres',
-#         'PASSWORD': 'JQUSUbESEFJsRUYwnbnlGTQhnqdZLEyg',
-#         'HOST': 'postgres.railway.internal',
-#         'PORT': '5432',
+#         'ENGINE': os.getenv("GITHUB_DB_ENGINE"),
+#         'NAME': os.getenv("GITHUB_DB_NAME"),
+#         'USER': os.getenv("GITHUB_DB_USER"),
+#         'PASSWORD': os.getenv("GITHUB_DB_PASSWORD"),
+#         'HOST': os.getenv("GITHUB_DB_HOST"),
+#         'PORT': os.getenv("GITHUB_DB_PORT"),
 #     }
 # }
 
+    # trisanjae gmail
 
-#github email (THE REAL ONE)
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER': 'postgres',
-#         'PASSWORD': 'ViruOZekOCZVQqYVkEdOHZPzDGhCdtmQ',
-#         'HOST': 'roundhouse.proxy.rlwy.net',
-#         'PORT': '21262',
+#         'ENGINE': os.getenv("TRISANJAE_DB_ENGINE"),
+#         'NAME': os.getenv("TRISANJAE_DB_NAME"),
+#         'USER': os.getenv("TRISANJAE_DB_USER"),
+#         'PASSWORD': os.getenv("TRISANJAE_DB_PASSWORD"),
+#         'HOST': os.getenv("TRISANJAE_DB_HOST"),
+#         'PORT': os.getenv("TRISANJAE_DB_PORT"),
 #     }
 # }
+
 
 #POSTGRES RENDER
+
 DATABASES = {
     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1000),
 }
+
 
 
 # Password validation
