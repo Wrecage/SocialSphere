@@ -350,3 +350,30 @@ body, html {
 #closeEmailModal:hover {
     background-color: #e6b801;
 }
+
+/* Forgot Password Styling */
+.forgot-password-btn {
+    font-size: 0.8vw; /* Smaller font size */
+    color: #888; /* Light gray color */
+    background: none; /* No background */
+    border: none; /* Remove borders */
+    padding: 0;
+    margin-top: 1rem; /* Margin from the login button */
+    display: block; /* Block display to appear like a link */
+    cursor: pointer;
+    text-decoration: underline; /* Underline for link appearance */
+    text-align: center;
+}
+ 
+#backToSignInBtn {
+    font-size: 0.8vw; /* Smaller font size */
+    color: #888; /* Light gray color */
+    background: none; /* No background */
+    border: none; /* Remove borders */
+    padding: 0;
+    margin-top: 1rem; /* Margin from the login button */
+    display: block; /* Block display to appear like a link */
+    cursor: pointer;
+    text-decoration: underline; /* Underline for link appearance */
+    text-align: center;
+}
