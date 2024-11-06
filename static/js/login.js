@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </button>
             </form>
             <div>
-                <button id="forgotPasswordBtn" class="loginbutton">Forgot your password?</button>
+                <button id="forgotPasswordBtn" class="forgot-password-btn">Forgot your password?</button>
             </div>
         `;
 
@@ -92,15 +92,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 </button>
             </form>
             <div>
-                <button id="backToSignInBtn" class="loginbutton">Back to Sign In</button>
+                <button id="backToSignInBtn" class="forgot-password-btn">Back to Sign In</button>
             </div>
         `;
 
         
-
-
-
-
 
 
 
