@@ -34,12 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
       eventDetailModal.style.display = 'none';
     }
   
-    // Check if the page was opened in a new tab (no referrer or limited history)
-    if (!document.referrer || window.history.length <= 1) {
-      console.log("Opened directly in a new tab or via scroll button. Redirecting to landing page.");
-      // Redirect to the landing page
+    if (isNewTab) {
+      console.log("Opened directly in a new tab. Redirecting to landing page.");
       const scrollY = window.scrollY;
-      window.location.href = `/?scrollY=${scrollY}`;
+      window.location.href = `/?scrollY=${scrollY}`; // Redirect with scroll position
     } else {
       // Navigate back to the previous page
       window.history.go(-1);
@@ -109,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
           closeDeleteModal(); // Close the delete confirmation modal
 
           // Handle the scenario where the modal needs to close in a new tab
-          if (!document.referrer || window.history.length <= 1) {
+          if (isNewTab) {
             console.log("Deleting in a new tab. Redirecting to landing page.");
             window.location.href = '/';
           }
