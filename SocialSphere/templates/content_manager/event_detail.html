@@ -14,9 +14,11 @@
   <script src="https://www.google.com/recaptcha/api.js?render=6Ld_NFkqAAAAAH_Zq5GLRSBSVHme3y5md8nWd9zs"></script>
 </head>
 <body>
-
+  
   <div id="event-detail-overlay" class="event-detail-overlay">
+    
     <div class="event-detail-container">
+      <input type="hidden" id="eventId" value="{{ event.id }}">
       <div id="close-button" class="close-button" onclick="closeEventDetail()">×</div>
       <div id="home-button" class="home-button" onclick="goHome()">Home</div>
       {% if event.photo %}
@@ -201,6 +203,16 @@
       </button>
     </div>
   </div>
+
+
+  <!-- not allowed empty comments modal -->
+  <div id="emptyCommentModal" class="empty-comment-modal" style="display: none;">
+    <div class="empty-comment-modal-content">
+        <span id="emptyCommentModalClose" class="empty-comment-modal-close">&times;</span>
+        <p id="emptyCommentModalMessage"></p>
+    </div>
+</div>
+
 
 </body>
 </html>

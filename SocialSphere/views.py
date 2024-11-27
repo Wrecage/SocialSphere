@@ -303,6 +303,15 @@ class ContentManagerUtility:
             avatar_style = self.request.POST.get('avatar_style', 'pixel-art')  # Get the avatar style from the form
             recaptcha_token = self.request.POST.get('recaptcha_token')
 
+            #checking if commnets are empty
+            if not comment_text:
+                return JsonResponse(
+                    {
+                        'status':'failed',
+                        'message' : 'Comment cannot be empty',
+                                     }
+                                     )
+
             # Recaptcha validation
             recaptcha_response = requests.post(
                 'https://www.google.com/recaptcha/api/siteverify',
@@ -407,6 +416,25 @@ class ContentManagerUtility:
                 return JsonResponse({'status': 'failed', 'message': 'Unauthorized'})
         return JsonResponse({'status': 'failed', 'message': 'Invalid request method'})
 
+    def fetch_comments(self, event_id):
+            try:
+                event = get_object_or_404(Event, pk=event_id)
+                comments = Comment.objects.filter(event=event).order_by('comment_date')
+                comments_data = [
+                    {
+                        'id': comment.id,
+                        'text': comment.comment_text,
+                        'date': localtime(comment.comment_date).strftime('%b. %d, %Y, %I:%M %p'),
+                        'avatar_style': comment.avatar_style,
+                        'ip_address': comment.ip_address,
+                    }
+                    for comment in comments
+                ]
+                return JsonResponse({'status': 'success', 'comments': comments_data})
+            except Event.DoesNotExist:
+                return JsonResponse({'status': 'failed', 'message': 'Event not found'}, status=404)
+            except Exception as e:
+                return JsonResponse({'status': 'failed', 'message': str(e)}, status=500)
 
     def get_total_likes_and_comments(self):
         total_likes = EventStats.objects.aggregate(Sum('total_likes'))['total_likes__sum'] or 0
@@ -837,6 +865,9 @@ def like_event(request, event_id):
     content_manager_utility = ContentManagerUtility(request)
     return content_manager_utility.like_event(event_id)
 
+def fetch_comments(request,event_id):
+    content_manager_utility = ContentManagerUtility(request)
+    return content_manager_utility.fetch_comments(event_id)
 
 def add_comment(request, event_id):
     content_manager_utility = ContentManagerUtility(request)
