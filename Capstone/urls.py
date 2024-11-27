@@ -75,4 +75,6 @@ urlpatterns = [
     path('password_reset/', views.custom_password_reset, name='password_reset'),
     path('reset_password/<uidb64>/<token>/', views.reset_password, name='reset_password'),
 
+    # fetch commments real time
+    path('fetch_comments/<int:event_id>/', views.fetch_comments, name='fetch_comments'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

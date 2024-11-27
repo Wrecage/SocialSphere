@@ -1,4 +1,7 @@
+
+
 document.addEventListener('DOMContentLoaded', function() {
+  
   window.showDeleteModal = function(commentId, deleteUrl) {
     const modal = document.getElementById('deleteCommentModal');
     const confirmButton = document.getElementById('confirmDeleteButton');
@@ -25,19 +28,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 
-  window.closeEventDetail = function() {
+  window.closeEventDetail = function () {
     const eventDetailModal = document.getElementById('event-detail-overlay');
     if (eventDetailModal) {
-        eventDetailModal.style.display = 'none';
+      eventDetailModal.style.display = 'none';
     }
-    
-    // Ensure a single "back" operation takes us to the event list page
-    if (window.history && window.history.length > 1) {
-        window.history.go(-1);  // Only one "back" operation needed
+  
+    // Check if the page was opened in a new tab (no referrer or limited history)
+    if (!document.referrer || window.history.length <= 1) {
+      console.log("Opened directly in a new tab or via scroll button. Redirecting to landing page.");
+      // Redirect to the landing page
+      const scrollY = window.scrollY;
+      window.location.href = `/?scrollY=${scrollY}`;
     } else {
-        window.location.href = '/';  // Replace with your event list URL if history navigation fails
+      // Navigate back to the previous page
+      window.history.go(-1);
     }
-};
+  };
+  
 
   window.goHome = function() {
     window.location.href = '/';
@@ -68,43 +76,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
   
   function handleConfirmDeleteButtonClick() {
-    document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+    document.getElementById('confirmDeleteButton').addEventListener('click', function () {
       const commentId = this.getAttribute('data-comment-id');
       const deleteUrl = this.getAttribute('data-delete-url');
       const loadingIcon = document.getElementById('deleteLoadingIcon');
       const confirmButton = document.getElementById('confirmDeleteButton');
-      
+  
       loadingIcon.style.display = 'inline-block';
       confirmButton.style.display = 'none';
-      
+  
       fetch(deleteUrl, {
         method: 'POST',
         headers: {
           'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
         },
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
-          // Remove the comment from the DOM without altering history
-            document.querySelector(`button[data-id="${commentId}"]`).parentElement.remove();
-
-            // Do NOT push any history states during comment deletion
-            const deleteModal = document.getElementById('deleteCommentModal');
-            if (deleteModal) {
-                deleteModal.style.display = 'none';
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // Fetch and re-render comments after deletion
+            const eventIdElement = document.getElementById('eventId');
+            const eventId = eventIdElement ? eventIdElement.value : null;
+  
+            if (eventId) {
+              fetchAndDisplayComments(eventId);
+            } else {
+              console.error('Invalid Event ID. Cannot refresh comments.');
             }
-        } else {
-            alert('Failed to delete comment');
-        }
-        closeDeleteModal();  // Close the delete confirmation modal
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        closeDeleteModal();
-      });
+          } else {
+            alert('Failed to delete comment.');
+          }
+          closeDeleteModal(); // Close the delete confirmation modal
+
+          // Handle the scenario where the modal needs to close in a new tab
+          if (!document.referrer || window.history.length <= 1) {
+            console.log("Deleting in a new tab. Redirecting to landing page.");
+            window.location.href = '/';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          closeDeleteModal();
+        })
+        .finally(() => {
+          loadingIcon.style.display = 'none';
+          confirmButton.style.display = 'inline-block';
+        });
     });
   }
+
+  // Restore scroll position when redirected to landing page
+document.addEventListener('DOMContentLoaded', function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const scrollY = urlParams.get('scrollY');
+
+  if (scrollY) {
+    window.scrollTo(0, parseInt(scrollY, 10)); // Restore scroll position
+  }
+});
+
 
   function initialize() {
     handleDeleteButtonClick();
@@ -122,9 +152,7 @@ function initializeCommentForm() {
   const loadingIcon = document.getElementById('loadingIcon');
   const deleteModal = document.getElementById('deleteCommentModal');
   const confirmDeleteButton = document.getElementById('confirmDeleteButton');
-  let currentDeleteCommentId = null;
-  let currentDeleteUrl = null;
-
+ 
   if (!textarea || !form || !enterIcon || !loadingIcon || !deleteModal || !confirmDeleteButton) {
     console.error('One or more elements were not found in the DOM');
     return;
@@ -133,22 +161,29 @@ function initializeCommentForm() {
   function submitFormWithReCaptcha() {
     enterIcon.style.display = 'none';
     loadingIcon.style.display = 'inline';
+  
+    grecaptcha.ready(function () {
+      grecaptcha.execute('6Ld_NFkqAAAAAH_Zq5GLRSBSVHme3y5md8nWd9zs', { action: 'submit' })
+        .then(function (token) {
+          const formData = new FormData(form);
+          formData.append('recaptcha_token', token);
+  
+          // Check for a valid eventId before submitting
+          const eventIdElement = document.getElementById('eventId');
+          const eventId = eventIdElement ? eventIdElement.value : null;
 
-    // Call reCAPTCHA v3 and get the token before submitting the form
-    grecaptcha.ready(function() {
-      grecaptcha.execute('6Ld_NFkqAAAAAH_Zq5GLRSBSVHme3y5md8nWd9zs', { action: 'submit' }).then(function(token) {
-
-
-        // Add the reCAPTCHA token to the form data
-        const formData = new FormData(form);
-        formData.append('recaptcha_token', token);
-
-        // Submit the form data with the reCAPTCHA token
-        submitForm(formData);
-      });
+          if (!eventId || eventId === 'undefined') {
+            console.error('Cannot submit comment: Invalid Event ID');
+            loadingIcon.style.display = 'none';
+            enterIcon.style.display = 'inline';
+            return;
+          }
+  
+          submitForm(formData);
+        });
     });
   }
-
+  
 
   function submitForm(formData) {
     fetch(form.action, {
@@ -171,9 +206,19 @@ function initializeCommentForm() {
     })
     .then(data => {
       if (data.status === 'success') {
-        insertNewComment(data);
-        updateCommentCount(1);  // Increment comment count by 1
+
+        const eventIdElement = document.getElementById('eventId');
+        const eventId = eventIdElement ? eventIdElement.value : null;
+
+
+
+        if (eventId) {
+          fetchAndDisplayComments(eventId);
+        } else {
+          console.error('Cannot fetch comments: Invalid Event ID.');
+        }
         form.reset(); // Clear the comment form after successful submission
+
       } else if (data.status === 'failed' && data.remaining_time) {
         showRatelimitModal(data.message, data.remaining_time);
       } else if (data.status === 'failed' && data.message === 'Spam detected. Please refrain from spamming the comment section.') {
@@ -184,6 +229,8 @@ function initializeCommentForm() {
         showErrorModal("Comments with links are not allowed.");
       } else if (data.message.includes("reCAPTCHA verification failed")) {
         showErrorModal("Bot-like activity detected. Please try again.");
+      } else if (data.message.includes('Comment cannot be empty')){
+        showEmptyCommentModal("Comment cannot be empty")
       } else {
         alert('Failed to add comment');
       }
@@ -194,8 +241,8 @@ function initializeCommentForm() {
     .catch(error => {
       console.error('Error occurred:', error);
       alert('An error occurred while submitting your comment. Please check the console for more details.');
-      enterIcon.style.display = 'inline';
       loadingIcon.style.display = 'none';
+      enterIcon.style.display = 'inline';
     });
   }
 
@@ -216,65 +263,7 @@ function initializeCommentForm() {
   }
 
   // Function to dynamically insert a new comment and attach delete logic
-  function insertNewComment(data) {
-    const commentsSection = document.querySelector('.comments-section');
   
-    if (commentsSection) {
-      const newComment = document.createElement('div');
-      newComment.classList.add('comment');
-      newComment.setAttribute('data-id', data.comment_id);
-  
-      const avatarUrl = `https://api.dicebear.com/9.x/${data.avatar_style}/svg?seed=${data.ip_address}`;
-  
-      // Construct the comment element structure
-      const avatarWrapper = document.createElement('div');
-      avatarWrapper.classList.add('avatar-wrapper');
-      const avatarImg = document.createElement('img');
-      avatarImg.src = avatarUrl;
-      avatarImg.alt = "Avatar";
-      avatarImg.classList.add('avatar');
-      avatarWrapper.appendChild(avatarImg);
-  
-      const commentContent = document.createElement('div');
-      commentContent.classList.add('comment-content');
-      const commentText = document.createElement('div');
-      commentText.classList.add('comment-text');
-      commentText.textContent = data.comment_text;
-  
-      // Use the formatted date provided by the Django backend
-      const commentDate = document.createElement('div');
-      commentDate.classList.add('comment-date');
-      commentDate.textContent = data.comment_date;  // Directly use the pre-formatted date from Django
-  
-      commentContent.appendChild(commentText);
-      commentContent.appendChild(commentDate);
-  
-      // Create delete button for the comment
-      const deleteButton = document.createElement('button');
-      deleteButton.classList.add('comment-delete-btn');
-      deleteButton.setAttribute('data-id', data.comment_id);
-      deleteButton.setAttribute('data-delete-url', `/delete_comment/${data.comment_id}/`);
-      deleteButton.innerHTML = '<i class="material-icons" style="font-size: 28px;">&#xe872;</i>';
-  
-      // Append the constructed elements to the new comment
-      newComment.appendChild(avatarWrapper);
-      newComment.appendChild(commentContent);
-      newComment.appendChild(deleteButton);
-  
-      // Insert the new comment directly below the <h3>Comments</h3> element
-      const commentsHeader = commentsSection.querySelector('h3');
-      if (commentsHeader) {
-        commentsHeader.insertAdjacentElement('afterend', newComment);
-      } else {
-        commentsSection.appendChild(newComment);
-      }
-  
-      // Attach delete functionality to the new delete button
-      deleteButton.addEventListener('click', function() {
-        showDeleteModal(data.comment_id, deleteButton.getAttribute('data-delete-url'));
-      });
-    }
-  }
 
   function updateCommentCount(change) {
     const commentCountElement = document.querySelector('.comment-count');
@@ -300,6 +289,8 @@ function initializeCommentForm() {
     e.preventDefault();
     submitFormWithReCaptcha();
   });
+
+
 }
 
 
@@ -482,3 +473,155 @@ window.onload = function() {
       }
   });
 };
+
+
+function showEmptyCommentModal(message) {
+  const modal = document.getElementById('emptyCommentModal');
+  const modalMessage = document.getElementById('emptyCommentModalMessage');
+  const modalClose = document.getElementById('emptyCommentModalClose');
+
+  // Set the message in the modal
+  modalMessage.textContent = message;
+
+  // Show the modal
+  modal.style.display = 'flex';
+
+  // Close modal when clicking the close button
+  modalClose.addEventListener('click', () => {
+      modal.style.display = 'none';
+  });
+
+  // Close modal when clicking outside the modal content
+  window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+          modal.style.display = 'none';
+      }
+  });
+}
+
+function submitComment() {
+  const textarea = document.getElementById('commentTextarea');
+  const comment = textarea.value.trim();
+  const loadingIcon = document.getElementById('loadingIcon');
+
+  // Validate the input
+  if (comment === "") {
+      showEmptyCommentModal("Comment cannot be empty");
+      textarea.focus(); // Focus back on the textarea for user convenience
+      return;
+  }
+
+  // Show loading spinner
+  loadingIcon.style.display = 'inline-block';
+
+  // Simulate submission process
+  setTimeout(() => {
+      showEmptyCommentModal("Comment submitted successfully!");
+      textarea.value = ""; // Clear textarea after submission
+      loadingIcon.style.display = 'none';
+  }, 1000);
+}
+
+// Add event listener to the enter icon
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById('enterIcon').addEventListener('click', submitComment);
+
+  const modalClose = document.getElementById('emptyCommentModalClose');
+  if (modalClose) {
+      modalClose.addEventListener('click', () => {
+          document.getElementById('emptyCommentModal').style.display = 'none';
+      });
+  }
+});
+
+
+
+let displayedComments = new Set();
+
+document.addEventListener('DOMContentLoaded', function () {
+    const eventIdElement = document.getElementById('eventId');
+    if (!eventIdElement) {
+        console.error('Event ID element not found!');
+        return;
+    }
+    const eventId = eventIdElement.value;
+    console.log(`Event ID: ${eventId}`);
+
+    // Start polling for comments
+    setInterval(() => {
+        fetchAndDisplayComments(eventId);
+    }, 5000);
+});
+
+function fetchAndDisplayComments(eventId) {
+  const loadingIcon = document.getElementById('loadingIcon');
+
+  if (!eventId || eventId === 'undefined') {
+    console.error('Invalid Event ID passed to fetchAndDisplayComments:', eventId);
+    return;
+  }
+
+
+   loadingIcon.style.display = 'inline-block'
+
+  fetch(`/fetch_comments/${eventId}/`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.status === 'success') {
+        const commentsSection = document.querySelector('.comments-section');
+        commentsSection.innerHTML = '<h3>Comments</h3>'; // Clear comments section before re-rendering
+
+        // Re-render all comments fetched from the server
+        data.comments.forEach(comment => {
+          renderComment(comment, commentsSection);
+        });
+
+
+        if (typeof callback === 'function') callback();
+        
+      } else {
+        console.error('Failed to fetch comments:', data.message);
+      }
+    })
+    .catch((error) => console.error('Error:', error))
+    .finally(() => {
+      loadingIcon.style.display = 'none'; // Stop loading icon
+    });
+}
+
+
+function renderComment(comment, commentsSection) {
+  const newComment = document.createElement('div');
+  newComment.classList.add('comment');
+  newComment.setAttribute('data-id', comment.id);
+
+  const avatarUrl = `https://api.dicebear.com/9.x/${comment.avatar_style}/svg?seed=${comment.ip_address}`;
+
+  newComment.innerHTML = `
+    <div class="avatar-wrapper">
+      <img src="${avatarUrl}" alt="Avatar" class="avatar">
+    </div>
+    <div class="comment-content">
+      <div class="comment-text">${comment.text}</div>
+      <div class="comment-date">${comment.date}</div>
+    </div>
+    <button class="comment-delete-btn" data-id="${comment.id}" data-delete-url="/delete_comment/${comment.id}/">
+      <i class="material-icons" style="font-size: 28px;">&#xe872;</i>
+    </button>
+  `;
+
+  commentsSection.appendChild(newComment);
+
+  // Attach delete functionality
+  const deleteButton = newComment.querySelector('.comment-delete-btn');
+  deleteButton.addEventListener('click', function () {
+    showDeleteModal(comment.id, `/delete_comment/${comment.id}/`);
+  });
+}
+
+
