@@ -553,14 +553,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function fetchAndDisplayComments(eventId) {
   const loadingIcon = document.getElementById('loadingIcon');
-
+  
   if (!eventId || eventId === 'undefined') {
     console.error('Invalid Event ID passed to fetchAndDisplayComments:', eventId);
     return;
   }
 
-
-   loadingIcon.style.display = 'inline-block'
+  loadingIcon.style.display = 'inline-block'
 
   fetch(`/fetch_comments/${eventId}/`)
     .then(response => {
@@ -574,15 +573,15 @@ function fetchAndDisplayComments(eventId) {
         const commentsSection = document.querySelector('.comments-section');
         commentsSection.innerHTML = '<h3>Comments</h3>'; // Clear comments section before re-rendering
         const userIp = data.user_ip;
-
-
+        const isStaff = data.is_staff;
+        const isSuperuser = data.is_superuser;
 
         data.comments.forEach(comment => {
-              renderComment(comment, commentsSection, userIp);
-            });
-        } else {
-            console.error('Failed to fetch comments:', data.message);
-        }
+          renderComment(comment, commentsSection, userIp, isStaff, isSuperuser);
+        });
+      } else {
+        console.error('Failed to fetch comments:', data.message);
+      }
     })
     .catch((error) => console.error('Error:', error))
     .finally(() => {
@@ -591,12 +590,15 @@ function fetchAndDisplayComments(eventId) {
 }
 
 
-function renderComment(comment, commentsSection, userIp) {
+function renderComment(comment, commentsSection, userIp, isStaff, isSuperuser) {
   const newComment = document.createElement('div');
   newComment.classList.add('comment');
   newComment.setAttribute('data-id', comment.id);
 
   const avatarUrl = `https://api.dicebear.com/9.x/${comment.avatar_style}/svg?seed=${comment.ip_address}`;
+
+  
+  const canDelete = comment.ip_address === userIp || isStaff || isSuperuser;
 
   newComment.innerHTML = `
     <div class="avatar-wrapper">
@@ -607,7 +609,7 @@ function renderComment(comment, commentsSection, userIp) {
       <div class="comment-date">${comment.date}</div>
     </div>
 
-    ${comment.ip_address === userIp ? `
+    ${canDelete ? `
       <button class="comment-delete-btn" data-id="${comment.id}" data-delete-url="/delete_comment/${comment.id}/">
           <i class="material-icons" style="font-size: 28px;">&#xe872;</i>
       </button>` : ''}
