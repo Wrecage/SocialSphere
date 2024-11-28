@@ -417,25 +417,36 @@ class ContentManagerUtility:
         return JsonResponse({'status': 'failed', 'message': 'Invalid request method'})
 
     def fetch_comments(self, event_id):
-            try:
-                event = get_object_or_404(Event, pk=event_id)
-                comments = Comment.objects.filter(event=event).order_by('comment_date')
-                comments_data = [
-                    {
-                        'id': comment.id,
-                        'text': comment.comment_text,
-                        'date': localtime(comment.comment_date).strftime('%b. %d, %Y, %I:%M %p'),
-                        'avatar_style': comment.avatar_style,
-                        'ip_address': comment.ip_address,
-                    }
-                    for comment in comments
-                ]
-                return JsonResponse({'status': 'success', 'comments': comments_data})
-            except Event.DoesNotExist:
-                return JsonResponse({'status': 'failed', 'message': 'Event not found'}, status=404)
-            except Exception as e:
-                return JsonResponse({'status': 'failed', 'message': str(e)}, status=500)
+        try:
+            # Get the IP address of the user making the request
+            user_ip = self.get_client_ip()
 
+            # Get the event object based on the event ID
+            event = get_object_or_404(Event, pk=event_id)
+
+            # Fetch all comments for the event, ordered by date
+            comments = Comment.objects.filter(event=event).order_by('comment_date')
+
+            # Prepare the data for each comment, including the user's IP
+            comments_data = [
+                {
+                    'id': comment.id,
+                    'text': comment.comment_text,
+                    'date': localtime(comment.comment_date).strftime('%b. %d, %Y, %I:%M %p'),
+                    'avatar_style': comment.avatar_style,
+                    'ip_address': comment.ip_address,
+                    'can_delete': comment.ip_address == user_ip  # Flag to check if user can delete
+                }
+                for comment in comments
+            ]
+
+            # Return the comments data with the user's IP in the response
+            return JsonResponse({'status': 'success', 'comments': comments_data, 'user_ip': user_ip})
+        except Event.DoesNotExist:
+            return JsonResponse({'status': 'failed', 'message': 'Event not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'failed', 'message': str(e)}, status=500)
+           
     def get_total_likes_and_comments(self):
         total_likes = EventStats.objects.aggregate(Sum('total_likes'))['total_likes__sum'] or 0
         total_comments = EventStats.objects.aggregate(Sum('total_comments'))['total_comments__sum'] or 0

@@ -573,18 +573,16 @@ function fetchAndDisplayComments(eventId) {
       if (data.status === 'success') {
         const commentsSection = document.querySelector('.comments-section');
         commentsSection.innerHTML = '<h3>Comments</h3>'; // Clear comments section before re-rendering
+        const userIp = data.user_ip;
 
-        // Re-render all comments fetched from the server
+
+
         data.comments.forEach(comment => {
-          renderComment(comment, commentsSection);
-        });
-
-
-        if (typeof callback === 'function') callback();
-        
-      } else {
-        console.error('Failed to fetch comments:', data.message);
-      }
+              renderComment(comment, commentsSection, userIp);
+            });
+        } else {
+            console.error('Failed to fetch comments:', data.message);
+        }
     })
     .catch((error) => console.error('Error:', error))
     .finally(() => {
@@ -593,7 +591,7 @@ function fetchAndDisplayComments(eventId) {
 }
 
 
-function renderComment(comment, commentsSection) {
+function renderComment(comment, commentsSection, userIp) {
   const newComment = document.createElement('div');
   newComment.classList.add('comment');
   newComment.setAttribute('data-id', comment.id);
@@ -608,18 +606,20 @@ function renderComment(comment, commentsSection) {
       <div class="comment-text">${comment.text}</div>
       <div class="comment-date">${comment.date}</div>
     </div>
-    <button class="comment-delete-btn" data-id="${comment.id}" data-delete-url="/delete_comment/${comment.id}/">
-      <i class="material-icons" style="font-size: 28px;">&#xe872;</i>
-    </button>
+
+    ${comment.ip_address === userIp ? `
+      <button class="comment-delete-btn" data-id="${comment.id}" data-delete-url="/delete_comment/${comment.id}/">
+          <i class="material-icons" style="font-size: 28px;">&#xe872;</i>
+      </button>` : ''}
   `;
 
   commentsSection.appendChild(newComment);
 
-  // Attach delete functionality
+  // Attach delete functionality only if the button exists
   const deleteButton = newComment.querySelector('.comment-delete-btn');
-  deleteButton.addEventListener('click', function () {
-    showDeleteModal(comment.id, `/delete_comment/${comment.id}/`);
-  });
+  if (deleteButton) {
+    deleteButton.addEventListener('click', function () {
+      showDeleteModal(comment.id, `/delete_comment/${comment.id}/`);
+    });
+  }
 }
-
-
