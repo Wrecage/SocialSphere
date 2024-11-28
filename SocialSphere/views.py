@@ -154,7 +154,7 @@ class ContentManagerUtility:
     
     def event_detail(self, event_id):
         event = get_object_or_404(Event, id=event_id)
-        comments = Comment.objects.filter(event=event).order_by('-comment_date')
+        comments = Comment.objects.filter(event=event).order_by('comment_date')
         client_ip = self.get_client_ip()
         
         # Prepare the context by including comments and their avatar styles directly from the model
@@ -418,16 +418,11 @@ class ContentManagerUtility:
 
     def fetch_comments(self, event_id):
         try:
-            # Get the IP address of the user making the request
             user_ip = self.get_client_ip()
-
-            # Get the event object based on the event ID
             event = get_object_or_404(Event, pk=event_id)
-
-            # Fetch all comments for the event, ordered by date
             comments = Comment.objects.filter(event=event).order_by('comment_date')
+            user_has_permission = self.request.user.is_staff or self.request.user.is_superuser
 
-            # Prepare the data for each comment, including the user's IP
             comments_data = [
                 {
                     'id': comment.id,
@@ -440,8 +435,13 @@ class ContentManagerUtility:
                 for comment in comments
             ]
 
-            # Return the comments data with the user's IP in the response
-            return JsonResponse({'status': 'success', 'comments': comments_data, 'user_ip': user_ip})
+            return JsonResponse({
+                'status': 'success',
+                'comments': comments_data,
+                'user_ip': user_ip,
+                'is_staff': self.request.user.is_staff, 
+                'is_superuser': self.request.user.is_superuser  
+            })
         except Event.DoesNotExist:
             return JsonResponse({'status': 'failed', 'message': 'Event not found'}, status=404)
         except Exception as e:
