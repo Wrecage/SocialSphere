@@ -553,6 +553,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function fetchAndDisplayComments(eventId) {
   const loadingIcon = document.getElementById('loadingIcon');
+  const commentCountElement = document.querySelector('.comment-count');
   
   if (!eventId || eventId === 'undefined') {
     console.error('Invalid Event ID passed to fetchAndDisplayComments:', eventId);
@@ -576,6 +577,13 @@ function fetchAndDisplayComments(eventId) {
         const isStaff = data.is_staff;
         const isSuperuser = data.is_superuser;
 
+
+         // Update the comment count dynamically
+         if (data.total_comments !== undefined) {
+          updateCommentCountInEventList(eventId, data.total_comments); // Update comment count
+        }
+      
+
         data.comments.forEach(comment => {
           renderComment(comment, commentsSection, userIp, isStaff, isSuperuser);
         });
@@ -587,6 +595,18 @@ function fetchAndDisplayComments(eventId) {
     .finally(() => {
       loadingIcon.style.display = 'none'; // Stop loading icon
     });
+}
+
+
+// Function to update the comment count in the event list
+function updateCommentCountInEventList(eventId, newCommentCount) {
+  const eventElement = document.querySelector(`.event[data-event-id="${eventId}"]`);
+  if (eventElement) {
+      const commentCountElement = eventElement.querySelector('.comment-count');
+      if (commentCountElement) {
+          commentCountElement.textContent = `${newCommentCount} Comments`;
+      }
+  }
 }
 
 

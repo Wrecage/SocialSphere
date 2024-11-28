@@ -145,6 +145,12 @@ class ContentManagerUtility:
         
         ip_address = self.get_client_ip()
         liked_events = Like.objects.filter(ip_address=ip_address).values_list('event_id', flat=True)
+
+        for event in events:
+                event.like_count = Like.objects.filter(event=event).count()  # Calculate like count for each event
+                event.comment_count = Comment.objects.filter(event=event).count()  # Similarly, calculate comment count
+
+
         context = {
             'events': events,
             'liked_events': liked_events,
@@ -282,6 +288,8 @@ class ContentManagerUtility:
             logger.debug(f"Creating a new like: {like}")
             liked = True
 
+            
+
         event_stats, _ = EventStats.objects.get_or_create(event=event)
         event_stats.total_likes = Like.objects.filter(event=event).count()
         event_stats.save()
@@ -293,7 +301,45 @@ class ContentManagerUtility:
             'total_likes': event_stats.total_likes
         })
     
-    
+    def get_like_count(self, event_id):
+        try:
+            # Get the event by ID
+            event = Event.objects.get(pk=event_id)
+
+            # Count the number of likes for this event
+            total_likes = Like.objects.filter(event=event).count()
+
+            return JsonResponse({
+                'status': 'success',
+                'total_likes': total_likes
+            })
+        except Event.DoesNotExist:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Event not found'
+            }, status=404)
+
+    def get_like_status(self, event_id):
+        try:
+            event = Event.objects.get(pk=event_id)
+
+            total_likes = Like.objects.filter(event=event).count()
+
+            ip_address = self.get_client_ip()
+
+            liked = Like.objects.filter(event=event, ip_address=ip_address).exists()
+
+            return JsonResponse({
+                'status': 'success',
+                'total_likes': total_likes,
+                'liked': liked
+            })
+        except Event.DoesNotExist:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Event not found'
+            }, status=404)
+        
     def add_comment(self, event_id):
         if self.request.method == 'POST':
             event = get_object_or_404(Event, pk=event_id)
@@ -423,6 +469,10 @@ class ContentManagerUtility:
             comments = Comment.objects.filter(event=event).order_by('comment_date')
             user_has_permission = self.request.user.is_staff or self.request.user.is_superuser
 
+           
+            event_stats = get_object_or_404(EventStats, event=event)
+            total_comments = event_stats.total_comments  
+
             comments_data = [
                 {
                     'id': comment.id,
@@ -440,7 +490,8 @@ class ContentManagerUtility:
                 'comments': comments_data,
                 'user_ip': user_ip,
                 'is_staff': self.request.user.is_staff, 
-                'is_superuser': self.request.user.is_superuser  
+                'is_superuser': self.request.user.is_superuser  ,
+                'total_comments': total_comments
             })
         except Event.DoesNotExist:
             return JsonResponse({'status': 'failed', 'message': 'Event not found'}, status=404)
@@ -871,10 +922,18 @@ def event_detail(request, event_id):
     content_manager_utility = ContentManagerUtility(request)
     return content_manager_utility.event_detail(event_id)
 
-@csrf_exempt
+
 def like_event(request, event_id):
     content_manager_utility = ContentManagerUtility(request)
     return content_manager_utility.like_event(event_id)
+
+def get_like_count(request,event_id):
+    content_manager_utility = ContentManagerUtility(request)   
+    return content_manager_utility.get_like_count(event_id)
+
+def get_like_status(request,event_id):
+    content_manager_utility = ContentManagerUtility(request)   
+    return content_manager_utility.get_like_status(event_id)
 
 def fetch_comments(request,event_id):
     content_manager_utility = ContentManagerUtility(request)

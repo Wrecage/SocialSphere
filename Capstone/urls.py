@@ -77,4 +77,11 @@ urlpatterns = [
 
     # fetch commments real time
     path('fetch_comments/<int:event_id>/', views.fetch_comments, name='fetch_comments'),
+
+    #fetch like counts realtime
+    path('get_like_count/<int:event_id>/', views.get_like_count, name='get_like_count'),
+
+    #fetch like status
+    path('get_like_status/<int:event_id>/', views.get_like_status, name='get_like_status'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
