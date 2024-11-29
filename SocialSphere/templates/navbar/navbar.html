@@ -24,7 +24,11 @@
         </a>
         <div class="navigation">
             <a class="page1 {% if request.resolver_match.url_name == 'dashboard_analytics' %}active{% endif %}" href="{% url 'dashboard_analytics' %}">Dashboard</a>
+        {% if request.user.username != 'testadmin' %}
             <a class="page2 {% if request.resolver_match.url_name == 'list_content_managers' or request.resolver_match.url_name == 'add_content_manager' or request.resolver_match.url_name == 'edit_content_manager' %}active{% endif %}" href="{% url 'list_content_managers' %}">User Management</a>
+        {% else %}
+            <div>Testadmin user detected. Dashboard access only.</div>
+        {% endif %}
         </div>
         <a id="logoutButton" class="profile-button" style="text-decoration: none;" href="{% url 'user_logout' %}">Logout</a>
        
