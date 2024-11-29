@@ -4,6 +4,13 @@ from django.utils import timezone
 
 class VisitorCountMiddleware(MiddlewareMixin):
     def process_request(self, request):
+
+
+        # Check if the request is from the cronjob (based on the custom header)
+        if request.headers.get('X-Cron-Job') == 'true':
+            return None  
+        
+
         if not request.session.session_key:
             request.session.save()
 
