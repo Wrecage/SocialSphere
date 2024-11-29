@@ -98,7 +98,9 @@
                                 <p class="kpi-title">Most Liked Event</p>
                                 {% if most_liked_event %}
                                     <div class="event-preview">
+                                        <a href="{% url 'event_detail' most_liked_event.id %}">
                                         <img src="{% url 'view_image' most_liked_event.id %}" alt="{{ most_liked_event.title }}" class="event-image">
+                                        </a>
                                         <p class="event-title">{{ most_liked_event.title }}</p>
                                         <p class="event-title"><strong>Likes: </strong><span class="event-likes"> {{ most_liked_event.eventstats.total_likes }}</span></p>
                                     </div>
@@ -112,7 +114,9 @@
                                 <p class="kpi-title">Most Commented Event</p>
                                 {% if most_commented_event %}
                                     <div class="event-preview">
+                                        <a href="{% url 'event_detail' most_commented_event.id %}">
                                         <img src="{% url 'view_image' most_commented_event.id %}" alt="{{ most_commented_event.title }}" class="event-image">
+                                        </a>
                                         <p class="event-title">{{ most_commented_event.title }}</p>
                                         <p class="event-title"><strong>Comments: </strong> <span class="event-comments"> {{ most_commented_event.eventstats.total_comments }}</span></p>
                                     </div>
