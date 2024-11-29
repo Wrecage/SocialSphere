@@ -8,6 +8,7 @@ from django.views.decorators.http import require_POST
 from django.urls import reverse
 from .facebook_utils import facebook_analytics, post_to_facebook
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.db.models import Count
 from django.http import HttpResponse
 from django.core.cache import cache
 from datetime import datetime, timedelta
@@ -47,6 +48,7 @@ from django.utils.encoding import force_str
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
+
 
 
 logger = logging.getLogger(__name__)
@@ -554,13 +556,12 @@ class ContentManagerUtility:
             total_visitors = EventStats.objects.filter(event=monthly_event).aggregate(Sum('total_visitors'))['total_visitors__sum'] or 0
 
             # Get the most liked event
-            most_liked_event = Event.objects.annotate(total_likes=Sum('eventstats__total_likes')).order_by('-total_likes').first()
+            most_liked_event = Event.objects.annotate(total_likes=Count('like')).order_by('-total_likes').first()
 
             # Get the most commented event
-            most_commented_event = Event.objects.annotate(total_comments=Sum('eventstats__total_comments')).order_by('-total_comments').first()
+            most_commented_event = Event.objects.annotate(total_comments=Count('comment')).order_by('-total_comments').first()
 
             
-
             facebook_pie_data = {
                 'reactions': data['total_reactions_count'],
                 'comments': data['total_comments'],
@@ -575,7 +576,7 @@ class ContentManagerUtility:
             website_pie_data = get_website_pie_data()
 
 
-            print(website_analytics_data)
+           
 
             current_month = timezone.now().strftime('%Y-%m')
 
