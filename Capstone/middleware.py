@@ -6,10 +6,19 @@ class VisitorCountMiddleware(MiddlewareMixin):
     def process_request(self, request):
 
 
-        # Check if the request is from the cronjob (based on the custom header)
-        if request.headers.get('X-Cron-Job') == 'true':
-            return None  
-        
+        # Check if the request is coming from a cron job
+        cronjob_ips = [
+            '116.203.134.67',
+            '116.203.129.16',
+            '23.88.105.37',
+            '128.140.8.200'
+        ]
+        cronjob_header = request.headers.get('X-Cron-Job') == 'true'
+        client_ip = request.META.get('REMOTE_ADDR')
+
+        # Skip tracking if the request comes from a cron job (via header or IP)
+        if cronjob_header or client_ip in cronjob_ips:
+            return None  # Ignore this request for tracking purposes
 
         if not request.session.session_key:
             request.session.save()
