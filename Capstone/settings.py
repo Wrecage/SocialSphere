@@ -38,7 +38,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['socialsphere-83da.onrender.com', 'socialsphere.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['socialsphere-83da.onrender.com', 'socialsphere.pythonanywhere.com', 'localhost', '127.0.0.1','socialsphere-1.onrender.com']
 
 
 if DEBUG:
