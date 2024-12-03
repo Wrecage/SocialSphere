@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'user_management/add_content_manager.css' %}">
     <script src="{% static 'js/accountmax.js' %}"></script>
-   
+    <link rel="shortcut icon" type="x-icon" href="{% static 'general/Socialsphere_Logo_Pure.png' %}">
+
 
 
 </head>
@@ -19,7 +20,7 @@
        
         
         <div class="title">ADD USER
-            <p class="description">Creating and managing users efficiently.</p>
+            <p class="description">Creating & managing users efficiently.</p>
         </div>
 
         <div class="form-container">
@@ -59,7 +60,7 @@
         <!-- role -->
         <label for="role">Role</label>
         <select id="role" name="role">
-            <option value="none" {% if not form.is_superuser.value and not form.is_staff.value %}selected{% endif %}>None</option>
+            <!-- <option value="none" {% if not form.is_superuser.value and not form.is_staff.value %}selected{% endif %}>None</option> -->
             <option value="admin" {% if form.is_superuser.value %}selected{% endif %}>Admin</option>
             <option value="content_manager" {% if form.is_staff.value %}selected{% endif %}>Content Manager</option>
         </select>
@@ -91,7 +92,7 @@
     <button type="submit">Save</button>
     </form>
     </div>
-    <a href="{% url 'list_content_managers' %}" class="buttonback">&lt;- Back</a>
+    <a href="{% url 'list_content_managers' %}" class="buttonback">&lt; Back</a>
 
     {% if modal_error_message %}
     <!-- Hidden error message element that JS will read from -->

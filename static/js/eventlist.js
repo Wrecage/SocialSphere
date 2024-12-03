@@ -89,9 +89,15 @@ function handleEventActions() {
 
         // Function to poll for new comment count every 5 seconds
         function pollForNewCommentCount(eventId) {
+            // Ensure eventId exists before sending the request
+            if (!eventId) {
+                console.warn('Event ID is not available');
+                return;  // Exit the function if no valid eventId
+            }
+        
             setInterval(function() {
                 $.ajax({
-                    url: `/fetch_comments/${eventId}/`, // Endpoint that returns the total comment count
+                    url: `/fetch_comments/${eventId}/`, 
                     method: 'GET',
                     success: function(response) {
                         if (response.status === 'success') {
@@ -100,8 +106,12 @@ function handleEventActions() {
                             updateCommentCountInEventList(eventId, newCommentCount);
                         }
                     },
-                    error: function() {
-                        console.error('Error fetching comment count');
+                    error: function(xhr, status, error) {
+                        if (xhr.status === 404) {
+                            console.error('Event not found');
+                        } else {
+                            console.error('Error fetching comment count');
+                        }
                     }
                 });
             }, 5000); // Poll every 5 seconds

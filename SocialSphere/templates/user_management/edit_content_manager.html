@@ -6,6 +6,8 @@
 <html>
 <head>
     <link rel="stylesheet" href="{% static 'user_management/edit_content_manager.css' %}">
+    <link rel="shortcut icon" type="x-icon" href="{% static 'general/Socialsphere_Logo_Pure.png' %}">
+
     <script src="{% static 'js/editcontentmanager.js' %}"></script>
     <script src="{% static 'js/accountmax.js' %}"></script>
     
@@ -16,7 +18,7 @@
  
     <br><br>
     <div class="title">EDIT USER
-        <a class="description">Modifying and maintaining users effectively.</a>
+        <a class="description">Modifying & maintaining users effectively.</a>
     </div>
     
     <div class="form-container">
@@ -46,7 +48,7 @@
         <!-- Role Selection -->
         <label for="role">Role</label>
         <select id="role" name="role">
-            <option value="none" {% if not form.is_superuser.value and not form.is_staff.value %}selected{% endif %}>None</option>
+            <!-- <option value="none" {% if not form.is_superuser.value and not form.is_staff.value %}selected{% endif %}>None</option> -->
             <option value="admin" {% if form.is_superuser.value %}selected{% endif %}>Admin</option>
             <option value="content_manager" {% if form.is_staff.value and not form.is_superuser.value %}selected{% endif %}>Content Manager</option>
         </select>
@@ -137,7 +139,7 @@
     {% endif %} -->
 
 </div>
-    <a href="{% url 'list_content_managers' %}"  class="buttonback" >&lt;- Back</a>
+    <a href="{% url 'list_content_managers' %}"  class="buttonback" >&lt; Back</a>
 
     
     {% if modal_error_message %}
