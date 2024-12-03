@@ -31,14 +31,15 @@ body::after {
 }
 /* Title styling */
 
+
 .title {
   font-size: 3rem; /* Adjust the font size */
   font-weight: bolder; /* Use a heavier weight if available */
   color: #ffcc00; /* Set text color */
   text-align: left; /* Align the text to the left */
-  margin-left: -450px; /* Space it away from the left side */
+  margin-left: -380px; /* Space it away from the left side */
   position: relative; /* Allow vertical centering adjustments */
-  top: 400px; /* Adjust to center vertically */
+  top: 380px; /* Adjust to center vertically */
   transform: translateY(-50%); /* Perfect vertical center */
 }
 
@@ -66,7 +67,7 @@ body::after {
   border-radius: 10px; /* Optional: Add rounded corners */
   position: relative; /* To enable positioning within the container */
   left: 325px; /* Moves the container to the right */
-  top: -50px;
+  top: -30px;
 }
 
 /* Form styles */
@@ -259,13 +260,13 @@ a {
   top:130px; 
   float: right;
   display: flex;
-  padding: .5rem 2rem;
+  padding: .5rem 1rem;
   background-color: #000000;
   color: #fff;
   font-weight: bold;
   transition: background-color 0.3s ease;
   border-radius: 50px;
-  border: 2px solid;
+  border: 2px;
   overflow: hidden;
   margin-inline: 21em;
   font-family: 'Poppins', sans-serif;

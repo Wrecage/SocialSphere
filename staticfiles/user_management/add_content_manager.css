@@ -53,25 +53,25 @@ h1 {
     border-radius: 10px; /* Optional: Add rounded corners */
     position: relative; /* To enable positioning within the container */
     left: 325px; /* Moves the container to the right */
-   
-}
+    top: -30px;
+  }
 
-/* Form styles */
+
 form {
-    background-color: #f7f7f7; /* Lighter background */
-    width: 100%;
-    margin: 40px auto; /* Centering the form */
-    padding: 30px; /* Added more padding for a spacious feel */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);    
-    height: 90%; /* Adjust height auomatically based on content */
-    overflow-y: auto; /* Scrollable if content exceeds max height */
-    scrollbar-color: black transparent;
-    top: 44%;
-    max-width: 600px;
-    text-align: left;
-    position: relative;
-    transform: translateY(-50%);
+  background-color: #f7f7f7; /* Lighter background */
+  width: 100%;
+  margin: 40px auto; /* Centering the form */
+  padding: 30px; /* Added more padding for a spacious feel */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);    
+  height: 90%; /* Adjust height auomatically based on content */
+  overflow-y: auto; /* Scrollable if content exceeds max height */
+  scrollbar-color: black transparent;
+  top: 44%;
+  max-width: 600px;
+  text-align: left;
+  position: relative;
+  transform: translateY(-50%);
 
 }
 
@@ -81,13 +81,14 @@ form {
     font-weight: bolder; /* Use a heavier weight if available */
     color: #ffcc00; /* Set text color */
     text-align: left; /* Align the text to the left */
-    margin-left: -450px; /* Space it away from the left side */
+    margin-left: -380px; /* Space it away from the left side */
     position: relative; /* Allow vertical centering adjustments */
-    top: 420px; /* Adjust to center vertically */
+    top: 380px; /* Adjust to center vertically */
     transform: translateY(-50%); /* Perfect vertical center */
-}
-
-.description {
+  }
+  
+  
+  .description {
     display: block; /* Display the description as a block element */
     font-size: 23.5px; /* Font size for the description */
     color: #000; /* Black text color */
@@ -98,8 +99,7 @@ form {
     line-height: 1.5; /* Adjust line spacing for better readability */
     text-align: left; /* Align text to the left */
     word-spacing: normal;
-}
-
+  }
 
 
 
@@ -259,13 +259,13 @@ a {
     top: 130px; 
     float: right;
     display: flex;
-    padding: .5rem 2rem;
+    padding: .5rem 1rem;
     background-color: #000000;
     color: #fff;
     font-weight: bold;
     transition: background-color 0.3s ease;
     border-radius: 50px;
-    border: 2px solid;
+    border: 2px;
     overflow: hidden;
     margin-inline: 21em;
     font-family: 'Poppins', sans-serif;
@@ -411,4 +411,6 @@ a {
     z-index: 10000; /* Make sure it's on top of everything */
     transition: width 0.2s ease; /* Smooth progress */
   }
+  
+
   

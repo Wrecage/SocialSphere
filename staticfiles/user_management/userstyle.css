@@ -271,6 +271,7 @@ form#delete-form table thead {
   z-index: 1;
 }
  
+
 button#delete-button {
   color: #fff;
   background-color: #000000;
@@ -278,7 +279,7 @@ button#delete-button {
   font-weight: bold;
   font-size: 16px;
   border: none;
-  padding: 1rem 2.5rem;
+  padding: 1rem 1.4rem;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
   user-select: none;
@@ -290,6 +291,7 @@ button#delete-button {
   transition: background-color 0.3s ease;
   overflow: hidden;
 }
+
 button#delete-button:hover {
   background-color: #555;
   transform: scale(1.1);
@@ -312,7 +314,6 @@ button#delete-button:hover {
   font-family: 'Poppins', sans-serif;
   font-weight: bold; /* Set font weight to bold */
   font-size: 16px; /* Keep font size consistent with original */
-  letter-spacing: 2px;
   cursor: pointer;
   background-color: black;
   transition: background-color 0.3s ease;
