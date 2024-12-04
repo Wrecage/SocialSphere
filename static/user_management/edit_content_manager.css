@@ -37,9 +37,9 @@ body::after {
   font-weight: bolder; /* Use a heavier weight if available */
   color: #ffcc00; /* Set text color */
   text-align: left; /* Align the text to the left */
-  margin-left: -380px; /* Space it away from the left side */
+  margin-left: -310px; /* Space it away from the left side */
   position: relative; /* Allow vertical centering adjustments */
-  top: 380px; /* Adjust to center vertically */
+  top: 360px; /* Adjust to center vertically */
   transform: translateY(-50%); /* Perfect vertical center */
 }
 
@@ -67,7 +67,7 @@ body::after {
   border-radius: 10px; /* Optional: Add rounded corners */
   position: relative; /* To enable positioning within the container */
   left: 325px; /* Moves the container to the right */
-  top: -30px;
+  top: -40px;
 }
 
 /* Form styles */
@@ -447,3 +447,241 @@ a {
   z-index: 10000; /* Make sure it's on top of everything */
   transition: width 0.2s ease; /* Smooth progress */
 }
+
+
+@media (max-width: 1919px) {
+  .form-container {
+      width: 500px;  /* Adjust width for slightly smaller screens */
+      height: 480px;
+      left: 320px;
+      top: -50px;
+      padding: 3%;
+  }
+
+  .title {
+      font-size: 1.1rem;
+  }
+
+  .description {
+      font-size: 21px;
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 4px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+/* Media Query for 1366px and below */
+@media (max-width: 1366px) {
+  .form-container {
+      width: 480px;  /* Adjust width */
+      height: 460px;
+      left: 270px;
+      top: -40px;
+      padding: 3%;
+  }
+
+  .title {
+      font-size: 1rem;  /* Reduce title size */
+      left: 140px;
+
+  }
+
+  .description {
+      font-size: 20px;  /* Adjust description font size */
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 4px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+/* Media Query for 1080px and below */
+@media (max-width: 1080px) {
+  .form-container {
+      width: 500px;  /* Adjust width */
+      height: 450px;
+      left: 210px;
+      top: 30px;
+      padding: 3%;
+  }
+
+  .title {
+      font-size: .9rem;
+  }
+
+  .description {
+      font-size: 19px;
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 4px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+/* Media Query for 1024px and below */
+@media (max-width: 1024px) {
+  .form-container {
+      width: 475px;  /* Adjust width */
+      height: 425px;
+      left: 180px;
+      top: 40px;
+      padding: 3%;
+  }
+
+  .title {
+      font-size: .85rem;
+  }
+
+  .description {
+      font-size: 18px;
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 4px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+/* Media Query for 768px and below */
+@media (max-width: 768px) {
+  .form-container {
+      width: 450px;  /* Adjust width */
+      height: 400px;
+      left: 150px;
+      top: 50px;
+      padding: 3%;
+  }
+
+  .title {
+      font-size: .7rem;
+  }
+
+  .description {
+      font-size: 17px;
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 5px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+/* Media Query for 600px and below */
+@media (max-width: 600px) {
+  .form-container {
+      width: 425px;  /* Adjust width */
+      height: 375px;
+      left: 120px;
+      top: 60px;
+      padding: 3%;
+  }
+
+  .title {
+      font-size: .6rem;
+  }
+
+  .description {
+      font-size: 16px;
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 5px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+/* Media Query for 480px and below (Mobile devices) */
+@media (max-width: 480px) {
+  .form-container {
+      width: 400px;  /* Adjust width */
+      height: 350px;
+      left: 90px;
+      top: 70px;
+      padding: 5%;
+  }
+
+  .title {
+      font-size: .5rem;
+  }
+
+  .description {
+      font-size: 15px;
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 5px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+/* Media Query for 375px and below (Small Mobile devices) */
+@media (max-width: 375px) {
+  .form-container {
+      width: 375px;  /* Adjust width */
+      height: 325px;
+      left: 60px;
+      top: 80px;
+      padding: 5%;
+  }
+
+  .title {
+      font-size: .45rem;
+  }
+
+  .description {
+      font-size: 14px;
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 5px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+/* Media Query for 320px and below (Very small Mobile devices) */
+@media (max-width: 320px) {
+  .form-container {
+      width: 330px;  /* Adjust width */
+      height: 280px;
+      left: 30px;
+      top: 90px;
+      padding: 5%;
+  }
+
+  .title {
+      font-size: .4rem;
+  }
+
+  .description {
+      font-size: 13px;
+  }
+
+  form:not(.exclude-global-form-styles)
+  {
+      padding: 5px;
+      height: 97%;
+      top: 43%;
+  }
+}
+
+
