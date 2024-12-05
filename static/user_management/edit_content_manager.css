@@ -459,11 +459,11 @@ a {
   }
 
   .title {
-      font-size: 1.1rem;
+      font-size: 3rem;
   }
 
   .description {
-      font-size: 21px;
+      font-size: 23.5px;
   }
 
   form:not(.exclude-global-form-styles)
