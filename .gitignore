@@ -1,5 +1,6 @@
 # Ignore environment variables
 Capstone/.env
+.env
 
 # Python compiled files
 __pycache__/
