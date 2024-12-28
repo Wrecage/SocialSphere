@@ -24,6 +24,8 @@ class Event(models.Model):
     def comment_count(self):
         return Comment.objects.filter(event=self).count()
 
+        
+
 class Like(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     ip_address = models.GenericIPAddressField()
